@@ -299,6 +299,10 @@ The art pass is considered complete when these frames have been inspected at
 The current reference captures live in `docs/img/` and
 `build/web/` after `godot --export-release "Web"`.
 
+The public playable build is at
+https://g1gowda123.github.io/nakshatra/ and the source is at
+https://github.com/g1gowda123/nakshatra.
+
 ---
 
 ## 11. Reference frames
