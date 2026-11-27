@@ -40,6 +40,13 @@
   December now have anchored positions and December has a brighter colour.
 - **Solar Storm Lab's satellite** read as a stray blue square; it is rebuilt as
   a small body with angled panels and a `SATELLITE` label.
+- **Title modals** keep their action row outside the scroll and the story text
+  uses the full sheet width, so the CTA is never sliced at the bottom edge.
+- **Quiz results** print `14 / 14` on one line; the compact header drops the
+  redundant status label instead of clipping it.
+- **Atlas labels** are culled against the panel and bottom safe area, so no
+  constellation or star name is sliced at an edge.
+- **Credits** correct the HYG catalogue URL to `astronexus.com`.
 - **Stale web packs**: `tools/polish_web.py` stamps `mainPack` with a content
   hash so the service worker cannot serve an old build after an update.
 
