@@ -4,7 +4,7 @@ Printable fallback for the twelve-slide deck. The deck itself is the
 primary artefact: `http://127.0.0.1:8060/index.html?scene=seminar`
 (or **Seminar mode** on the title screen).
 
-Keys: `→` next · `←` back · `N` notes · `A` auto · `D` checks ·
+Keys: `→` next · `←` back · `N` cue · `Shift+N` notes · `A` auto · `D` checks ·
 `F` fullscreen · `L` open the attached exhibit · `Backspace` return to the deck · `I` enlarge · `P` pause.
 
 ---
@@ -147,7 +147,7 @@ The measure of this project is not how it looks on a gaming laptop. It is whethe
 
 **Open:** Light the lanterns (`res://scenes/Finale.tscn`)
 
-**Figure:** The finale: a certificate, rising lanterns, and a class that read the sky.
+**Figure:** The finale, rising lanterns, and a QR to open the deck on your phone.
 
 ---
 

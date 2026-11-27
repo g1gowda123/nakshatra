@@ -4,7 +4,7 @@ set -u
 cd "$(dirname "$0")/.."
 
 fail=0
-for t in TestContent TestSeminar TestSolarFlow TestMoonFlow; do
+for t in TestContent TestSeminar TestSolarFlow TestMoonFlow TestQuizFlow; do
   echo
   echo "== $t =="
   log="$(mktemp)"

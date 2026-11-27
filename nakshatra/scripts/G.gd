@@ -24,7 +24,7 @@ const INK_SOFT := Color("4a5366")
 
 const SAVE_PATH := "user://nakshatra_save.json"
 
-const VERSION := "1.3.0"
+const VERSION := "1.3.1"
 const EDITION := "Studio edition"
 
 var visited: Dictionary = {}
@@ -43,6 +43,8 @@ var content: Dictionary = {}
 var seminar_index: int = 0
 var seminar_elapsed: float = 0.0
 var seminar_return: bool = false
+# The exhibit that just finished, consumed by the hub for its light-up beat.
+var last_completed := ""
 
 ## Kannada key terms (UI shows these under English labels in Kannada mode).
 const KANNADA := {
@@ -198,6 +200,7 @@ func set_lang(value: String) -> void:
 func complete(id: String) -> void:
 	if not visited.get(id, false):
 		visited[id] = true
+		last_completed = id
 		save_game()
 		progress_changed.emit()
 

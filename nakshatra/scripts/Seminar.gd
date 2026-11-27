@@ -55,6 +55,9 @@ var auto_track: Control
 var dots_box: HBoxContainer
 var notes_text: Label
 var notes_time: Label
+var cue_panel: PanelContainer
+var cue_text: Label
+var cue_visible := false
 var dot_buttons: Array[Button] = []
 # Portrait slides are taller than the phone: the note pane scrolls, so the
 # bottom edge fades out and offers a scroll cue until the reader reaches it.
@@ -106,6 +109,10 @@ func _ready() -> void:
 			start = int(str(raw)) - 1
 	if start > 0:
 		_go(start, false)
+	if OS.get_cmdline_user_args().has("--cue"):
+		_show_cue()
+	if OS.get_cmdline_user_args().has("--notes"):
+		_show_notes()
 	get_viewport().size_changed.connect(_on_resize)
 	set_process(true)
 
@@ -408,7 +415,8 @@ func _top_bar() -> Control:
 			_show_controls())
 		bar.add_child(menu)
 	else:
-		notes_btn = _bar_button("Notes · N")
+		notes_btn = _bar_button("Cue · N")
+		notes_btn.tooltip_text = "One-sentence cue (Shift+N: full notes)"
 		notes_btn.pressed.connect(_toggle_notes)
 		bar.add_child(notes_btn)
 		auto_btn = _bar_button("Auto · A")
@@ -842,6 +850,8 @@ func _apply_slide() -> void:
 		notes_time.text = "~%d SEC" % int(s.get("seconds", DEFAULT_SECONDS))
 	if notes_visible and notes_text:
 		notes_text.text = str(s.get("note", ""))
+	if cue_visible and cue_text:
+		cue_text.text = _cue_line(str(s.get("note", "")))
 
 	auto_left = float(s.get("seconds", DEFAULT_SECONDS))
 	auto_total = auto_left
@@ -1039,12 +1049,80 @@ func _close_figure() -> void:
 # ======================================================================
 
 func _toggle_notes() -> void:
-	notes_visible = not notes_visible
-	Sfx.play("click")
 	if notes_visible:
-		_show_notes()
-	else:
+		notes_visible = false
 		_hide_notes()
+	elif cue_visible:
+		_hide_cue()
+	else:
+		_show_cue()
+	Sfx.play("click")
+
+
+func _show_cue() -> void:
+	# A projected script is a credibility risk. N shows one sentence; Shift+N
+	# opens the full notes for rehearsal on your own screen.
+	if cue_panel or notes_visible or slides.is_empty():
+		return
+	var s: Dictionary = slides[index]
+	var panel := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.02, 0.035, 0.07, 0.96)
+	sb.border_color = Color(G.GOLD, 0.35)
+	sb.set_border_width_all(1)
+	sb.content_margin_left = 14
+	sb.content_margin_right = 14
+	sb.content_margin_top = 6
+	sb.content_margin_bottom = 6
+	panel.add_theme_stylebox_override("panel", sb)
+	panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	if _portrait:
+		# On a phone the bottom bar is already crowded; put the cue under the
+		# header so it covers the figure, never the note or the scroll cue.
+		panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+		panel.offset_left = UI.pad()
+		panel.offset_right = -UI.pad()
+		panel.offset_top = 52
+		panel.offset_bottom = 108
+	else:
+		panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+		panel.offset_left = UI.pad()
+		panel.offset_right = -UI.pad()
+		panel.offset_bottom = -78
+		panel.offset_top = panel.offset_bottom - 52
+	ui.add_child(panel)
+	cue_panel = panel
+	var h := UI.hbox(8)
+	panel.add_child(h)
+	var tag := UI.micro("CUE", Color(G.GOLD, 0.9), 8)
+	tag.autowrap_mode = TextServer.AUTOWRAP_OFF
+	tag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	h.add_child(tag)
+	cue_text = UI.label(_cue_line(str(s.get("note", ""))), 13, Color(G.CREAM, 0.94))
+	cue_text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cue_text.max_lines_visible = 2
+	cue_text.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	h.add_child(cue_text)
+	var full := UI.ghost_button("Full", 10)
+	full.custom_minimum_size = Vector2(58, 30)
+	full.pressed.connect(func(): _hide_cue(); _show_notes())
+	h.add_child(full)
+	cue_visible = true
+
+
+func _hide_cue() -> void:
+	if cue_panel:
+		cue_panel.queue_free()
+		cue_panel = null
+		cue_text = null
+	cue_visible = false
+
+
+func _cue_line(note: String) -> String:
+	var cut := note.find(". ")
+	if cut > 0:
+		return note.left(cut + 1)
+	return note
 
 
 func _show_notes() -> void:
@@ -1052,6 +1130,9 @@ func _show_notes() -> void:
 		return
 	if slides.is_empty():
 		return
+	if cue_visible:
+		_hide_cue()
+	notes_visible = true
 	var s: Dictionary = slides[index]
 	var vp := UI.viewport_size()
 	var panel := PanelContainer.new()
@@ -1104,6 +1185,7 @@ func _show_notes() -> void:
 
 
 func _hide_notes() -> void:
+	notes_visible = false
 	if _notes_panel:
 		_notes_panel.queue_free()
 		_notes_panel = null
@@ -1461,7 +1543,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_A:
 			_toggle_auto()
 		KEY_N:
-			_toggle_notes()
+			if key.shift_pressed:
+				if cue_visible:
+					_hide_cue()
+				_show_notes()
+			else:
+				_toggle_notes()
 		KEY_D:
 			_open_checks()
 		KEY_F:

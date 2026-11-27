@@ -153,121 +153,97 @@ def wrap(draw, text, fnt, max_width):
 
 
 def architecture():
-    """A 16:10 diagram that explains the data-to-classroom pipeline."""
+    """A three-stage pipeline that reads at slide size, not only on ENLARGE."""
     scale = 2
-    W, H = 1600, 1000
+    W, H = 1200, 750
     img = Image.new("RGBA", (W * scale, H * scale), (7, 11, 22, 255))
     d = ImageDraw.Draw(img)
 
     rng = random.Random(7)
-    for _ in range(260):
+    for _ in range(180):
         x, y = rng.randrange(W * scale), rng.randrange(H * scale)
-        a = rng.randrange(30, 150)
-        r = 1 if rng.random() > 0.18 else 2
+        a = rng.randrange(30, 140)
+        r = 1 if rng.random() > 0.2 else 2
         d.ellipse([x, y, x + r, y + r], fill=(210, 220, 255, a))
 
     gold = (231, 194, 125, 255)
     teal = (121, 214, 201, 255)
     cream = (244, 236, 221, 255)
-    muted = (150, 164, 187, 255)
-    line = (231, 194, 125, 95)
+    muted = (170, 184, 204, 255)
+    line = (231, 194, 125, 120)
 
-    d.text((65 * scale, 48 * scale), "NAKSHATRA  ·  UNDER THE HOOD", font=font(F_BODY_MED, 22 * scale), fill=teal)
-    d.text((63 * scale, 80 * scale), "From a star catalogue to a classroom browser", font=font(F_SERIF, 46 * scale), fill=gold)
-    d.text((65 * scale, 142 * scale),
-           "Every arrow is a build step or a runtime boundary. Nothing crosses the network at play time.",
-           font=font(F_BODY, 17 * scale), fill=muted)
+    d.text((50 * scale, 38 * scale), "NAKSHATRA  ·  UNDER THE HOOD", font=font(F_BODY_MED, 22 * scale), fill=teal)
+    d.text((48 * scale, 72 * scale), "From a star catalogue to a browser", font=font(F_SERIF, 44 * scale), fill=gold)
+    d.text((50 * scale, 132 * scale), "Three stages. No server at play time.",
+           font=font(F_BODY, 20 * scale), fill=muted)
 
     cols = [
         {
-            "x": 65, "name": "DATA", "color": gold,
+            "x": 50, "name": "DATA", "color": gold,
             "boxes": [
-                ("HYG Database v3", ["8,879 naked-eye stars", "position · magnitude · colour"]),
-                ("Stellarium skycultures", ["88 IAU constellations", "28 nakshatras · line figures"]),
-                ("content.json", ["written lessons", "14 questions · 8 field-guide cards"]),
-                ("build_sky_data.py", ["offline pipeline", "compact JSON at build time"]),
+                ("HYG v3", ["8,879 naked-eye stars", "position · magnitude · colour"]),
+                ("Skycultures", ["88 constellations", "28 nakshatras · line figures"]),
             ],
         },
         {
-            "x": 445, "name": "RUNTIME", "color": teal,
+            "x": 425, "name": "BUILD", "color": teal,
             "boxes": [
-                ("StarDB autoload", ["loads the catalogue once", "lookup by HIP number"]),
-                ("SkyDome", ["8,879-instance MultiMesh", "custom sky + star shaders"]),
-                ("Seven labs + Atlas", ["Moon · stars · scale · seasons", "solar storms · black holes · quiz"]),
-                ("G autoload", ["progress · language · sound", "one local save file"]),
-                ("Seminar deck", ["12 slides · speaker notes", "one-click jump to a lab"]),
+                ("Python pipeline", ["compact JSON", "written at build time"]),
+                ("Godot 4.7", ["12 scenes", "16 custom shaders"]),
             ],
         },
         {
-            "x": 825, "name": "EXPERIENCE", "color": cream,
+            "x": 800, "name": "BROWSER", "color": cream,
             "boxes": [
-                ("Phone, portrait", ["touch targets", "the primary layout"]),
-                ("Projector, 16:9", ["same build", "large type for a hall"]),
-                ("Two languages", ["English + Kannada terms", "no separate edition"]),
-                ("Explain, then play", ["a written Sky Note", "before every exhibit"]),
-            ],
-        },
-        {
-            "x": 1205, "name": "SHIP", "color": (232, 160, 160, 255),
-            "boxes": [
-                ("Godot 4.7", ["GL Compatibility renderer", "no compute · no threads"]),
-                ("Web export", ["one static folder", "itch.io / school LAN"]),
-                ("Classroom-safe", ["no server · no accounts", "no ads · no analytics"]),
-                ("Offline", ["works after first load", "progress stays on device"]),
+                ("One MultiMesh", ["8,879 stars", "one draw call"]),
+                ("Static folder", ["no server · no accounts", "offline after first load"]),
             ],
         },
     ]
 
-    box_x_pad = 16
-    box_h = 104
-    gap = 14
-    top = 206
+    box_w = 350
+    box_h = 120
+    gap = 34
+    top = 212
     for col in cols:
         x = col["x"]
-        d.text((x * scale, 184 * scale), col["name"], font=font(F_BODY_MED, 18 * scale), fill=col["color"])
-        d.rectangle([x * scale, 200 * scale, (x + 330) * scale, 201 * scale], fill=col["color"])
+        d.text((x * scale, 166 * scale), col["name"], font=font(F_BODY_MED, 24 * scale), fill=col["color"])
+        d.rectangle([x * scale, 202 * scale, (x + box_w) * scale, 204 * scale], fill=col["color"])
         y = top
         for title, lines in col["boxes"]:
             d.rounded_rectangle(
-                [x * scale, y * scale, (x + 330) * scale, (y + box_h) * scale],
+                [x * scale, y * scale, (x + box_w) * scale, (y + box_h) * scale],
                 radius=14 * scale,
                 fill=(11, 20, 36, 255),
-                outline=(col["color"][0], col["color"][1], col["color"][2], 95),
+                outline=(col["color"][0], col["color"][1], col["color"][2], 110),
                 width=2 * scale,
             )
-            d.text(((x + box_x_pad) * scale, (y + 14) * scale), title,
-                   font=font(F_BODY_MED, 21 * scale), fill=col["color"])
-            ly = y + 48
+            d.text(((x + 20) * scale, (y + 16) * scale), title,
+                   font=font(F_BODY_MED, 28 * scale), fill=col["color"])
+            ly = y + 60
             for text in lines:
-                d.text(((x + box_x_pad) * scale, ly * scale), text,
-                       font=font(F_BODY, 15 * scale), fill=muted)
-                ly += 23
+                d.text(((x + 20) * scale, ly * scale), text,
+                       font=font(F_BODY, 20 * scale), fill=muted)
+                ly += 28
             y += box_h + gap
 
-    # Arrows between the columns.
-    arrow_y = [420, 610]
-    for i in range(3):
-        x1 = cols[i]["x"] + 334
-        x2 = cols[i + 1]["x"] - 6
-        for y in arrow_y:
-            d.line([x1 * scale, y * scale, x2 * scale, y * scale], fill=line, width=2 * scale)
-            d.polygon(
-                [(x2 * scale, y * scale), ((x2 - 10) * scale, (y - 6) * scale), ((x2 - 10) * scale, (y + 6) * scale)],
-                fill=gold,
-            )
+    for i in range(2):
+        x1 = cols[i]["x"] + box_w + 8
+        x2 = cols[i + 1]["x"] - 10
+        y = top + box_h + gap // 2
+        d.line([x1 * scale, y * scale, x2 * scale, y * scale], fill=line, width=3 * scale)
+        d.polygon([(x2 * scale, y * scale), ((x2 - 12) * scale, (y - 7) * scale), ((x2 - 12) * scale, (y + 7) * scale)], fill=gold)
 
-    # Footer strip with the numbers a presenter is likely to quote.
-    d.rounded_rectangle([65 * scale, 884 * scale, 1535 * scale, 948 * scale],
-                        radius=16 * scale, fill=(10, 18, 33, 255), outline=(231, 194, 125, 80), width=2 * scale)
-    d.text((88 * scale, 904 * scale),
-           "8,879 stars   ·   88 constellations   ·   28 nakshatras   ·   7 exhibits   ·   14 questions   ·   12 scenes   ·   16 shaders",
-           font=font(F_BODY_MED, 19 * scale), fill=cream)
+    d.rounded_rectangle([50 * scale, 668 * scale, 1150 * scale, 712 * scale],
+                        radius=12 * scale, fill=(10, 18, 33, 255), outline=(231, 194, 125, 90), width=2 * scale)
+    d.text((70 * scale, 680 * scale),
+           "8,879 stars · 88 constellations · 28 nakshatras · 7 exhibits · 14 questions",
+           font=font(F_BODY_MED, 20 * scale), fill=cream)
 
     img = img.resize((W, H), Image.LANCZOS).convert("RGB")
     path = os.path.join(OUT, "architecture.webp")
-    img.save(path, "WEBP", quality=92, method=6)
+    img.save(path, "WEBP", quality=93, method=6)
     print("image architecture.webp", img.size)
-
 
 if __name__ == "__main__":
     convert_shots()

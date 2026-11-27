@@ -78,10 +78,16 @@ func _ready() -> void:
 
 	scene._toggle_notes()
 	await get_tree().process_frame
-	_check(scene._notes_panel != null, "speaker notes panel opens")
+	_check(scene.cue_panel != null and scene.cue_visible, "N opens a one-sentence cue")
 	scene._toggle_notes()
 	await get_tree().process_frame
-	_check(scene._notes_panel == null, "speaker notes panel closes")
+	_check(scene.cue_panel == null, "N closes the cue")
+	scene._show_notes()
+	await get_tree().process_frame
+	_check(scene._notes_panel != null and scene.notes_visible, "Shift+N opens the full speaker notes")
+	scene._hide_notes()
+	await get_tree().process_frame
+	_check(scene._notes_panel == null, "full speaker notes close")
 
 	scene._go(10, true)
 	await get_tree().process_frame

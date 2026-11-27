@@ -1,6 +1,6 @@
 # QA report — 27 November 2026
 
-Build: `v1.3.0 — studio pass`
+Build: `v1.3.1 — studio pass`
 Engine: Godot 4.7.2 · GL Compatibility · Web export
 
 ## Studio pass gate
@@ -13,15 +13,17 @@ bash tools/run_tests.sh
 ```
 
 Result: **ALL TESTS PASS** — content, seminar (13 pre-flight rows), solar flow
-and the new **moon flow** contract (five phases, travel direction, feedback,
-hidden readout). Visual checks were re-run at 1280×720 and 390×844 for the
+the new **moon flow** contract (five phases, travel direction, feedback,
+hidden readout) and the **quiz flow** contract (30 reshuffles, index remap,
+scoring, revise topics). Visual checks were re-run at 1280×720 and 390×844 for the
 Moon lab, hub, quiz, Solar lesson, Seasons lab, star hunt, finale and seminar
 slides 1/11.
 
 New in this pass: shuffled quiz options with **Revise** links, a saveable
-certificate, keyboard focus, reduced motion, a persistent seminar timer, a
-one-key return to the deck, stat pills on every slide, and exact pre-flight
-counts. The earlier report below remains the v1.2.1 baseline.
+cropped certificate, keyboard focus, reduced motion, a lantern light-up on
+return, a persistent seminar timer, a one-key return to the deck, `N` as a
+projector-safe cue, stat pills on every slide, a readable pipeline diagram, a
+QR on the closing figure, and exact pre-flight counts. The earlier report below remains the v1.2.1 baseline.
 
 ---
 

@@ -119,8 +119,8 @@ jumps. If you are running late, use the literal cut order below; do not improvis
 
 ## Slide-by-slide script
 
-The in-game **speaker notes** (press **N**) contain a shorter version of each
-script. This is the full version, with stage directions.
+The in-game **speaker notes** (press **Shift+N**) contain a shorter version of each
+script; **N** alone shows only a one-sentence cue. This is the full version, with stage directions.
 
 ### 1 · Nakshatra (0:00–0:40)
 
@@ -314,7 +314,8 @@ open. Press **Present** in the Sky Lab to return to the deck.
 | `→` `Space` `PageDown` | Next slide |
 | `←` `PageUp` | Previous slide |
 | `Home` / `End` | First / last slide |
-| `N` | Speaker notes |
+| `N` | One-sentence cue (projector-safe) |
+| `Shift+N` | Full speaker notes |
 | `A` | Auto-advance (uses each slide’s own timing) |
 | `D` | Presenter checks, shortcuts, demo state, reset |
 | `F` | Fullscreen (browser fullscreen on the web build) |

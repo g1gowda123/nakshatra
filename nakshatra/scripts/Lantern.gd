@@ -30,6 +30,8 @@ var _hover := false
 var _busy := false
 var _hover_t := 0.0
 var _pop := 0.0
+var _lit := 1.0
+var _lit_target := 1.0
 
 const BODY_HEIGHT := 0.80
 const BODY_RADIUS := 0.395
@@ -375,21 +377,37 @@ func _make_paper_mesh() -> ArrayMesh:
 
 func set_done(value: bool) -> void:
 	done = value
+	_lit = 1.0 if value else 0.0
+	_lit_target = _lit
+	_apply_lit()
+	_ring.visible = value or _hover
+	if _number_label:
+		_number_label.modulate = Color("2a1608") if not value else Color("3b230c")
+
+
+func light_up() -> void:
+	# Returning from a finished exhibit: this one lantern warms up in front of
+	# the player while the other six sit quietly. The whole progression spine
+	# finally has a visible beat.
+	done = true
+	_lit = 0.0
+	_lit_target = 1.0
+	_ring.visible = true
+	await get_tree().create_timer(0.2).timeout
+	Sfx.play("success", -9.0, 1.04)
+
+
+func _apply_lit() -> void:
 	if _body_mat:
-		_body_mat.set_shader_parameter("lit", 1.0 if value else 0.88)
-	if _light:
-		_light.light_energy = 1.55 if value else 1.15
-	if _glow:
-		_glow.modulate.a = 0.72 if value else 0.58
+		_body_mat.set_shader_parameter("lit", lerpf(0.88, 1.0, _lit))
 	if _pool:
 		var m := _pool.material_override as StandardMaterial3D
 		if m:
-			m.albedo_color.a = 0.40 if value else 0.30
-	_ring.visible = value or _hover
+			m.albedo_color.a = lerpf(0.30, 0.40, _lit)
+	if _glow:
+		_glow.modulate.a = lerpf(0.58, 0.72, _lit)
 	if _ring_mat:
-		_ring_mat.albedo_color = Color(accent, 0.75 if value else 0.0)
-	if _number_label:
-		_number_label.modulate = Color("2a1608") if not value else Color("3b230c")
+		_ring_mat.albedo_color = Color(accent, lerpf(0.0, 0.75, _lit) if not _hover else 0.55)
 
 
 func set_hover(value: bool) -> void:
@@ -408,6 +426,9 @@ func _process(delta: float) -> void:
 	phase += delta if motion else 0.0
 	_hover_t = minf(_hover_t + delta, 1.0)
 	_pop = maxf(_pop - delta * 3.4, 0.0)
+	if not is_equal_approx(_lit, _lit_target):
+		_lit = move_toward(_lit, _lit_target, delta * 0.7)
+		_apply_lit()
 	# A single writer for the pop: activate() raises _pop, this decays it and
 	# folds it into the hover scale. Tweening the same properties here fought
 	# the hover lerp and the tap read as a dead click.
@@ -421,9 +442,11 @@ func _process(delta: float) -> void:
 	if _body_mat:
 		_body_mat.set_shader_parameter("flicker", flicker)
 	if _light:
-		_light.light_energy = (1.55 if done else 1.15) + (0.28 if _hover else 0.0) + (flicker - 1.0) * 0.9 + _pop * 1.25
+		_light.light_energy = lerpf(1.15, 1.55, _lit) + (0.28 if _hover else 0.0) + (flicker - 1.0) * 0.9 + _pop * 1.25
 	if _glow:
-		var g := 1.30 if done else (1.50 if _hover else 1.15)
+		var g := lerpf(1.15, 1.30, _lit)
+		if _hover:
+			g = maxf(g, 1.50)
 		_glow.scale = _glow.scale.lerp(Vector3.ONE * (g + _pop * 0.9), delta * 4.0)
 	if _title_label:
 		var a := _title_label.modulate.a

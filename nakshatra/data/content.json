@@ -1029,8 +1029,8 @@
           "Next: more languages, an offline teacher dashboard, and a “tonight’s sky” timeline."
         ],
         "note": "The measure of this project is not how it looks on a gaming laptop. It is whether it works on the phone a student already owns, the projector a classroom already has, and a school network with no internet. That is why the export is a static folder, why the layout is portrait-first, and why Kannada terms sit beside the English. The next step is a teacher dashboard that can export class results without a server, and a “tonight’s sky” mode that tells a student what to look for after the seminar.",
-        "image": "res://assets/seminar/certificate_detail.webp",
-        "caption": "The finale: a certificate, rising lanterns, and a class that read the sky.",
+        "image": "res://assets/seminar/certificate_qr.webp",
+        "caption": "The finale, rising lanterns, and a QR to open the deck on your phone.",
         "lab": "res://scenes/Finale.tscn",
         "lab_label": "Light the lanterns",
         "seconds": 55,

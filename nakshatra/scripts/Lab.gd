@@ -44,6 +44,33 @@ func _ready() -> void:
 		G.pending_guide = false
 		await get_tree().process_frame
 		G.show_field_guide()
+	if G.last_completed != "":
+		_celebrate_return.call_deferred()
+
+
+func _celebrate_return() -> void:
+	var id := G.last_completed
+	G.last_completed = ""
+	if not lanterns.has(id) or lanterns[id] == null:
+		return
+	await get_tree().create_timer(0.7).timeout
+	if not is_inside_tree() or not lanterns.has(id) or lanterns[id] == null:
+		return
+	lanterns[id].set_done(false)
+	lanterns[id].light_up()
+	var title := str(G.module_info(id).get("title", id))
+	var toast := UI.tracked("%s  ·  LIT" % title.to_upper(), 9, Color(G.GOLD, 0.95), 2)
+	toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	toast.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	toast.offset_top = 86
+	toast.offset_bottom = 106
+	toast.modulate.a = 0.0
+	ui_root.add_child(toast)
+	var tw := create_tween()
+	tw.tween_property(toast, "modulate:a", 1.0, 0.3)
+	tw.tween_interval(1.6)
+	tw.tween_property(toast, "modulate:a", 0.0, 0.5)
+	tw.tween_callback(toast.queue_free)
 
 
 func _build_world() -> void:

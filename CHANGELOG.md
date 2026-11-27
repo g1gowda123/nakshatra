@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — The studio pass
+## v1.3.1 — The studio pass · 2026-11-27
 
 ### Fixed
 
@@ -44,7 +44,11 @@
   tap/hover/verdict transition. On the web it follows
   `prefers-reduced-motion` by default.
 - **The certificate can be saved** as a PNG from the finale, with the action
-  row hidden for the capture; the file never leaves the device.
+  row hidden for the capture and the image cropped to the certificate itself.
+  The file never leaves the device.
+- **Returning to the hill lights one lantern.** `G.last_completed` is consumed
+  by the hub: that lantern warms up from unlit over 1.4 s, its ring and glow
+  come up, a soft success cue plays, and a restrained "… · LIT" line names it.
 - **Quiz pages reset to the top** when the next riddle opens.
 
 ### Changed — seminar
@@ -60,8 +64,14 @@
   not the hub, and the last-slide clicker press is a silent no-op.
 - **Pre-flight checks exact numbers**: 8,879 stars, 88 constellations, 28
   nakshatras, plus a deck-copy row for stats and bullet length.
+- **N is now a projector-safe cue**, not the full script: one sentence in a
+  small strip. **Shift+N** opens the full speaker notes for rehearsal.
 - **Portrait slides cap the figure at 24%** and add a "scroll for more" cue;
   the note column can no longer collapse to a one-character wrap.
+- **Slide 11's pipeline is a three-stage 1200×750 diagram** with 28–34 px
+  labels, readable at slide size instead of only on ENLARGE.
+- **Slide 12 carries a scannable QR** to `?scene=seminar` on the certificate
+  figure, beside the URL pill.
 - **Deck copy fixes**: 27 nakshatras (28 drawn figures), Saptarishi as the
   seven-star asterism inside Ursa Major, and Cassiopeia is not a nakshatra.
 

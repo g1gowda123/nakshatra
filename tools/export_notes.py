@@ -23,7 +23,7 @@ def main():
         "primary artefact: `http://127.0.0.1:8060/index.html?scene=seminar`",
         "(or **Seminar mode** on the title screen).",
         "",
-        "Keys: `→` next · `←` back · `N` notes · `A` auto · `D` checks ·",
+        "Keys: `→` next · `←` back · `N` cue · `Shift+N` notes · `A` auto · `D` checks ·",
         "`F` fullscreen · `L` open the attached exhibit · `Backspace` return to the deck · `I` enlarge · `P` pause.",
         "",
         "---",

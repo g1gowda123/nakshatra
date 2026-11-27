@@ -47,6 +47,12 @@ func _check_debug_route() -> void:
 				# QA capture helper: light all seven lanterns so the finale
 				# certificate can be captured without playing the lessons.
 				G.unlock_all()
+			elif a.begins_with("--celebrate="):
+				# QA capture helper: return to the hill as if this exhibit was
+				# just finished, so the light-up beat can be photographed.
+				var cid := a.get_slice("=", 1)
+				G.visited[cid] = true
+				G.last_completed = cid
 			elif not a.begins_with("--"):
 				scene_key = str(a)
 	var routes := {

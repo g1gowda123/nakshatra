@@ -11,7 +11,7 @@ account, no network calls at play time.
 **Play the current build:** https://g1gowda123.github.io/nakshatra/  
 **Source:** https://github.com/g1gowda123/nakshatra
 
-**v1.3.0 — The studio pass.** A verified Moon-phase model, a quiz that shuffles
+**v1.3.1 — The studio pass.** A verified Moon-phase model, a quiz that shuffles
 its answers, a take-home certificate, keyboard access, reduced motion, and a
 deck that survives its own live-demo loop.
 The same build includes a twelve-slide presenter deck with speaker notes, a
@@ -40,7 +40,7 @@ venue has no internet.
 Then:
 
 - **→ / Space / PageDown** — next slide. **← / PageUp** — back.
-- **N** — speaker notes. **D** — pre-flight checks, shortcuts, demo state.
+- **N** — one-sentence cue. **Shift+N** — full speaker notes. **D** — pre-flight checks, shortcuts, demo state.
 - **F** — fullscreen. **L** — open the live exhibit on this slide.
 - **I** or click the figure — enlarge the architecture diagram or any screenshot.
 - **A** — auto-advance. **P** — pause the timer. **Esc** — back to the Sky Lab.
@@ -164,7 +164,8 @@ full UI translation — an honest limitation and a clear next step.
 | `→` `Space` `PageDown` | Next slide |
 | `←` `PageUp` | Previous slide |
 | `Home` / `End` | First / last slide |
-| `N` | Speaker notes |
+| `N` | One-sentence cue (projector-safe) |
+| `Shift+N` | Full speaker notes |
 | `A` | Auto-advance |
 | `D` | Checks, shortcuts, demo state, reset |
 | `F` | Fullscreen |
@@ -250,7 +251,7 @@ runs on itch.io without special COOP/COEP headers and on phones without
 bash tools/run_tests.sh
 ```
 
-This runs four headless contract tests:
+This runs five headless contract tests:
 
 - `tests/TestContent.tscn` — 7 modules, 14 questions, 8 planets, 8 Field Guide
   cards, 5 hunts, 4 scale riddles, 12 seminar slides, every image and lab path,
@@ -262,6 +263,9 @@ This runs four headless contract tests:
   shielded flare reaches the challenge, and the stage stays stable.
 - `tests/TestMoonFlow.tscn` — the five cardinal phases, the orbit direction,
   the corrected geometry feedback, and the hidden challenge readout.
+- `tests/TestQuizFlow.tscn` — options stay a permutation, the correct index is
+  remapped, the answer moves between positions, and a wrong choice records the
+  real answer and its revise topic.
 
 Visual work uses `tests/Capture.tscn`, a dev-only harness that loads any scene at
 a fixed size and saves a PNG. It is not part of the export.
