@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.3.1 — The studio pass · 2026-11-27
+## v1.3.2 — The studio pass · 2026-11-27
 
 ### Fixed
 
@@ -50,6 +50,10 @@
   by the hub: that lantern warms up from unlit over 1.4 s, its ring and glow
   come up, a soft success cue plays, and a restrained "… · LIT" line names it.
 - **Quiz pages reset to the top** when the next riddle opens.
+- **A teacher can keep the attempt**: the results screen names the score by
+exhibit (`The Long Road 2/4`) and exports one CSV row per riddle — chosen
+answer, correct answer, result, explanation and revise topic — with no
+account, server or upload.
 
 ### Changed — seminar
 

@@ -12,6 +12,7 @@ var chosen := -1
 var started := false
 var finished := false
 var wrong: Array = []
+var answers: Array = []
 # Which exhibit each riddle belongs to. A wrong answer offers a one-tap route
 # back to the exact lesson that explains it — assessment that closes the loop.
 const QUIZ_TOPICS := [
@@ -60,21 +61,44 @@ func _ready() -> void:
 		index = maxi(0, questions.size() - 1)
 		_render()
 	if args.has("--quiz-review"):
-		# QA helper: renders the "second look" with four wrong answers, so the
-		# revise links and the long result page can be captured without playing.
-		started = true
-		finished = true
-		score = questions.size() - 4
-		index = maxi(0, questions.size() - 1)
-		for i in mini(4, questions.size()):
-			var q: Dictionary = questions[i]
+		_load_review_state()
+	if OS.has_feature("web"):
+		var search = JavaScriptBridge.eval("window.location.search", true)
+		if typeof(search) == TYPE_STRING and str(search).contains("quiz=review"):
+			_load_review_state()
+
+
+func _load_review_state() -> void:
+	# QA/demo helper: renders the second look with four wrong answers.
+	started = true
+	finished = true
+	score = questions.size() - 4
+	index = maxi(0, questions.size() - 1)
+	answers.clear()
+	wrong.clear()
+	for i in questions.size():
+		var q: Dictionary = questions[i]
+		var opts: Array = q.get("options", [])
+		var correct := int(q.get("answer", 0))
+		var ok := i >= 4
+		var chosen := correct if ok else (correct + 1) % maxi(opts.size(), 1)
+		answers.append({
+			"n": i + 1,
+			"q": str(q.get("q", "")),
+			"chosen": str(opts[chosen]) if chosen < opts.size() else "",
+			"correct": str(opts[correct]) if correct < opts.size() else "",
+			"ok": ok,
+			"why": str(q.get("why", "")),
+			"topic": str(QUIZ_TOPICS[i]) if i < QUIZ_TOPICS.size() else "",
+		})
+		if not ok:
 			wrong.append({
 				"q": str(q.get("q", "")),
-				"answer": str((q.get("options", []) as Array)[int(q.get("answer", 0))]),
+				"answer": str(opts[correct]),
 				"why": str(q.get("why", "")),
 				"topic": str(QUIZ_TOPICS[i]) if i < QUIZ_TOPICS.size() else "",
 			})
-		_render()
+	_render()
 
 
 func _build_world() -> void:
@@ -247,6 +271,7 @@ func _render_intro() -> void:
 		index = 0
 		score = 0
 		wrong.clear()
+		answers.clear()
 		answered = false
 		chosen = -1
 		_shuffle_gen += 1
@@ -378,15 +403,26 @@ func _choose(i: int) -> void:
 	var opts: Array = q.get("options", [])
 	var correct_original := int(q.get("answer", -1))
 	var picked_original := int(_order[i]) if i >= 0 and i < _order.size() else -1
+	var picked_text := str(opts[picked_original]) if picked_original >= 0 and picked_original < opts.size() else ""
+	var correct_text := str(opts[correct_original]) if correct_original >= 0 and correct_original < opts.size() else ""
+	var topic := str(QUIZ_TOPICS[index]) if index < QUIZ_TOPICS.size() else ""
+	answers.append({
+		"n": index + 1,
+		"q": str(q.get("q", "")),
+		"chosen": picked_text,
+		"correct": correct_text,
+		"ok": picked_original == correct_original,
+		"why": str(q.get("why", "")),
+		"topic": topic,
+	})
 	if picked_original == correct_original:
 		score += 1
 		Sfx.play("success")
 	else:
 		Sfx.play("soft_error")
-		var topic := str(QUIZ_TOPICS[index]) if index < QUIZ_TOPICS.size() else ""
 		wrong.append({
 			"q": str(q.get("q", "")),
-			"answer": str(opts[correct_original]) if correct_original >= 0 and correct_original < opts.size() else "",
+			"answer": correct_text,
 			"why": str(q.get("why", "")),
 			"topic": topic,
 		})
@@ -438,7 +474,41 @@ func _render_results() -> void:
 		content_box.add_child(UI.pill("Passed  ·  Sky Keeper", G.TEAL, 12))
 	else:
 		content_box.add_child(UI.pill("Not yet — visit a lab and try again", G.GOLD, 12))
+	if answers.size() > 0:
+		# Assessment should name the exhibit to revisit, not just the score.
+		var by_topic := {}
+		for a in answers:
+			var t := str(a.get("topic", ""))
+			if t == "":
+				continue
+			if not by_topic.has(t):
+				by_topic[t] = [0, 0]
+			by_topic[t][1] += 1
+			if bool(a.get("ok", false)):
+				by_topic[t][0] += 1
+		if not by_topic.is_empty():
+			var flow := HFlowContainer.new()
+			flow.add_theme_constant_override("h_separation", 6)
+			flow.add_theme_constant_override("v_separation", 6)
+			content_box.add_child(flow)
+			flow.add_child(UI.micro("BY EXHIBIT", Color(G.GOLD, 0.85), 8))
+			for t in by_topic:
+				var got: int = int(by_topic[t][0])
+				var n: int = int(by_topic[t][1])
+				var label := str(G.module_info(t).get("title", t))
+				var col := G.TEAL if got == n else (G.GOLD if got * 2 >= n else G.VERMILION)
+				flow.add_child(UI.pill("%s  %d/%d" % [label, got, n], col, 11))
 	content_box.add_child(UI.rule(Color(G.GOLD, 0.2), 1))
+	var save := UI.ghost_button("Save this attempt  ↓", 12)
+	save.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	save.custom_minimum_size = Vector2(0, 38)
+	save.pressed.connect(_save_results_csv)
+	content_box.add_child(save)
+	var note := UI.micro("CSV  ·  OPENS IN EXCEL OR SHEETS  ·  STAYS ON THIS DEVICE", Color(G.MUTED, 0.7), 8)
+	note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	content_box.add_child(note)
+
 	if wrong.size() > 0:
 		var rev := UI.vbox(8)
 		content_box.add_child(rev)
@@ -476,6 +546,7 @@ func _render_results() -> void:
 		index = 0
 		score = 0
 		wrong.clear()
+		answers.clear()
 		answered = false
 		chosen = -1
 		_shuffle_gen += 1
@@ -486,6 +557,59 @@ func _render_results() -> void:
 	back.custom_minimum_size = Vector2(210, 44)
 	back.pressed.connect(func(): Router.go("res://scenes/Lab.tscn"))
 	row.add_child(back)
+
+
+
+func _csv_cell(value: String) -> String:
+	return "\"" + value.replace("\"", "\"\"") + "\""
+
+
+func _save_results_csv() -> void:
+	# A teacher can keep the attempt without an account or a server: one row per
+	# riddle, with the chosen answer, the correct one, and the explanation.
+	var total := questions.size()
+	var lines: Array[String] = [
+		"Nakshatra — Sky Riddles",
+		"Name," + _csv_cell(G.player_name),
+		"Date," + _csv_cell(Time.get_datetime_string_from_system(false, true)),
+		"Score,%d,%d" % [score, total],
+		"",
+		"#," + ",".join(PackedStringArray(["Question", "Your answer", "Correct answer", "Result", "Explanation", "Revise"])),
+	]
+	for a in answers:
+		lines.append("%d,%s,%s,%s,%s,%s,%s" % [
+			int(a.get("n", 0)),
+			_csv_cell(str(a.get("q", ""))),
+			_csv_cell(str(a.get("chosen", ""))),
+			_csv_cell(str(a.get("correct", ""))),
+			_csv_cell("correct" if bool(a.get("ok", false)) else "wrong"),
+			_csv_cell(str(a.get("why", ""))),
+			_csv_cell(str(a.get("topic", ""))),
+		])
+	var csv := "\n".join(PackedStringArray(lines)) + "\n"
+	var fname := "nakshatra-riddles.csv"
+	if OS.has_feature("web"):
+		var b64 := Marshalls.raw_to_base64(csv.to_utf8_buffer())
+		var js := "(function(){var s=atob('%s');var a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);var b=new Blob([a],{type:'text/csv;charset=utf-8'});var u=URL.createObjectURL(b);var e=document.createElement('a');e.href=u;e.download='%s';document.body.appendChild(e);e.click();e.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);})()" % [b64, fname]
+		JavaScriptBridge.eval(js, true)
+	else:
+		var path := "user://" + fname
+		var f := FileAccess.open(path, FileAccess.WRITE)
+		if f:
+			f.store_string(csv)
+			f.close()
+			if DisplayServer.get_name() != "headless":
+				OS.shell_open(ProjectSettings.globalize_path(path))
+	Sfx.play("chime")
+	var toast := UI.micro("RESULTS SAVED", G.TEAL, 9)
+	toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	content_box.add_child(toast)
+	toast.modulate.a = 0.0
+	var tw := create_tween()
+	tw.tween_property(toast, "modulate:a", 1.0, 0.25)
+	tw.tween_interval(1.6)
+	tw.tween_property(toast, "modulate:a", 0.0, 0.4)
+	tw.tween_callback(toast.queue_free)
 
 
 func _message(pct: int) -> String:

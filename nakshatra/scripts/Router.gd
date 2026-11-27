@@ -113,7 +113,7 @@ func go(path: String, hold: float = 0.0) -> void:
 	await get_tree().process_frame
 	scene_changed.emit()
 	var tw2 := create_tween()
-	tw2.tween_property(_fade, "modulate:a", 0.0, 0.45).set_trans(Tween.TRANS_SINE)
+	tw2.tween_property(_fade, "modulate:a", 0.0, 0.28).set_trans(Tween.TRANS_SINE)
 	await tw2.finished
 	_fade.visible = false
 	_busy = false

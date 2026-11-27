@@ -312,7 +312,7 @@ func _save_certificate(actions: Control, save_btn: Button, name_edit: LineEdit, 
 	else:
 		var path := "user://nakshatra-certificate.png"
 		var err := img.save_png(path)
-		if err == OK:
+		if err == OK and DisplayServer.get_name() != "headless":
 			OS.shell_open(ProjectSettings.globalize_path(path))
 	actions.visible = true
 	save_btn.visible = true

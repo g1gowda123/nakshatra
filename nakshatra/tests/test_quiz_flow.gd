@@ -54,6 +54,10 @@ func _ready() -> void:
 	scene._choose(scene._correct_display)
 	_check(scene.score == 1, "choosing the mapped correct option scores")
 	_check(scene.wrong.is_empty(), "correct choice adds no wrong entry")
+	_check(scene.answers.size() == 1, "every answer is recorded for the CSV report")
+	if not scene.answers.is_empty():
+		_check(str(scene.answers[0]["correct"]) == correct_text, "CSV row stores the correct answer")
+		_check(bool(scene.answers[0]["ok"]), "CSV row marks the correct attempt")
 
 	scene.wrong.clear()
 	scene.answered = false
@@ -66,6 +70,9 @@ func _ready() -> void:
 	scene._choose(wrong_pick)
 	_check(scene.score == 1, "wrong choice does not add a point")
 	_check(scene.wrong.size() == 1, "wrong choice is recorded once")
+	_check(scene.answers.size() == 2, "wrong choice is also added to the CSV report")
+	if scene.answers.size() >= 2:
+		_check(not bool(scene.answers[1]["ok"]), "CSV row marks the wrong attempt")
 	if not scene.wrong.is_empty():
 		_check(str(scene.wrong[0]["answer"]) == correct_text, "review stores the real correct answer")
 		_check(str(scene.wrong[0]["topic"]) == str(scene.QUIZ_TOPICS[0]), "review stores the exhibit topic")

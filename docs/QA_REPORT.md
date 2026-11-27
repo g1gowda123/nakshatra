@@ -1,6 +1,6 @@
 # QA report — 27 November 2026
 
-Build: `v1.3.1 — studio pass`
+Build: `v1.3.2 — studio pass`
 Engine: Godot 4.7.2 · GL Compatibility · Web export
 
 ## Studio pass gate
@@ -23,7 +23,8 @@ New in this pass: shuffled quiz options with **Revise** links, a saveable
 cropped certificate, keyboard focus, reduced motion, a lantern light-up on
 return, a persistent seminar timer, a one-key return to the deck, `N` as a
 projector-safe cue, stat pills on every slide, a readable pipeline diagram, a
-QR on the closing figure, and exact pre-flight counts. The earlier report below remains the v1.2.1 baseline.
+QR on the closing figure, exact pre-flight counts, a by-exhibit quiz breakdown
+and an offline CSV of the attempt. The earlier report below remains the v1.2.1 baseline.
 
 ---
 
