@@ -36,8 +36,9 @@ ship.
 | Sky Riddles | Pass | Pass | Intro card and index card fit; CTA reachable. |
 | Sky Atlas | Pass | Pass | Labels legible; time value beside slider; LIST no longer clipped on phone. |
 | Finale 1/7 | Pass | Pass | Softer copy; horizon fills the lower third. |
-| Finale 7/7 | Pass | Not exercised in browser (native only) | Certificate, stats, topic list, horizon. |
+| Finale 7/7 | Pass | Pass | Certificate, stats, topic list, horizon; Chrome + 390×844 checked. |
 | Seminar deck | Pass | Pass | Slide 1 fits; ENLARGE button no longer clipped; controls reachable. |
+| Offline reload | Pass | Pass | After first load, network off; deck and direct `?scene=lab` render from Cache Storage. |
 
 ## Functional checks
 
@@ -56,8 +57,12 @@ ship.
   formula (it was 30° out).
 - **Solar lab** — the release button is disabled at 35 % stress and explains
   why; raising the slider above 70 enables it.
-- **Finale** — native 7/7 capture shows the certificate, `Aarav`, 8/14, the
-  seven topic line, and the festival horizon.
+- **Finale** — the 7/7 certificate shows the score (`14/14` after **D → Set
+demo state**), the seven-topic line, the name field and the festival horizon.
+- **Offline / PWA** — loaded the deck and the direct `?scene=lab` route, set
+  DevTools to Offline, and reloaded: both rendered from the service-worker
+  cache (`nakshatra-<pck-stamp>`). A hard reload that bypasses HTTP cache still
+  needs the service worker's own cache, which is the intended path.
 
 ## Known limitations (honest)
 
@@ -74,7 +79,10 @@ ship.
    the playbook rather than removed.
 5. **Performance was not profiled on low-end phones.** The web build is 18 MB
    PCK + 38 MB WASM; the hill uses 650 grass instances and no shadows from
-   lanterns. The shaders are GL Compatibility-safe.
+   lanterns. The shaders are GL Compatibility-safe. In headless software WebGL
+   the first Lab build can take tens of seconds; the deck now shows an
+   **Opening the Sky Lab** status card and the playbook asks the presenter to
+   warm the hill once before the talk.
 
 ## Art QA checklist (what was actually looked at)
 
