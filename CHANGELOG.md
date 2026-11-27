@@ -53,6 +53,11 @@
 - **Printable presenter material**: `docs/SPEAKER_NOTES.md` (the same notes as
   the deck, generated from `content.json` by `tools/export_notes.py`) and
   `docs/HANDOUT.md` (a one-page audience takeaway).
+- **Installable offline PWA**: `polish_web.py` now writes `sw.js` and a web app
+  manifest. After the first load the browser caches the HTML, WASM, PCK,
+  worklets and icons; the manifest adds Seminar deck and Sky Lab shortcuts.
+- **One-command build**: `tools/build_web.sh` exports, brands, packages and
+  refreshes the stats with an absolute path, so it works from the repo root.
 
 ### Fixed
 
@@ -63,6 +68,9 @@
   is never cropped on the left; portrait text keeps its scroll area.
 - `?demo=1` now uses `G.unlock_all()`, so it sets the full quiz total rather
   than a partial score.
+- **Scene changes show a status card** (“Opening the Sky Lab”) instead of a
+  black void, and a failed scene change reports the error instead of leaving
+  the fade covering the screen.
 
 ## v1.2.0 — The hand-made hill · 2026-11-27
 

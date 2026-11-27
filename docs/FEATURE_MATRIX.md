@@ -21,6 +21,7 @@ or a technical claim.
 | **Kannada layer** | Kannada module names and key terms beside the English | Localisation is part of the design, not a translation afterthought | `G.KANNADA`, `content.json` |
 | **Portrait-first UI** | Every screen has a portrait and landscape layout; content scale follows the browser | Works on the device a student already owns | `UI.gd`, `G._apply_content_scale` |
 | **Offline static build** | One folder; no runtime network calls | A school lab can copy it to a local server or run it from a laptop | `build/web/`, `export_presets.cfg` |
+| **Installable offline PWA** | A generated service worker precaches the HTML, JS, WASM, PCK, worklets and icons; a manifest adds home-screen shortcuts for the deck and Sky Lab | Venue Wi-Fi can fail after the first load; the second visit still works | `tools/polish_web.py`, `sw.js`, `manifest.webmanifest` |
 | **Local save** | Lanterns, quiz best, language, sound and seminar slide index in `user://` | Progress survives a reload without an account | `G.gd` |
 | **Seminar mode** | 12-slide presenter deck inside the same build | A teacher or student can present the project without a separate slide file | `Seminar.gd`, `content.json` |
 | **Speaker notes** | A bottom sheet with a script for each slide; `N` toggles | The presenter does not have to memorise the deck | `Seminar.gd` |

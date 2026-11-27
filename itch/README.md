@@ -189,6 +189,11 @@ python3 -m http.server 8060
 # deck: http://127.0.0.1:8060/index.html?scene=seminar
 ```
 
+The export includes `sw.js` and `manifest.webmanifest`. After the first load the
+browser caches the HTML, WASM, PCK, worklets and icons, so a reload with the
+network off still starts; the manifest also adds **Seminar deck** and **Sky Lab**
+home-screen shortcuts. Serve over HTTP/HTTPS, never `file://`.
+
 For a native seminar run without a browser:
 
 ```bash
@@ -196,7 +201,7 @@ godot --path nakshatra -- --screen=seminar
 ```
 
 `--screen=` also accepts `lab`, `moon`, `stars`, `scale`, `seasons`, `flares`,
-`blackhole`, `quiz`, `atlas` and `finale`.
+`blackhole`, `quiz`, `atlas`, `finale`, `guide`, `seminar` and `present`.
 
 ---
 
@@ -212,6 +217,8 @@ python tools/build_sky_data.py
 # 2. (Optional) regenerate the art, audio and seminar figures
 python tools/make_art.py             # ComfyUI on http://127.0.0.1:8188
 python tools/make_audio.py
+python tools/make_plates.py          # engraved almanac plates (Pillow)
+python tools/make_store_cover.py     # itch cover from the title plate
 python tools/make_seminar_assets.py  # deck screenshots, crops, architecture figure
 
 # 3. Export, brand the loader, package the itch zip and refresh stats
@@ -330,6 +337,10 @@ issue — accuracy matters more than polish.
 
 - **Free choice is the point.** There is no level lock, no forced order, and no
   “complete the story to learn”. The story is a wrapper, not a gate.
+- **A printed almanac, not a template.** `scripts/UI.gd` holds the whole visual
+  system: ink ground, cream paper modals, gold hairlines, near-square corners
+  and one vermilion accent. Display type is Cormorant Garamond; labels are
+  tracked Noto Sans; every overlay is a paper sheet, not a frosted panel.
 - **One real sky.** The stars are not a decorative texture: positions,
   brightnesses and colours come from the HYG catalogue. Constellation lines are
   the official IAU figures; nakshatra lines are from Stellarium's Indian

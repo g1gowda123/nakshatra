@@ -112,10 +112,11 @@ and no platform-specific build. The same export can be copied to a school server
 
 ### 15. How does “offline” work if it is a web page?
 
-The page is loaded from a local server or the itch.io page and then makes **no
-network calls**. All data, fonts, images, audio and the WASM/PCK are served once
-and cached by the browser. On a school LAN, the whole folder can be copied to a
-static server. There is no API, no CDN and no telemetry.
+The export includes a small **service worker** (`sw.js`) and a web app manifest.
+On the first successful load it precaches the HTML, JavaScript, WASM, PCK,
+worklets and icons in Cache Storage; after that, a reload with the network off
+still starts. The page itself makes no API, CDN or telemetry calls, and the whole
+folder can be copied to a school static server.
 
 ### 16. Why are threads disabled?
 

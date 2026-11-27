@@ -55,6 +55,8 @@ Say it once at the start. Do not read it off the slide.
 ### 30 minutes before
 
 - [ ] Open the deck. Press **D** and confirm every pre-flight row is green.
+- [ ] Open the Sky Lab once, then return to the deck. The first hill load
+      compiles shaders; after that the `L` jumps are quick.
 - [ ] Press **F** for fullscreen. Check that the top bar and footer are visible.
 - [ ] Click once on the page so the browser allows audio; confirm the ambient bed.
 - [ ] Set the room volume to roughly 30%. The deck is quiet on purpose.
@@ -315,6 +317,7 @@ open. Press **Present** in the Sky Lab to return to the deck.
 | `P` | Pause / resume the rehearsal timer |
 | `Esc` | Close a figure/check overlay, then return to the Sky Lab |
 | Click the figure | Enlarge it |
+| Click a footer dot | Jump straight to that slide |
 | Footer buttons | Back / Next / Open exhibit / Sky Lab |
 
 **On a clicker:** most send Page Up/Page Down, which map to previous/next. If
