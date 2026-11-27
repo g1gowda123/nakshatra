@@ -1,5 +1,48 @@
 # Changelog
 
+## Unreleased — The almanac edition
+
+### Changed
+
+- **The whole interface is now a printed sky almanac.** `scripts/UI.gd` is the
+  single source of truth: ink ground, cream paper modals, gold hairlines,
+  near-square corners and one vermilion accent. The old rounded pills, teal
+  glows and template cards are gone.
+- **Typography carries the hierarchy**: Cormorant Garamond for display and
+  numerals, tracked Noto Sans for micro-caps, Noto Sans Kannada for the Kannada
+  line. Every modal is a paper sheet over a dimmed scene.
+- **The hub is a catalogue shelf**: numbered cards, short catalogue tags, a
+  cream colophon card, and a responsive 4/3/1-column grid. Compact layouts get
+  shorter cards and a scroll region instead of clipped rows.
+- **New engraved plates** replace the generated card illustrations:
+  `tools/make_plates.py` draws the moon phases, Saptarishi field, turning year,
+  solar storm, black hole, riddles, atlas and title plate as deterministic line
+  art. `data/content.json` points at `assets/art/plates/`.
+- **New store cover** (`tools/make_store_cover.py`) and a refreshed fourteen-shot
+  store set under `itch/`.
+
+### Fixed
+
+- **The Field Guide could not open.** The old QA route awaited a timer on the
+  title scene, which was freed before the callback; the hub now owns the
+  hand-off through `G.pending_guide`.
+- **Compact hub clipping** at 780×437: the seventh card and the colophon fell
+  below the fold. Card heights, tags, and the scroll cap were adjusted.
+- **Kannada card titles** were appended under the English title and overlapped
+  it in the short card. Kannada mode now replaces the title.
+- **Tofu glyphs** on the arrow and check characters in tracked micro-caps;
+  replaced with `›`, `DONE`, and `LIT`.
+- **The 3D Kannada observatory sign** bled faintly through the lesson shelf at
+  compact sizes; it is hidden in compact mode and kept on desktop.
+- **Briefing plates cropped their engraved captions**; the frame now uses
+  contain fit so the whole plate is visible.
+- **Season labels** collided with Earth and the right-hand panel; June and
+  December now have anchored positions and December has a brighter colour.
+- **Solar Storm Lab's satellite** read as a stray blue square; it is rebuilt as
+  a small body with angled panels and a `SATELLITE` label.
+- **Stale web packs**: `tools/polish_web.py` stamps `mainPack` with a content
+  hash so the service worker cannot serve an old build after an update.
+
 ## v1.2.1 — Presenter polish · 2026-11-27
 
 ### Added

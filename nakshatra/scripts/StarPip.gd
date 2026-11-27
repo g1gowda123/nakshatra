@@ -3,7 +3,7 @@ extends Control
 ## A tiny five-point star drawn in code — no font or SVG dependency.
 
 var filled := true
-var pip_color: Color = Color("e7c27d")
+var pip_color: Color = Color("d9b36c")
 var pip_size := 12.0
 
 

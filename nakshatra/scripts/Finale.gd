@@ -250,7 +250,7 @@ func _certificate() -> Control:
 	var row: BoxContainer = UI.vbox(8) if UI.is_compact() else UI.hbox(8)
 	row.mouse_filter = Control.MOUSE_FILTER_PASS
 	wrap.add_child(row)
-	var back := UI.button("Return to the hill   →", true, 16)
+	var back := UI.button("Return to the hill   ›", true, 16)
 	back.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	back.pressed.connect(func(): Router.go("res://scenes/Lab.tscn"))
 	row.add_child(back)
