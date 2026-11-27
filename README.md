@@ -11,7 +11,7 @@ account, no network calls at play time.
 **Play the current build:** https://g1gowda123.github.io/nakshatra/  
 **Source:** https://github.com/g1gowda123/nakshatra
 
-**v1.3.2 — The studio pass.** A verified Moon-phase model, a quiz that shuffles
+**v1.4.0 — The true sky.** A verified Moon-phase model, a quiz that shuffles
 its answers, a take-home certificate, keyboard access, reduced motion, and a
 deck that survives its own live-demo loop.
 The same build includes a twelve-slide presenter deck with speaker notes, a
@@ -115,7 +115,9 @@ and a one-click **CSV** of the attempt for a teacher. Designed to be used as a
 - **Field Guide to the Universe** — written, illustrated cards on nebulae,
   supernovae, pulsars, galaxies, gravitational waves and exoplanets.
 - **Sky Atlas** — the real sky at 13°N with the 88 IAU constellations,
-  28 nakshatras, star labels and a time slider.
+  28 nakshatras, star labels, a time slider that uses the actual local
+  sidereal time, and a **Tonight** card that names four stars above the
+  horizon right now.
 - **The Story** — an optional four-panel lantern-festival story. It never gates
   a lesson.
 - **The Finale** — when all seven lanterns are lit, a certificate and a sky full
@@ -253,7 +255,7 @@ runs on itch.io without special COOP/COEP headers and on phones without
 bash tools/run_tests.sh
 ```
 
-This runs five headless contract tests:
+This runs six headless contract tests:
 
 - `tests/TestContent.tscn` — 7 modules, 14 questions, 8 planets, 8 Field Guide
   cards, 5 hunts, 4 scale riddles, 12 seminar slides, every image and lab path,
@@ -266,8 +268,11 @@ This runs five headless contract tests:
 - `tests/TestMoonFlow.tscn` — the five cardinal phases, the orbit direction,
   the corrected geometry feedback, and the hidden challenge readout.
 - `tests/TestQuizFlow.tscn` — options stay a permutation, the correct index is
-  remapped, the answer moves between positions, and a wrong choice records the
-  real answer and its revise topic.
+  remapped, the answer moves between positions, a wrong choice records the
+  real answer and its revise topic, and every attempt is stored for the CSV.
+- `tests/TestSky.tscn` — the horizon transform puts Polaris, Capella, Sirius,
+  Fomalhaut and Arcturus at their textbook altitudes and keeps the south
+  celestial pole below the horizon.
 
 Visual work uses `tests/Capture.tscn`, a dev-only harness that loads any scene at
 a fixed size and saves a PNG. It is not part of the export.

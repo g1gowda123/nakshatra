@@ -256,7 +256,14 @@ func _update_readout() -> void:
 	var p := _phase()
 	var hide := not completed and challenge_index < challenges.size()
 	if phase_label:
-		phase_label.text = "—" if hide else str(p["name"])
+		if hide:
+			phase_label.text = "PHASE HIDDEN"
+			phase_label.add_theme_font_size_override("font_size", 11)
+			phase_label.add_theme_color_override("font_color", Color(G.MUTED, 0.8))
+		else:
+			phase_label.text = str(p["name"])
+			phase_label.add_theme_font_size_override("font_size", 23)
+			phase_label.add_theme_color_override("font_color", G.CREAM)
 	if illum_label:
 		illum_label.text = "Set the geometry, then check." if hide else "%d%% of the face lit" % int(round(float(p["illum"]) * 100.0))
 	if phase_kn_label:

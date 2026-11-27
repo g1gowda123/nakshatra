@@ -17,6 +17,7 @@ var sky_material: ShaderMaterial
 var star_positions: PackedVector3Array = PackedVector3Array()
 var star_indices: PackedInt32Array = PackedInt32Array()
 
+const LONGITUDE_DEG := 78.0  # Chandragiri, 13 N 78 E
 var latitude_deg := 13.0
 var sidereal_deg := 0.0
 var show_modern := true
@@ -316,16 +317,43 @@ func set_latitude(lat: float) -> void:
 
 
 func set_hour(hour: float) -> void:
-	# 15 degrees of sidereal rotation per hour; the offset is chosen so the
-	# night sky feels right for an evening in early winter in India.
-	set_sidereal(hour * 15.0 + 95.0)
+	# The time slider is local clock time tonight, not an arbitrary offset: use
+	# the Julian date and GMST so "21:00" shows the sky actually overhead.
+	var date := Time.get_datetime_dict_from_system()
+	var tz := Time.get_time_zone_from_system()
+	var bias_min := float(tz.get("bias", 0))
+	var hour_ut := fposmod(hour - bias_min / 60.0, 24.0)
+	var jd := _julian_day(int(date.get("year", 2026)), int(date.get("month", 1)), int(date.get("day", 1)), hour_ut)
+	var d := jd - 2451545.0
+	var gmst := fposmod(280.46061837 + 360.98564736629 * d, 360.0)
+	set_sidereal(gmst + LONGITUDE_DEG)
+
+
+func _julian_day(y: int, m: int, day: int, hour_ut: float) -> float:
+	var yy := y
+	var mm := m
+	if mm <= 2:
+		yy -= 1
+		mm += 12
+	var a := int(yy / 100)
+	var b := 2 - a + int(a / 4)
+	return int(365.25 * (yy + 4716)) + int(30.6001 * (mm + 1)) + day + b - 1524.5 + hour_ut / 24.0
 
 
 func set_sidereal(deg: float) -> void:
 	sidereal_deg = fmod(deg, 360.0)
-	var tilt := deg_to_rad(-(90.0 - latitude_deg))
-	var spin := deg_to_rad(90.0 - sidereal_deg)
-	_apply_basis(Basis(Vector3.RIGHT, tilt) * Basis(Vector3.UP, spin))
+	# Direct horizon transform: world +X east, +Y up, -Z south. For a star at
+	# hour angle H the textbook altitude/azimuth formulas give this rotation.
+	var th := deg_to_rad(sidereal_deg)
+	var phi := deg_to_rad(latitude_deg)
+	var st := sin(th)
+	var ct := cos(th)
+	var sp := sin(phi)
+	var cp := cos(phi)
+	var col0 := Vector3(-st, cp * ct, -sp * ct)
+	var col1 := Vector3(0.0, sp, cp)
+	var col2 := Vector3(-ct, -cp * st, sp * st)
+	_apply_basis(Basis(col0, col1, col2))
 
 
 func guided_to_ra_dec(ra_deg: float, dec_deg: float, camera_forward: Vector3) -> void:

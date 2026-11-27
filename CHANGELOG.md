@@ -1,5 +1,31 @@
 # Changelog
 
+## v1.4.0 — The true sky · 2026-11-27
+
+### Fixed
+
+- **The Sky Atlas horizon was 12 hours out of phase and mirrored.** The old
+  `set_sidereal` built its rotation as `tilt × spin` with the wrong signs, so
+  a south-facing 21:00 view showed the south celestial pole and the wrong
+  constellations. It now uses the textbook hour-angle rotation (`+X` east,
+  `+Y` up, `−Z` south). A south-facing view at 21:00 shows Fomalhaut, Grus,
+  Phoenix and the autumn horizon, with Orion rising in the east.
+- **The time slider is real clock time, not a seasonal guess.** `set_hour`
+  derives Julian date and GMST from today's date, the local UTC offset and
+  78° E, then sets local sidereal time. 21:00 now means 21:00 tonight.
+- **The default camera looks 28° above the southern horizon**, so the first
+  frame contains sky rather than the below-horizon pole.
+- **The title screen prints the live version**, not the stale `V 1.2.1`.
+
+### Added
+
+- **Tonight at 13° N** (`TONIGHT` or `T`): four bright stars that are 20°–85°
+  above the horizon, with altitude and compass direction, plus a short
+  observing note. Excludes the Moon and planets, and says so.
+- **`TestSky`** locks Polaris, Capella, Sirius, Fomalhaut and Arcturus to
+  their textbook altitudes and asserts the south celestial pole is below the
+  horizon, so the transform cannot silently mirror again.
+
 ## v1.3.2 — The studio pass · 2026-11-27
 
 ### Fixed

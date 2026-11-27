@@ -24,7 +24,7 @@ const INK_SOFT := Color("4a5366")
 
 const SAVE_PATH := "user://nakshatra_save.json"
 
-const VERSION := "1.3.2"
+const VERSION := "1.4.0"
 const EDITION := "Studio edition"
 
 var visited: Dictionary = {}

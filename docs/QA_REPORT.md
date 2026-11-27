@@ -1,6 +1,6 @@
 # QA report — 27 November 2026
 
-Build: `v1.3.2 — studio pass`
+Build: `v1.4.0 — the true sky`
 Engine: Godot 4.7.2 · GL Compatibility · Web export
 
 ## Studio pass gate

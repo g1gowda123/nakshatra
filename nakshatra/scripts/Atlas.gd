@@ -30,6 +30,8 @@ func _ready() -> void:
 	_build_ui()
 	get_viewport().size_changed.connect(_on_resize)
 	set_process(true)
+	if OS.get_cmdline_user_args().has("--tonight"):
+		_show_tonight.call_deferred()
 
 
 func _build_world() -> void:
@@ -40,7 +42,7 @@ func _build_world() -> void:
 	cam.current = true
 	add_child(cam)
 	cam.position = Vector3.ZERO
-	cam.rotation_degrees = Vector3(-12, 0, 0)
+	cam.rotation_degrees = Vector3(28, 0, 0)
 
 	sky = SkyDome.new()
 	sky.latitude_deg = 13.0
@@ -139,7 +141,7 @@ func _build_ui() -> void:
 
 func _top_bar() -> Control:
 	time_label = UI.micro("21:00", Color(G.GOLD, 0.9), 10)
-	var acts: Array = [{"text": "LIST" if UI.is_compact() else "CONSTELLATIONS", "fn": func(): _show_constellations()}]
+	var acts: Array = [{"text": "LIST" if UI.is_compact() else "CONSTELLATIONS", "fn": func(): _show_constellations()}, {"text": "TONIGHT", "fn": func(): _show_tonight()}]
 	return UI.app_bar("Sky Atlas", "CHANDRAGIRI  ·  13° N  ·  THE REAL SKY", "res://scenes/Lab.tscn", acts, Vector2i(-1, -1), "THE SKY LAB", time_label)
 
 
@@ -235,7 +237,7 @@ func _fill_panel() -> void:
 	info_title = UI.heading("Tap a star", 22)
 	info_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	v.add_child(info_title)
-	info_body = UI.rich("Drag to look around. Tap any dot to find out what it is. The gold lines are the 88 constellations; the teal lines are the 28 nakshatras.", 12, Color(G.MUTED, 0.95))
+	info_body = UI.rich("Drag to look around. Tap any dot to find out what it is. The gold lines are the 88 constellations; the teal lines are the 28 nakshatras.\n\nPress [b]T[/b] for a short list of what is up tonight.", 12, Color(G.MUTED, 0.95))
 	v.add_child(info_body)
 
 	_update_time()
@@ -413,7 +415,54 @@ func _select_constellation(id: String) -> void:
 	Sfx.play("chime")
 
 
+func _show_tonight() -> void:
+	var picks: Array = []
+	var used := {}
+	for ns in StarDB.named_stars:
+		if float(ns.get("mag", 9.0)) > 2.0:
+			continue
+		var idx := StarDB.star_index_by_hip(int(ns.get("hip", 0)))
+		if idx < 0:
+			continue
+		var local := StarDB.dir_from_ra_dec(StarDB.ra[idx], StarDB.dec[idx])
+		var world: Vector3 = (sky.global_transform.basis * local).normalized()
+		var alt := rad_to_deg(asin(clampf(world.y, -1.0, 1.0)))
+		if alt < 20.0 or alt > 85.0:
+			continue
+		var con := str(ns.get("con", ""))
+		if used.has(con):
+			continue
+		var az := fposmod(rad_to_deg(atan2(world.x, -world.z)), 360.0)
+		var dirs := ["north", "north-east", "east", "south-east", "south", "south-west", "west", "north-west"]
+		picks.append({
+			"name": str(ns.get("name", "Star")),
+			"alt": int(round(alt)),
+			"dir": dirs[int(round(az / 45.0)) % 8],
+			"con": con,
+			"mag": float(ns.get("mag", 9.0)),
+		})
+		used[con] = true
+		if picks.size() >= 4:
+			break
+	picks.sort_custom(func(a, b): return float(a["mag"]) < float(b["mag"]))
+	var hh := int(hour)
+	var mm := int(round(fposmod(hour, 1.0) * 60.0)) % 60
+	var lines: Array = ["Face south first. The sky turns around Dhruva, the Pole Star, in the north."]
+	if picks.is_empty():
+		lines.append("Nothing bright enough is above 20° at this hour. Move the time slider and try again.")
+	else:
+		for p in picks:
+			lines.append("•  %s — %d° up, %s  (%s)" % [p["name"], int(p["alt"]), str(p["dir"]), str(p["con"])])
+	lines.append("Give your eyes ten minutes to adapt. No telescope is needed for any of these.")
+	Overlay.info(ui_root, "Tonight at 13° N", "A SHORT LOOKING LIST  ·  %02d:%02d" % [hh, mm], lines,
+		["The Moon and planets are not included in this list.", "The Atlas is set to the real sky for your date and time."])
+
+
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_T:
+		_show_tonight()
+		return
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		var mb := event as InputEventMouseButton
 		if mb.pressed:

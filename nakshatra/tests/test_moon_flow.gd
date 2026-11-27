@@ -57,7 +57,7 @@ func _ready() -> void:
 	_check(scene.feedback_label.text.contains("fallback") == false, "no generic fallback on correct answer")
 	_check(scene._why("full") != "", "full moon has an explanation")
 	_check(scene._phase_note("Waning Crescent").to_lower().contains("sunrise"), "waning crescent note teaches rise time")
-	_check(scene.phase_label.text == "—", "phase name is hidden while a challenge is active")
+	_check(scene.phase_label.text == "PHASE HIDDEN", "phase name is hidden while a challenge is active")
 
 	if _fail == 0:
 		print("TEST PASS moon")

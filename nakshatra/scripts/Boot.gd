@@ -430,7 +430,7 @@ func _footer() -> Control:
 		_show_credits())
 	row.add_child(credits)
 	row.add_child(UI.spacer())
-	var note := UI.tracked("CHANDRAGIRI  ·  13° N  ·  V 1.2.1", 8, Color(G.MUTED, 0.6), 2)
+	var note := UI.tracked("CHANDRAGIRI  ·  13° N  ·  V " + G.VERSION, 8, Color(G.MUTED, 0.6), 2)
 	note.autowrap_mode = TextServer.AUTOWRAP_OFF
 	note.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	row.add_child(note)
