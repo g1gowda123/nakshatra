@@ -210,7 +210,7 @@ func _add_orbit_label(text: String, angle: float, color: Color) -> void:
 	l.outline_modulate = Color(0.01, 0.02, 0.05, 0.9)
 	l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	l.no_depth_test = true
-	l.position = Vector3(cos(angle) * (ORBIT_R + 0.9), 0.5, sin(angle) * (ORBIT_R + 0.9))
+	l.position = Vector3(cos(angle) * (ORBIT_R + 3.2), 0.85, sin(angle) * (ORBIT_R + 3.2))
 	add_child(l)
 
 

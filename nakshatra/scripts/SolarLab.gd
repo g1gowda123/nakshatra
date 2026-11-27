@@ -144,6 +144,41 @@ func _build_sun() -> void:
 	light.omni_range = 90.0
 	sun_node.add_child(light)
 
+	# The panel calls it AR-7; give the active region a visible home.
+	var ar := MeshInstance3D.new()
+	var ar_mesh := SphereMesh.new()
+	ar_mesh.radius = 0.30
+	ar_mesh.height = 0.60
+	ar_mesh.radial_segments = 12
+	ar_mesh.rings = 6
+	ar.mesh = ar_mesh
+	var ar_mat := StandardMaterial3D.new()
+	ar_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	ar_mat.albedo_color = Color(0.23, 0.08, 0.03)
+	ar.material_override = ar_mat
+	ar.position = Vector3(2.25, 1.55, 2.42)
+	sun_node.add_child(ar)
+	var ar_glow := Sprite3D.new()
+	ar_glow.texture = load("res://assets/fx/glow.png")
+	ar_glow.pixel_size = 0.012
+	ar_glow.scale = Vector3.ONE * 1.4
+	ar_glow.modulate = Color(1.0, 0.42, 0.16, 0.55)
+	ar_glow.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	ar_glow.shaded = false
+	ar_glow.position = ar.position + Vector3(0, 0.05, 0.10)
+	sun_node.add_child(ar_glow)
+	var ar_label := Label3D.new()
+	ar_label.text = "AR-7"
+	ar_label.font = UI.body_med_font()
+	ar_label.font_size = 28
+	ar_label.pixel_size = 0.014
+	ar_label.modulate = Color(1.0, 0.92, 0.72, 0.98)
+	ar_label.outline_size = 9
+	ar_label.outline_modulate = Color(0.05, 0.01, 0.0, 0.95)
+	ar_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	ar_label.position = ar.position + Vector3(0.0, 0.72, 0.15)
+	sun_node.add_child(ar_label)
+
 	for i in 3:
 		_add_loop(i * 52.0, 1.55 + i * 0.08, 1.15 - i * 0.12, 1.4 + i * 0.18)
 

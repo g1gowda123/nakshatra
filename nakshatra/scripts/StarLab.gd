@@ -146,7 +146,7 @@ func _refresh_target_glows() -> void:
 		var pidx := StarDB.star_index_by_hip(11767)
 		if pidx >= 0 and not UI.is_compact():
 			var pl := Label3D.new()
-			pl.text = "Dhruva — Polaris"
+			pl.text = "Dhruva  ·  Polaris"
 			pl.font = UI.body_med_font()
 			pl.font_size = 76
 			pl.pixel_size = 0.52

@@ -192,7 +192,7 @@ static func _art_plate(path: String, info: Dictionary, size: Vector2) -> Control
 	var art := TextureRect.new()
 	art.texture = load(path)
 	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if str(info.get("art_credit", "")) != "" else TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	art.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE

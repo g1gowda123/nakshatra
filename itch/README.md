@@ -8,6 +8,9 @@ Built with **Godot 4.7.2** and exported for the **Web (HTML5)**. It runs on
 itch.io, a classroom projector, a school laptop or a phone. No install, no
 account, no network calls at play time.
 
+**Play the current build:** https://g1gowda123.github.io/nakshatra/  
+**Source:** https://github.com/g1gowda123/nakshatra
+
 **v1.2.1 — The hand-made hill, presenter polish.** A procedural lantern hill,
 paper-and-ink shaders, a real-sky hunt, a readable Atlas and a festival finale.
 The same build includes a twelve-slide presenter deck with speaker notes, a
