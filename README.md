@@ -65,7 +65,7 @@ answers for the questions after the demo.
 | Audience | Classes 6–9, teachers, a classroom projector or a phone |
 | Exhibits | 7 (Moon, constellations, solar system, seasons, solar storms, black holes, quiz) |
 | Sky data | 8,879 naked-eye stars (HYG v3); 88 IAU constellations; 28 nakshatras (Stellarium) |
-| Content | 14 explained questions, 8 Field Guide cards, 5 constellation hunts, 8 planet fact sheets |
+| Content | 14 explained questions, 10 Field Guide cards, 5 constellation hunts, 8 planet fact sheets |
 | Seminar mode | 12 slides, speaker notes, timer, auto-advance, pre-flight, figure zoom |
 | Engine | Godot 4.7.2 · GL Compatibility · Web export · threads disabled |
 | Runtime | One static folder; no server, no accounts, no analytics, no network calls |
@@ -257,7 +257,7 @@ bash tools/run_tests.sh
 
 This runs six headless contract tests:
 
-- `tests/TestContent.tscn` — 7 modules, 14 questions, 8 planets, 8 Field Guide
+- `tests/TestContent.tscn` — 7 modules, 14 questions, 8 planets, 10 Field Guide
   cards, 5 hunts, 4 scale riddles, 12 seminar slides, every image and lab path,
   and the sky counts.
 - `tests/TestSeminar.tscn` — the deck opens, every slide has content and a note,

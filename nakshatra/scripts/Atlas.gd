@@ -432,7 +432,9 @@ func _show_tonight() -> void:
 		var con := str(ns.get("con", ""))
 		if used.has(con):
 			continue
-		var az := fposmod(rad_to_deg(atan2(world.x, -world.z)), 360.0)
+		# atan2(east, south) is a bearing from south; compass bearings start at
+		# north, so flip it before naming a direction.
+		var az := fposmod(180.0 - rad_to_deg(atan2(world.x, -world.z)), 360.0)
 		var dirs := ["north", "north-east", "east", "south-east", "south", "south-west", "west", "north-west"]
 		picks.append({
 			"name": str(ns.get("name", "Star")),

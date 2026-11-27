@@ -53,7 +53,7 @@ func _ready() -> void:
 		_ok(str(q.get("why", "")) != "", "question %d has an explanation" % (i + 1))
 
 	_ok((d.get("planets", []) as Array).size() == 8, "8 planet fact sheets")
-	_ok((d.get("wonders", []) as Array).size() == 8, "8 Field Guide cards")
+	_ok((d.get("wonders", []) as Array).size() == 10, "10 Field Guide cards")
 	_ok((d.get("star_hunts", []) as Array).size() == 5, "5 constellation hunts")
 	_ok((d.get("scale_riddles", []) as Array).size() == 4, "4 scale riddles")
 	_ok((d.get("story", []) as Array).size() == 4, "4 story panels")

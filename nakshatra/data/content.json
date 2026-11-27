@@ -764,6 +764,20 @@
       "category": "Other worlds",
       "text": "More than 5,000 planets are known to orbit stars other than the Sun. Some are gas giants; some are rocky worlds in the 'habitable zone' where liquid water could exist. The TRAPPIST-1 system has seven Earth-sized planets around a cool red star, 40 light-years away.",
       "link": ""
+    },
+    {
+      "title": "Eclipses",
+      "kannada": "ಗ್ರಹಣ",
+      "category": "Our Moon",
+      "text": "The Moon crosses the Sun–Earth line every month, but its orbit is tilted by about 5°. Most new and full moons pass above or below the shadow. An eclipse needs the Moon near a node, where the tilt carries it into line. A solar eclipse is the Moon's shadow falling on Earth; a lunar eclipse is Earth's shadow falling on the Moon.",
+      "link": "moon"
+    },
+    {
+      "title": "Tides",
+      "kannada": "ಉಬ್ಬರವಿಳಿತ",
+      "category": "Our Moon",
+      "text": "The Moon pulls hardest on the ocean nearest it, raising a bulge. The far side also bulges because the whole Earth is pulled toward the Moon. As Earth turns through both bulges, most coasts get two high tides a day. At new and full moon the Sun and Moon pull together for higher spring tides; at quarter moon they pull at right angles for lower neap tides.",
+      "link": "moon"
     }
   ],
   "seminar": {
