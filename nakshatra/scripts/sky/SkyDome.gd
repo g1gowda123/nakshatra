@@ -277,6 +277,7 @@ func _process(_delta: float) -> void:
 			minf(sp.x - hw - safe.position.x, safe.end.x - (sp.x + hw)),
 			minf(sp.y - hh - safe.position.y, safe.end.y - (sp.y + hh)))
 		var margin := 72.0 if UI.is_compact() else 44.0
+		l.visible = edge > 0.0
 		var a := 0.0 if edge < margin else clampf((edge - margin) / 80.0, 0.0, 1.0)
 		l.modulate.a = base * a
 
