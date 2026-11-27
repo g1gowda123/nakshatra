@@ -5,7 +5,7 @@ never bloats the source repository.
 
 | Output | Where | Contains |
 |---|---|---|
-| Source | https://github.com/g1gowda123/nakshatra | Godot project, tools, tests, docs, raw source data |
+| Source | https://github.com/g1gowda123/nakshatra | Godot project, tools, tests, docs, compact sky data |
 | Playable | https://g1gowda123.github.io/nakshatra/ | Only the exported Web build, on the `gh-pages` branch |
 | Store | `itch/nakshatra-web.zip` | The same Web build plus licence/README, ready to upload |
 

@@ -14,6 +14,10 @@ data_src/hyg.csv
 # packaged download (rebuild with tools/build_web.sh)
 itch/*.zip
 
+# Python cache
+__pycache__/
+*.pyc
+
 # OS noise
 .DS_Store
 *.tmp
