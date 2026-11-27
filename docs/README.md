@@ -13,6 +13,7 @@ built, what it claims, and how those claims are checked.
 | [`FEATURE_MATRIX.md`](FEATURE_MATRIX.md) | You need to map a feature to a syllabus topic or a demo moment. | ~8 min read |
 | [`ART_DIRECTION.md`](ART_DIRECTION.md) | You are adding an exhibit, shader or lantern, or explaining the look. | ~10 min read |
 | [`QA_REPORT.md`](QA_REPORT.md) | You need the tested matrix, known limits and re-run commands. | ~5 min read |
+| [`PUBLISHING.md`](PUBLISHING.md) | You are updating the GitHub Pages build or the itch zip. | ~5 min read |
 | [`VIVA_QA.md`](VIVA_QA.md) | You are preparing for questions after the demo. | ~12 min read |
 | [`STATS.md`](STATS.md) | You need real numbers (stars, lines of code, build size). | 1 min read |
 

@@ -233,6 +233,8 @@ func _certificate() -> Control:
 
 	var stats := UI.micro("SEVEN LANTERNS LIT  ·  RIDDLES: %d OF %d CORRECT" % [G.quiz_best, G.content.get("quiz", []).size()], Color("6b4f2a"), 8)
 	stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	v.add_child(stats)
 	var topics := UI.label("Moon phases  ·  Saptarishi  ·  the long road  ·  the turning year\nsolar storms  ·  black holes  ·  sky riddles", 10, Color(G.INK_SOFT, 0.9))
 	topics.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -242,10 +244,10 @@ func _certificate() -> Control:
 	v.add_child(seal_row)
 	seal_row.add_child(UI.brand_mark(34))
 
-	var row := UI.hbox(8)
+	var row: BoxContainer = UI.vbox(8) if UI.is_compact() else UI.hbox(8)
 	row.mouse_filter = Control.MOUSE_FILTER_PASS
 	wrap.add_child(row)
-	var back := UI.button("Return to the hill   ›", true, 16)
+	var back := UI.button("Return to the hill   →", true, 16)
 	back.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	back.pressed.connect(func(): Router.go("res://scenes/Lab.tscn"))
 	row.add_child(back)
@@ -255,12 +257,9 @@ func _certificate() -> Control:
 	row.add_child(atlas)
 	var note := UI.micro("TAKE A SCREENSHOT TO KEEP THIS PAGE  ·  EVERYTHING STAYS ON YOUR DEVICE", Color(G.MUTED, 0.7), 8)
 	note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	wrap.add_child(note)
-	# The certificate arrives like a page being set down, not a popup.
-	wrap.modulate.a = 0.0
-	var tw := wrap.create_tween()
-	tw.tween_interval(0.25)
-	tw.tween_property(wrap, "modulate:a", 1.0, 0.85).set_trans(Tween.TRANS_SINE)
 	return wrap
 
 

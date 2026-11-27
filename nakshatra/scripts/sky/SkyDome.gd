@@ -205,6 +205,7 @@ func _make_labels() -> void:
 		l.no_depth_test = true
 		l.position = StarDB.star_dir(idx) * (STAR_RADIUS - 14.0)
 		l.render_priority = 3
+		l.set_meta("base_alpha", 1.0)
 		label_root.add_child(l)
 		shown += 1
 		if shown >= 34:
@@ -226,6 +227,7 @@ func _make_labels() -> void:
 		l.no_depth_test = true
 		l.position = center * (STAR_RADIUS - 30.0)
 		l.render_priority = 3
+		l.set_meta("base_alpha", 1.0)
 		label_root.add_child(l)
 
 
@@ -234,6 +236,27 @@ func set_labels(value: bool) -> void:
 	if value:
 		_make_labels()
 	label_root.visible = value
+
+
+func _process(_delta: float) -> void:
+	# Labels are 3D billboards; fade them before their text can clip on the
+	# viewport edge or disappear under the Atlas panel.
+	if not label_root or not label_root.visible:
+		return
+	var cam := get_viewport().get_camera_3d()
+	if not cam:
+		return
+	var vp := get_viewport().get_visible_rect().size
+	for l in label_root.get_children():
+		var base := float(l.get_meta("base_alpha", 1.0))
+		var wp: Vector3 = l.global_position
+		if cam.is_position_behind(wp):
+			l.modulate.a = 0.0
+			continue
+		var sp := cam.unproject_position(wp)
+		var edge := minf(minf(sp.x, vp.x - sp.x), minf(sp.y, vp.y - sp.y))
+		var a := 0.0 if edge < 40.0 else clampf((edge - 40.0) / 80.0, 0.0, 1.0)
+		l.modulate.a = base * a
 
 
 func set_star_scale(value: float) -> void:

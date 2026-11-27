@@ -172,7 +172,9 @@ func _build_world() -> void:
 		elif i == 4:
 			lift = 0.85
 		plab.position = Vector3(side, radius + lift, 0)
-		plab.visible = not (UI.is_compact() and i < 4)
+		# Mercury and Mars are tiny and their labels still collide with Venus/Earth
+		# at the compressed scale; the planet grid names them instead.
+		plab.visible = (i >= 4 or i == 1 or i == 2) and not (UI.is_compact() and i < 4)
 		node.add_child(plab)
 
 		if i == 5:
