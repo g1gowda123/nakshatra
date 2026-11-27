@@ -177,7 +177,7 @@ func _build_inset() -> void:
 	inset_view.transparent_bg = false
 	inset_view.own_world_3d = false
 	inset_cam = Camera3D.new()
-	inset_cam.fov = 20.0
+	inset_cam.fov = 26.0
 	inset_cam.cull_mask = 0xFFFFF & ~2
 	inset_cam.current = true
 	inset_view.add_child(inset_cam)
