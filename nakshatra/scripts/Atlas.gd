@@ -125,6 +125,12 @@ func _build_ui() -> void:
 		panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		h.add_child(panel)
 	_fill_panel()
+	var vp := UI.viewport_size()
+	if UI.is_portrait():
+		var ph := clampf(vp.y * 0.44, 300.0, 430.0)
+		sky.label_safe = Rect2(24, 80, vp.x - 48, maxf(120.0, vp.y - 80.0 - ph - 12.0))
+	else:
+		sky.label_safe = Rect2(24, 80, maxf(160.0, vp.x - 24.0 - 360.0 - 20.0), vp.y - 80.0 - 24.0)
 	_portrait = UI.is_portrait()
 	ui_root.add_child(UI.grain(0.04))
 	UI.fade_in(ui_root, 0.05, 0.6)

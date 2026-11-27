@@ -25,13 +25,17 @@ The source `.gitignore` excludes `nakshatra/.godot/`, `nakshatra/build/`,
 ## 2. Update the playable build
 
 ```bash
-cd "/home/g1/projects/idt game/nakshatra"
-godot --headless --path . --import
-godot --headless --path . --export-release "Web" build/web/index.html
+cd "/home/g1/projects/idt game"
+bash tools/build_web.sh
+```
 
-# A branch that contains only the static site
+The build lands in `nakshatra/build/web/` and includes `sw.js` plus
+`manifest.webmanifest`; `tools/check_web.py` verifies both and that the zip
+carries them. Publish the whole folder to `gh-pages`:
+
+```bash
 tmp="$(mktemp -d)"
-cp -r build/web/. "$tmp/"
+cp -r nakshatra/build/web/. "$tmp/"
 touch "$tmp/.nojekyll"
 cd "$tmp"
 git init -q

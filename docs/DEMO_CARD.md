@@ -1,7 +1,7 @@
 # Demo card — print this
 
 **Nakshatra — The Sky Weavers** · free-choice 3D sky lab · Classes 6–9
-`http://127.0.0.1:8060/index.html?scene=seminar`
+`https://g1gowda123.github.io/nakshatra/?scene=seminar`
 
 ## 30-second pitch
 

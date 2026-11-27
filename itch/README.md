@@ -30,8 +30,11 @@ and has a printable one-page handout. See
 Open the game, choose **Seminar mode** on the title screen, or go straight to:
 
 ```text
-http://127.0.0.1:8060/index.html?scene=seminar
+https://g1gowda123.github.io/nakshatra/?scene=seminar
 ```
+
+The same build runs locally from `nakshatra/build/web/` (see below) when the
+venue has no internet.
 
 Then:
 

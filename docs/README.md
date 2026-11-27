@@ -3,6 +3,9 @@
 This folder is the paper trail for the project: how to present it, how it is
 built, what it claims, and how those claims are checked.
 
+**Live build:** <https://g1gowda123.github.io/nakshatra/> · **deck:**
+<https://g1gowda123.github.io/nakshatra/?scene=seminar>
+
 | Document | Read it when | Length |
 |---|---|---|
 | [`SEMINAR_PLAYBOOK.md`](SEMINAR_PLAYBOOK.md) | You are presenting, or you are the person holding the clicker. | ~10 min read |

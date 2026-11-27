@@ -219,11 +219,12 @@ to be shareable with schools under the same terms.
 
 ### 29. Can a school deploy this tomorrow?
 
-Yes, if it has a laptop or a static server. Copy `nakshatra/build/web/` to the
-server, or use the itch.io zip. No database, no credentials, no maintenance
-beyond replacing the folder. The only first-load requirement is that the browser
-can download the page — the current export is about 55 MB uncompressed, cached
-after the first load.
+Yes, if it has a laptop or a static server. The current build is live at
+<https://g1gowda123.github.io/nakshatra/> on GitHub Pages; copy
+`nakshatra/build/web/` to a school server, or use the itch.io zip. No database,
+no credentials, no maintenance beyond replacing the folder. The only first-load
+requirement is that the browser can download the page — the export is about 55 MB
+uncompressed; the service worker caches it after the first load.
 
 ### 30. What would you do with another month?
 

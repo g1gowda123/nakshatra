@@ -10,13 +10,18 @@ low-end phone — and keeps working after the first load.
 ## Try it
 
 ```text
-http://127.0.0.1:8060/index.html
+https://g1gowda123.github.io/nakshatra/
 ```
+
+![QR code to the live sky lab](img/qr_live.png)
+
+*Scan to open the live sky lab. The deck is at `?scene=seminar`; the first load
+needs a network, then the service worker keeps it offline.*
 
 On the title screen choose **Seminar mode** for the twelve-slide deck, or
 **Enter the Sky Lab** to explore. The deck is also at
-`?scene=seminar`. Everything is local: no server, no login, no tracking, no
-network calls after the page has loaded.
+`?scene=seminar`. The first load needs a network; after that the service worker
+keeps it running offline. No login, no tracking.
 
 ## Five things to notice
 

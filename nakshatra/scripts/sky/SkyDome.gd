@@ -22,6 +22,9 @@ var sidereal_deg := 0.0
 var show_modern := true
 var show_nakshatra := false
 var show_labels := false
+## Optional screen-space safe area for labels; the Atlas sets this to the
+## canvas left of its control panel so names never render under the panel.
+var label_safe := Rect2()
 var _highlight_id := ""
 
 var _star_material: ShaderMaterial
@@ -213,6 +216,10 @@ func _make_labels() -> void:
 	# Every IAU constellation gets a name; at any one view only a handful are
 	# on screen, so the atlas reads as a real printed chart rather than a blank.
 	for c in StarDB.constellations:
+		# On a phone the chart is too dense for every constellation name; the
+		# Atlas list still names them, and the star labels stay.
+		if UI.is_compact():
+			break
 		var cid := str(c.get("id", ""))
 		var center := constellation_center(cid)
 		var l := Label3D.new()
@@ -254,8 +261,23 @@ func _process(_delta: float) -> void:
 			l.modulate.a = 0.0
 			continue
 		var sp := cam.unproject_position(wp)
-		var edge := minf(minf(sp.x, vp.x - sp.x), minf(sp.y, vp.y - sp.y))
-		var a := 0.0 if edge < 40.0 else clampf((edge - 40.0) / 80.0, 0.0, 1.0)
+		var safe := Rect2(Vector2.ZERO, vp)
+		if label_safe.size.x > 20.0 and label_safe.size.y > 20.0:
+			safe = label_safe
+		# The anchor alone is not enough: a long name anchored 20 px inside the
+		# edge still clips. Estimate the billboard's screen extent from the
+		# font size, pixel size and distance, then test the whole box.
+		var dist := maxf(1.0, cam.global_position.distance_to(wp))
+		var px_per_world := vp.y / (2.0 * dist * tan(deg_to_rad(cam.fov) * 0.5))
+		var w_world := float(l.text.length()) * float(l.font_size) * float(l.pixel_size) * 0.56
+		var h_world := float(l.font_size) * float(l.pixel_size) * 1.25
+		var hw := w_world * px_per_world * 0.5
+		var hh := h_world * px_per_world * 0.5
+		var edge := minf(
+			minf(sp.x - hw - safe.position.x, safe.end.x - (sp.x + hw)),
+			minf(sp.y - hh - safe.position.y, safe.end.y - (sp.y + hh)))
+		var margin := 72.0 if UI.is_compact() else 44.0
+		var a := 0.0 if edge < margin else clampf((edge - margin) / 80.0, 0.0, 1.0)
 		l.modulate.a = base * a
 
 

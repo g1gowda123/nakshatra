@@ -44,10 +44,13 @@ Say it once at the start. Do not read it off the slide.
 ### The day before
 
 - [ ] Charge the laptop; pack the charger and an HDMI adapter.
-- [ ] Serve the build locally rather than relying on the venue Wi-Fi:
+- [ ] Open the live build once: `https://g1gowda123.github.io/nakshatra/`.
+      The service worker caches it, so the venue Wi-Fi can fail afterwards.
+- [ ] Keep the local copy as the fallback:
       `cd nakshatra/build/web && python3 -m http.server 8060`.
 - [ ] Test the exact URL in the exact browser you will use.
-- [ ] Put the deck URL in a bookmark: `http://127.0.0.1:8060/index.html?scene=seminar`.
+- [ ] Put the deck URL in a bookmark:
+      `https://g1gowda123.github.io/nakshatra/?scene=seminar`.
       A per-slide bookmark is `&slide=8` (1–12); `&demo=1` sets the finale state.
 - [ ] Optional: use the browser's **Install** action once. The app manifest adds
       a home-screen icon and shortcuts for the deck and the Sky Lab.
