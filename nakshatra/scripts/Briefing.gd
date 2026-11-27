@@ -248,7 +248,7 @@ static func _chip(text: String) -> PanelContainer:
 static func _paper_button(text: String, primary: bool) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.focus_mode = Control.FOCUS_NONE
+	b.focus_mode = Control.FOCUS_ALL
 	b.custom_minimum_size = Vector2(0, 46)
 	b.add_theme_font_size_override("font_size", 12)
 	b.add_theme_font_override("font", UI.tracked_font("body", 1))
@@ -267,7 +267,7 @@ static func _paper_button(text: String, primary: bool) -> Button:
 	b.add_theme_stylebox_override("normal", normal)
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", pressed)
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_stylebox_override("focus", UI.focus_ring())
 	b.add_theme_color_override("font_color", PAPER if primary else INK)
 	b.add_theme_color_override("font_hover_color", Color.WHITE if primary else INK)
 	b.add_theme_color_override("font_pressed_color", G.GOLD if primary else INK)

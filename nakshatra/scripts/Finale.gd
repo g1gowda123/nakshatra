@@ -170,7 +170,7 @@ func _not_yet_card() -> Control:
 
 func _certificate() -> Control:
 	var wrap := VBoxContainer.new()
-	wrap.add_theme_constant_override("separation", 10)
+	wrap.add_theme_constant_override("separation", 14)
 	wrap.mouse_filter = Control.MOUSE_FILTER_PASS
 	var p := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
@@ -180,8 +180,8 @@ func _certificate() -> Control:
 	sb.set_corner_radius_all(2)
 	sb.content_margin_left = 30
 	sb.content_margin_right = 30
-	sb.content_margin_top = 24
-	sb.content_margin_bottom = 22
+	sb.content_margin_top = 28
+	sb.content_margin_bottom = 26
 	sb.shadow_color = Color(0, 0, 0, 0.6)
 	sb.shadow_size = 26
 	sb.shadow_offset = Vector2(0, 12)
@@ -189,15 +189,15 @@ func _certificate() -> Control:
 	p.custom_minimum_size = Vector2(minf(520, UI.viewport_size().x - 48), 0)
 	wrap.add_child(p)
 
-	var v := UI.vbox(5)
+	var v := UI.vbox(6)
 	p.add_child(v)
-	var top := UI.micro("CHANDRAGIRI   ·   THE SKY WEAVERS", Color("8a6a3c"), 9)
+	var top := UI.micro("CHANDRAGIRI   ·   THE SKY WEAVERS", Color("5c4426"), 10)
 	top.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(top)
 	var title := UI.label("Sky Weaver", 46 if not UI.is_compact() else 38, G.INK, "serif")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(title)
-	var line := UI.label("This night, the sky was read true.", 14, G.INK_SOFT)
+	var line := UI.label("This night, the sky was read true.", 14, Color(G.INK, 0.74))
 	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(line)
 
@@ -234,12 +234,12 @@ func _certificate() -> Control:
 	var stats_text := "SEVEN LANTERNS LIT  ·  RIDDLES: %d OF %d CORRECT" % [G.quiz_best, G.content.get("quiz", []).size()]
 	if UI.is_compact():
 		stats_text = "SEVEN LANTERNS LIT\nRIDDLES: %d OF %d CORRECT" % [G.quiz_best, G.content.get("quiz", []).size()]
-	var stats := UI.micro(stats_text, Color("6b4f2a"), 8)
+	var stats := UI.micro(stats_text, Color("5c4426"), 9)
 	stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	v.add_child(stats)
-	var topics := UI.label("Moon phases  ·  Saptarishi  ·  the long road  ·  the turning year\nsolar storms  ·  black holes  ·  sky riddles", 10, Color(G.INK_SOFT, 0.9))
+	var topics := UI.label("Moon phases  ·  Saptarishi  ·  the long road  ·  the turning year\nsolar storms  ·  black holes  ·  sky riddles", 11, Color(G.INK, 0.72))
 	topics.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	topics.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	v.add_child(topics)
@@ -258,12 +258,60 @@ func _certificate() -> Control:
 	atlas.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	atlas.pressed.connect(func(): Router.go("res://scenes/Atlas.tscn"))
 	row.add_child(atlas)
-	var note := UI.micro("TAKE A SCREENSHOT TO KEEP THIS PAGE  ·  EVERYTHING STAYS ON YOUR DEVICE", Color(G.MUTED, 0.7), 8)
+
+	# The certificate is the one artifact a student can take home. Export it as
+	# a PNG instead of asking them to crop a screenshot: the buttons and the
+	# caret are hidden for the capture, then the page comes back unchanged.
+	var save := UI.ghost_button("Save this certificate  ↓", 12)
+	save.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	save.custom_minimum_size = Vector2(0, 38)
+	save.pressed.connect(func(): _save_certificate(row, save, name_edit))
+	wrap.add_child(save)
+
+	var note := UI.micro("EVERYTHING STAYS ON YOUR DEVICE  ·  NO ACCOUNT, NO UPLOAD", Color(G.MUTED, 0.7), 8)
 	note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	note.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	wrap.add_child(note)
 	return wrap
+
+
+func _save_certificate(actions: Control, save_btn: Button, name_edit: LineEdit) -> void:
+	if save_btn.disabled:
+		return
+	save_btn.disabled = true
+	actions.visible = false
+	save_btn.visible = false
+	name_edit.release_focus()
+	# One full frame after the UI change, so no button or caret is baked in.
+	await RenderingServer.frame_post_draw
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	var img := get_viewport().get_texture().get_image()
+	var png := img.save_png_to_buffer()
+	if OS.has_feature("web"):
+		var b64 := Marshalls.raw_to_base64(png)
+		var js := "(function(){var a=document.createElement('a');a.href='data:image/png;base64,%s';a.download='nakshatra-certificate.png';document.body.appendChild(a);a.click();a.remove();})()" % b64
+		JavaScriptBridge.eval(js, true)
+	else:
+		var path := "user://nakshatra-certificate.png"
+		var err := img.save_png(path)
+		if err == OK:
+			OS.shell_open(ProjectSettings.globalize_path(path))
+	actions.visible = true
+	save_btn.visible = true
+	save_btn.disabled = false
+	Sfx.play("chime")
+	var toast := UI.micro("CERTIFICATE SAVED", Color(G.TEAL, 0.95), 9)
+	toast.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	toast.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	save_btn.get_parent().add_child(toast)
+	toast.modulate.a = 0.0
+	var tw := create_tween()
+	tw.tween_property(toast, "modulate:a", 1.0, 0.25)
+	tw.tween_interval(1.8)
+	tw.tween_property(toast, "modulate:a", 0.0, 0.4)
+	tw.tween_callback(toast.queue_free)
 
 
 func _process(delta: float) -> void:

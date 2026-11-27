@@ -30,6 +30,8 @@ const EDITION := "Seminar edition"
 var visited: Dictionary = {}
 var quiz_best: int = 0
 var quiz_last: int = 0
+var quiz_prev: int = -1
+var quiz_attempts: int = 0
 var lang: String = "en"          # "en" or "kn"
 var story_seen: bool = false
 var player_name: String = ""
@@ -185,6 +187,8 @@ func reset_progress() -> void:
 	visited.clear()
 	quiz_best = 0
 	quiz_last = 0
+	quiz_prev = -1
+	quiz_attempts = 0
 	seminar_index = 0
 	save_game()
 	progress_changed.emit()
@@ -203,7 +207,9 @@ func unlock_all() -> void:
 
 
 func record_quiz(score: int, total: int) -> void:
+	quiz_prev = quiz_last if quiz_attempts > 0 else -1
 	quiz_last = score
+	quiz_attempts += 1
 	if score > quiz_best:
 		quiz_best = score
 	if score >= int(ceil(total * 0.6)):
@@ -217,6 +223,8 @@ func save_game() -> void:
 		"visited": visited,
 		"quiz_best": quiz_best,
 		"quiz_last": quiz_last,
+		"quiz_prev": quiz_prev,
+		"quiz_attempts": quiz_attempts,
 		"lang": lang,
 		"story_seen": story_seen,
 		"name": player_name,
@@ -243,6 +251,8 @@ func load_game() -> void:
 	visited = parsed.get("visited", {})
 	quiz_best = int(parsed.get("quiz_best", 0))
 	quiz_last = int(parsed.get("quiz_last", 0))
+	quiz_prev = int(parsed.get("quiz_prev", -1))
+	quiz_attempts = int(parsed.get("quiz_attempts", 0))
 	lang = str(parsed.get("lang", "en"))
 	story_seen = bool(parsed.get("story_seen", false))
 	player_name = str(parsed.get("name", ""))

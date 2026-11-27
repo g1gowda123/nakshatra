@@ -463,12 +463,12 @@
     {
       "q": "Why does the Moon seem to change shape during a month?",
       "options": [
-        "Earth's shadow falls on it",
         "We see different amounts of its sunlit half",
         "Clouds cover its surface",
-        "It makes its own light"
+        "It makes its own light",
+        "Earth's shadow falls on it"
       ],
-      "answer": 1,
+      "answer": 0,
       "why": "Half the Moon is always lit. As it orbits Earth we see more or less of that lit half. Earth's shadow only matters during a lunar eclipse."
     },
     {
@@ -485,34 +485,34 @@
     {
       "q": "Which planet is the hottest?",
       "options": [
+        "Jupiter",
         "Mercury",
         "Venus",
-        "Mars",
-        "Jupiter"
+        "Mars"
       ],
-      "answer": 1,
+      "answer": 2,
       "why": "Venus is farther from the Sun than Mercury, but its thick carbon-dioxide atmosphere traps heat. Its surface is about 465°C — hotter than Mercury."
     },
     {
       "q": "The Saptarishi is another name for which constellation?",
       "options": [
-        "Ursa Major",
         "Orion",
         "Scorpius",
-        "Cassiopeia"
+        "Cassiopeia",
+        "Ursa Major"
       ],
-      "answer": 0,
+      "answer": 3,
       "why": "The seven sages of Indian sky lore are the seven bright stars of Ursa Major — the Great Bear, also called the Big Dipper or the Plough."
     },
     {
       "q": "What is the main cause of seasons on Earth?",
       "options": [
-        "Earth's changing distance from the Sun",
         "The tilt of Earth's axis",
         "The Moon's phases",
-        "The Sun's brightness changing"
+        "The Sun's brightness changing",
+        "Earth's changing distance from the Sun"
       ],
-      "answer": 1,
+      "answer": 0,
       "why": "Earth's axis is tilted 23.4°. As we orbit, each hemisphere leans toward or away from the Sun, changing both day length and the height of the noon Sun."
     },
     {
@@ -529,34 +529,34 @@
     {
       "q": "Which planet has the shortest year?",
       "options": [
-        "Mercury",
-        "Venus",
         "Earth",
-        "Mars"
+        "Mars",
+        "Mercury",
+        "Venus"
       ],
-      "answer": 0,
+      "answer": 2,
       "why": "Mercury is closest to the Sun and moves fastest, completing one orbit in only 88 Earth days."
     },
     {
       "q": "Why is Dhruva, the Pole Star, useful for finding direction?",
       "options": [
-        "It is the brightest star",
-        "It stays nearly fixed in the north",
         "It is the closest star",
-        "It is the Sun's twin"
+        "It is the Sun's twin",
+        "It is the brightest star",
+        "It stays nearly fixed in the north"
       ],
-      "answer": 1,
+      "answer": 3,
       "why": "Dhruva (Polaris) sits almost directly above Earth's north pole, so the whole sky seems to turn around it. It stays nearly fixed in the north all night."
     },
     {
       "q": "One astronomical unit (AU) is the distance between...",
       "options": [
-        "Earth and the Moon",
         "Earth and the Sun",
         "The Sun and Neptune",
-        "Two neighbouring stars"
+        "Two neighbouring stars",
+        "Earth and the Moon"
       ],
-      "answer": 1,
+      "answer": 0,
       "why": "1 AU is about 15 crore km — the average Earth–Sun distance. Neptune is about 30 AU away, which is why sunlight takes over 4 hours to reach it."
     },
     {
@@ -573,34 +573,34 @@
     {
       "q": "What is a solar flare?",
       "options": [
+        "A comet's tail",
         "A storm in Earth's atmosphere",
         "A sudden release of magnetic energy from the Sun",
-        "A solar eclipse",
-        "A comet's tail"
+        "A solar eclipse"
       ],
-      "answer": 1,
+      "answer": 2,
       "why": "Tangled magnetic fields in the Sun's atmosphere can snap and reconnect, releasing a burst of X-rays and ultraviolet light. A coronal mass ejection may follow."
     },
     {
       "q": "What is a black hole's event horizon?",
       "options": [
-        "Its solid surface",
-        "The boundary beyond which nothing can escape",
         "The edge of the accretion disk",
-        "The point where time begins"
+        "The point where time begins",
+        "Its solid surface",
+        "The boundary beyond which nothing can escape"
       ],
-      "answer": 1,
+      "answer": 3,
       "why": "The event horizon is the distance at which the escape velocity equals the speed of light. Crossing it means no return — it is not a solid surface."
     },
     {
       "q": "Why do auroras glow near the poles?",
       "options": [
-        "Sunlight reflects off ice",
         "Charged particles from the Sun excite gases in Earth's atmosphere",
         "The Moon shines through the atmosphere",
-        "Earth's core heats the air"
+        "Earth's core heats the air",
+        "Sunlight reflects off ice"
       ],
-      "answer": 1,
+      "answer": 0,
       "why": "Earth's magnetic field funnels solar particles toward the poles. They collide with oxygen and nitrogen, making them glow green, red and purple."
     },
     {

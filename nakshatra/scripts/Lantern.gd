@@ -29,6 +29,7 @@ var _area: Area3D
 var _hover := false
 var _busy := false
 var _hover_t := 0.0
+var _pop := 0.0
 
 const BODY_HEIGHT := 0.80
 const BODY_RADIUS := 0.395
@@ -405,7 +406,12 @@ func set_hover(value: bool) -> void:
 func _process(delta: float) -> void:
 	phase += delta
 	_hover_t = minf(_hover_t + delta, 1.0)
-	var target := 1.0 + (0.055 if _hover else 0.0)
+	_pop = maxf(_pop - delta * 3.4, 0.0)
+	# A single writer for the pop: activate() raises _pop, this decays it and
+	# folds it into the hover scale. Tweening the same properties here fought
+	# the hover lerp and the tap read as a dead click.
+	var pop := 1.0 + _pop * 0.17
+	var target := (1.0 + (0.055 if _hover else 0.0)) * pop
 	_swing.scale = _swing.scale.lerp(Vector3.ONE * target, delta * 7.0)
 	# A slow, organic pendulum; the paper body is light, the pole is not.
 	_swing.rotation.z = sin(phase * 0.9) * 0.025 + (_hover_t * 0.02 if _hover else 0.0)
@@ -414,10 +420,10 @@ func _process(delta: float) -> void:
 	if _body_mat:
 		_body_mat.set_shader_parameter("flicker", flicker)
 	if _light:
-		_light.light_energy = (1.55 if done else 1.15) + (0.28 if _hover else 0.0) + (flicker - 1.0) * 0.9
+		_light.light_energy = (1.55 if done else 1.15) + (0.28 if _hover else 0.0) + (flicker - 1.0) * 0.9 + _pop * 1.25
 	if _glow:
 		var g := 1.30 if done else (1.50 if _hover else 1.15)
-		_glow.scale = _glow.scale.lerp(Vector3.ONE * g, delta * 4.0)
+		_glow.scale = _glow.scale.lerp(Vector3.ONE * (g + _pop * 0.9), delta * 4.0)
 	if _title_label:
 		var a := _title_label.modulate.a
 		a = move_toward(a, 1.0 if _hover else 0.0, delta * 5.0)
@@ -430,11 +436,8 @@ func activate() -> void:
 	if _busy:
 		return
 	_busy = true
-	var tw := create_tween()
-	tw.set_parallel(true)
-	tw.tween_property(_swing, "scale", Vector3.ONE * 1.16, 0.13).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	if _light:
-		tw.tween_property(_light, "light_energy", 3.0, 0.13)
+	_pop = 1.0
+	Sfx.play("lantern", -7.0, 1.02)
 	await get_tree().create_timer(0.17).timeout
 	chosen.emit(id)
 	await get_tree().create_timer(0.10).timeout

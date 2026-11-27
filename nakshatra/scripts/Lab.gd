@@ -423,7 +423,10 @@ func _build_ui() -> void:
 	mid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	col.add_child(mid)
 
-	var hint := UI.tracked("TAP A LANTERN  —  OR PICK A LESSON BELOW", 8, Color(G.MUTED, 0.8), 2)
+	var hint_text := "TAP A LANTERN  —  OR PICK A LESSON BELOW"
+	if G.all_done():
+		hint_text = "SEVEN LANTERNS LIT  —  THE HILL IS YOURS"
+	var hint := UI.tracked(hint_text, 8, Color(G.MUTED, 0.8), 2)
 	hint.autowrap_mode = TextServer.AUTOWRAP_OFF
 	hint.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	hint.position = Vector2(2, 12)
@@ -431,7 +434,7 @@ func _build_ui() -> void:
 	mid.add_child(hint)
 
 	if G.all_done():
-		var finale := UI.button("Light the lanterns   ›", true, 17)
+		var finale := UI.button("The lantern festival   ›", true, 17)
 		finale.custom_minimum_size = Vector2(240, 44)
 		finale.set_anchors_preset(Control.PRESET_CENTER)
 		finale.position = Vector2(-120, -22)
@@ -525,6 +528,7 @@ func _show_menu() -> void:
 	snd.pressed.connect(func():
 		G.sound_on = not G.sound_on
 		G.save_game()
+		Sfx.apply_sound_setting()
 		overlay.queue_free()
 		_show_menu())
 	v.add_child(snd)
@@ -670,7 +674,7 @@ func _module_card(id: String) -> Control:
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(0, 94 if not UI.is_compact() else 80)
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	b.focus_mode = Control.FOCUS_NONE
+	b.focus_mode = Control.FOCUS_ALL
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	b.add_theme_stylebox_override("normal", _card_style(done, current))
 	var hover := _card_style(done, current)
@@ -678,7 +682,7 @@ func _module_card(id: String) -> Control:
 	hover.border_color = Color(G.GOLD, 0.65)
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", hover)
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_stylebox_override("focus", UI.focus_ring())
 	b.pressed.connect(func():
 		Sfx.play("click")
 		_open_module(id))
@@ -739,7 +743,7 @@ func _module_row(id: String) -> Control:
 
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(0, 58)
-	b.focus_mode = Control.FOCUS_NONE
+	b.focus_mode = Control.FOCUS_ALL
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	b.add_theme_stylebox_override("normal", _card_style(done, current))
 	var hover := _card_style(done, current)
@@ -747,7 +751,7 @@ func _module_row(id: String) -> Control:
 	hover.border_color = Color(G.GOLD, 0.65)
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", hover)
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_stylebox_override("focus", UI.focus_ring())
 	b.pressed.connect(func():
 		Sfx.play("click")
 		_open_module(id))

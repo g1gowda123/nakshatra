@@ -55,6 +55,11 @@ var dots_box: HBoxContainer
 var notes_text: Label
 var notes_time: Label
 var dot_buttons: Array[Button] = []
+# Portrait slides are taller than the phone: the note pane scrolls, so the
+# bottom edge fades out and offers a scroll cue until the reader reaches it.
+var portrait_scroll: ScrollContainer
+var scroll_fade: TextureRect
+var scroll_cue: Label
 
 # --- small floating lights behind the deck ------------------------------
 var _lanterns: Array[Node3D] = []
@@ -65,12 +70,15 @@ class ArtFrame:
 	extends Control
 	## A framed image that keeps its height proportional to its width.
 	var ratio := 16.0 / 9.0
+	var max_height := 0.0
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_RESIZED:
 			var w := size.x
 			if w > 1.0:
 				var h := w / maxf(ratio, 0.1)
+				if max_height > 0.0:
+					h = minf(h, max_height)
 				if absf(custom_minimum_size.y - h) > 0.5:
 					custom_minimum_size.y = h
 
@@ -497,17 +505,74 @@ func _build_portrait_body(body: Control) -> void:
 	v.add_child(visual)
 	_build_visual_column(visual)
 
+	var wrap := UI.vbox(0)
+	wrap.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	v.add_child(wrap)
+
+	var holder := Control.new()
+	holder.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wrap.add_child(holder)
+
 	var scroll := UI.scroll()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	v.add_child(scroll)
-	var margin := UI.margin(2, 4, 2, 4)
+	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	holder.add_child(scroll)
+	portrait_scroll = scroll
+	var margin := UI.margin(2, 4, 2, 16)
 	margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	# A ScrollContainer measures its child before it has a width of its own.
+	# Without a floor the labels wrap one character per line, which makes the
+	# content thousands of pixels tall and looks like clipped text.
+	margin.custom_minimum_size.x = UI.viewport_size().x - 40
 	scroll.add_child(margin)
 	var text := UI.vbox(0)
 	text.alignment = BoxContainer.ALIGNMENT_BEGIN
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text.custom_minimum_size.x = UI.viewport_size().x - 48
 	margin.add_child(text)
 	_build_text_column(text, true)
+
+	# A paper fade at the fold plus a small cue. Without it the densest slides
+	# look clipped rather than scrollable — the note is there, but nothing says so.
+	var grad := Gradient.new()
+	grad.set_color(0, Color(G.BG, 0.0))
+	grad.set_color(1, Color(G.BG, 0.96))
+	var gtex := GradientTexture2D.new()
+	gtex.gradient = grad
+	gtex.width = 8
+	gtex.height = 64
+	gtex.fill_from = Vector2(0, 0)
+	gtex.fill_to = Vector2(0, 1)
+	scroll_fade = TextureRect.new()
+	scroll_fade.texture = gtex
+	scroll_fade.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	scroll_fade.stretch_mode = TextureRect.STRETCH_SCALE
+	scroll_fade.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	scroll_fade.offset_top = -30
+	scroll_fade.offset_bottom = 0
+	scroll_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	holder.add_child(scroll_fade)
+	scroll_cue = UI.tracked("SCROLL FOR MORE  ⌄", 8, Color(G.GOLD, 0.8), 2)
+	scroll_cue.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	scroll_cue.custom_minimum_size.y = 14
+	scroll_cue.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wrap.add_child(scroll_cue)
+	scroll.get_v_scroll_bar().value_changed.connect(func(_v): _update_scroll_cue())
+	holder.resized.connect(func(): _update_scroll_cue.call_deferred())
+	_update_scroll_cue.call_deferred()
+
+
+func _update_scroll_cue() -> void:
+	if portrait_scroll == null or scroll_fade == null:
+		return
+	var bar := portrait_scroll.get_v_scroll_bar()
+	var overflow := bar.max_value > bar.page + 2.0
+	var at_end := bar.value >= bar.max_value - bar.page - 2.0
+	var show := overflow and not at_end
+	scroll_fade.visible = show
+	if scroll_cue:
+		scroll_cue.visible = show
 
 
 func _build_text_column(parent: Control, scrollable: bool = false) -> void:
@@ -525,10 +590,14 @@ func _build_text_column(parent: Control, scrollable: bool = false) -> void:
 	title_lbl = UI.label("", 54, G.GOLD, "display")
 	title_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title_lbl.add_theme_constant_override("line_spacing", -2)
+	if _portrait:
+		title_lbl.custom_minimum_size.x = UI.viewport_size().x - 72
 	v.add_child(title_lbl)
 
 	subtitle_lbl = UI.label("", 17, Color(G.CREAM, 0.92))
 	subtitle_lbl.add_theme_constant_override("line_spacing", 5)
+	if _portrait:
+		subtitle_lbl.custom_minimum_size.x = UI.viewport_size().x - 72
 	v.add_child(subtitle_lbl)
 
 	var spacer := Control.new()
@@ -572,6 +641,11 @@ func _build_visual_column(parent: Control) -> void:
 	art.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	art.clip_contents = true
+	if _portrait:
+		# On a phone the figure must not eat the note: cap it at 24% of the
+		# screen and letterbox the plate inside the frame.
+		art.max_height = UI.viewport_size().y * 0.24
+		art.custom_minimum_size.y = art.max_height
 	frame.add_child(art)
 	image_art = art
 
@@ -593,13 +667,15 @@ func _build_visual_column(parent: Control) -> void:
 	parent.add_child(cap_row)
 	caption_lbl = UI.label("", 12, Color(G.CREAM, 0.88))
 	caption_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if _portrait:
+		caption_lbl.custom_minimum_size.x = UI.viewport_size().x - 160
 	caption_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	caption_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	caption_lbl.custom_minimum_size.y = 28
 	cap_row.add_child(caption_lbl)
 
 	fig_btn = UI.ghost_button("ENLARGE", 10)
-	fig_btn.custom_minimum_size = Vector2(92, 28)
+	fig_btn.custom_minimum_size = Vector2(96, 34)
 	fig_btn.add_theme_font_size_override("font_size", 9)
 	fig_btn.tooltip_text = "Enlarge this figure (I)"
 	fig_btn.pressed.connect(_show_figure)
@@ -720,6 +796,9 @@ func _apply_slide() -> void:
 		c.queue_free()
 	for b in s.get("bullets", []):
 		bullets_box.add_child(_bullet_row(str(b)))
+	if portrait_scroll:
+		portrait_scroll.scroll_vertical = 0
+	_update_scroll_cue.call_deferred()
 
 	for c in stats_box.get_children():
 		stats_box.remove_child(c)
@@ -785,6 +864,8 @@ func _bullet_row(text: String) -> Control:
 	h.add_child(dot)
 	var body := UI.label(text, 14 if UI.viewport_size().y < 520.0 else (15 if _compact else 18), Color(G.CREAM, 0.93))
 	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if _portrait:
+		body.custom_minimum_size.x = UI.viewport_size().x - 84
 	body.add_theme_constant_override("line_spacing", 4)
 	h.add_child(body)
 	return h

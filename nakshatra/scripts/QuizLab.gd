@@ -12,9 +12,24 @@ var chosen := -1
 var started := false
 var finished := false
 var wrong: Array = []
+# Which exhibit each riddle belongs to. A wrong answer offers a one-tap route
+# back to the exact lesson that explains it — assessment that closes the loop.
+const QUIZ_TOPICS := [
+	"moon", "scale", "scale", "stars", "seasons", "moon", "scale",
+	"stars", "scale", "moon", "flares", "blackhole", "flares", "blackhole",
+]
+const TOPIC_SCENES := {
+	"moon": "res://scenes/MoonLab.tscn",
+	"stars": "res://scenes/StarLab.tscn",
+	"scale": "res://scenes/ScaleLab.tscn",
+	"seasons": "res://scenes/SeasonLab.tscn",
+	"flares": "res://scenes/SolarLab.tscn",
+	"blackhole": "res://scenes/BlackHoleLab.tscn",
+}
 var content_box: VBoxContainer
 var panel: PanelContainer
 var progress_label: Label
+var page_scroll: ScrollContainer
 
 
 func _ready() -> void:
@@ -30,12 +45,28 @@ func _ready() -> void:
 		started = true
 		_render()
 	if args.has("--quiz-answer"):
-		_choose(1)
+		_choose(int(questions[0].get("answer", 1)))
 	if args.has("--quiz-result"):
 		started = true
 		finished = true
 		score = questions.size()
 		index = maxi(0, questions.size() - 1)
+		_render()
+	if args.has("--quiz-review"):
+		# QA helper: renders the "second look" with four wrong answers, so the
+		# revise links and the long result page can be captured without playing.
+		started = true
+		finished = true
+		score = questions.size() - 4
+		index = maxi(0, questions.size() - 1)
+		for i in mini(4, questions.size()):
+			var q: Dictionary = questions[i]
+			wrong.append({
+				"q": str(q.get("q", "")),
+				"answer": str((q.get("options", []) as Array)[int(q.get("answer", 0))]),
+				"why": str(q.get("why", "")),
+				"topic": str(QUIZ_TOPICS[i]) if i < QUIZ_TOPICS.size() else "",
+			})
 		_render()
 
 
@@ -92,6 +123,7 @@ func _build_ui() -> void:
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	col.add_child(scroll)
+	page_scroll = scroll
 
 	var center := CenterContainer.new()
 	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -151,6 +183,8 @@ func _render() -> void:
 			progress_label.text = "%d/%d" % [mini(index + 1, questions.size()), questions.size()]
 		else:
 			progress_label.text = "%02d / %02d" % [mini(index + 1, questions.size()), questions.size()]
+	if page_scroll:
+		page_scroll.set_deferred("scroll_vertical", 0)
 
 
 func _render_intro() -> void:
@@ -325,7 +359,8 @@ func _choose(i: int) -> void:
 		Sfx.play("success")
 	else:
 		Sfx.play("soft_error")
-		wrong.append({"q": str(q.get("q", "")), "answer": str((q.get("options", []) as Array)[correct]), "why": str(q.get("why", ""))})
+		var topic := str(QUIZ_TOPICS[index]) if index < QUIZ_TOPICS.size() else ""
+		wrong.append({"q": str(q.get("q", "")), "answer": str((q.get("options", []) as Array)[correct]), "why": str(q.get("why", "")), "topic": topic})
 	_render()
 
 
@@ -359,6 +394,17 @@ func _render_results() -> void:
 	score_row.add_child(of)
 	content_box.add_child(_segments(score, total))
 	content_box.add_child(UI.label("%d%%  ·  %s" % [pct, _message(pct)], 16, G.CREAM))
+	if G.quiz_prev >= 0 and G.quiz_attempts > 1:
+		# Pre-test / post-test is a classroom promise; show the change, not just
+		# the score. A student who took it before the lesson can see the gain.
+		var delta := score - G.quiz_prev
+		var change := "no change"
+		if delta > 0:
+			change = "+%d since last attempt" % delta
+		elif delta < 0:
+			change = "%d since last attempt" % delta
+		var line := UI.label("Previous: %d / %d  ·  %s" % [G.quiz_prev, total, change], 13, Color(G.TEAL if delta >= 0 else G.GOLD, 0.95))
+		content_box.add_child(line)
 	if pct >= 60:
 		content_box.add_child(UI.pill("Passed  ·  Sky Keeper", G.TEAL, 12))
 	else:
@@ -374,6 +420,15 @@ func _render_results() -> void:
 			box.add_child(UI.label(str(w["q"]), 14, G.CREAM))
 			box.add_child(UI.label("Answer: " + str(w["answer"]), 12, G.TEAL, "body_med"))
 			box.add_child(UI.label(str(w["why"]), 13, G.MUTED))
+			var topic := str(w.get("topic", ""))
+			if TOPIC_SCENES.has(topic):
+				var title := str(G.module_info(topic).get("title", topic))
+				var go := UI.ghost_button("Revise: " + title + "  ›", 11)
+				go.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+				go.pressed.connect(func():
+					Sfx.play("click")
+					Router.go(TOPIC_SCENES[topic]))
+				box.add_child(go)
 			rev.add_child(UI.rule(Color(G.GOLD, 0.12), 1))
 	else:
 		content_box.add_child(UI.label("Every answer correct. That is a sky well read.", 15, G.TEAL))

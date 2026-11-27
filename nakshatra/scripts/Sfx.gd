@@ -27,12 +27,25 @@ func _ready() -> void:
 		_ambient.stream = amb
 		_ambient.volume_db = -18.0
 		_ambient.finished.connect(func(): if G.sound_on: _ambient.play())
-		_ambient.play()
+		if G.sound_on:
+			_ambient.play()
 	for i in 8:
 		var p := AudioStreamPlayer.new()
 		p.name = "Sfx%d" % i
 		add_child(p)
 		_pool.append(p)
+
+
+func apply_sound_setting() -> void:
+	# The menu toggle used to only flip a bool: the ambient bed kept playing
+	# over a "Sound: Off" label. Keep the one setting authoritative.
+	if _ambient == null or _ambient.stream == null:
+		return
+	if G.sound_on:
+		if not _ambient.playing:
+			_ambient.play()
+	else:
+		_ambient.stop()
 
 
 func _load_stream(path: String) -> AudioStream:

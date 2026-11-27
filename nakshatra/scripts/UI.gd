@@ -326,10 +326,21 @@ static func plate_bg(alpha: float = 0.92) -> StyleBoxFlat:
 	return sb
 
 
+static func focus_ring() -> StyleBoxFlat:
+	## A visible keyboard focus ring. Buttons used to opt out of focus entirely,
+	## which made the whole game unreachable with Tab on a laptop.
+	var sb := StyleBoxFlat.new()
+	sb.draw_center = false
+	sb.border_color = Color(1.0, 0.86, 0.55, 0.95)
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(2)
+	return sb
+
+
 static func button(text: String, primary: bool = false, size: int = 19) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.focus_mode = Control.FOCUS_NONE
+	b.focus_mode = Control.FOCUS_ALL
 	b.add_theme_font_size_override("font_size", maxi(12, size - 5))
 	b.add_theme_font_override("font", tracked_font("body", 1))
 	b.custom_minimum_size = Vector2(0, 46)
@@ -361,7 +372,7 @@ static func button(text: String, primary: bool = false, size: int = 19) -> Butto
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", pressed)
 	b.add_theme_stylebox_override("disabled", disabled)
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_stylebox_override("focus", focus_ring())
 	b.add_theme_color_override("font_color", G.INK if primary else G.CREAM)
 	b.add_theme_color_override("font_hover_color", G.INK if primary else Color.WHITE)
 	b.add_theme_color_override("font_pressed_color", G.INK if primary else G.GOLD)
@@ -372,7 +383,7 @@ static func button(text: String, primary: bool = false, size: int = 19) -> Butto
 static func ink_button(text: String, primary: bool = true, size: int = 16) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.focus_mode = Control.FOCUS_NONE
+	b.focus_mode = Control.FOCUS_ALL
 	b.add_theme_font_size_override("font_size", maxi(11, size - 4))
 	b.add_theme_font_override("font", tracked_font("body", 1))
 	b.custom_minimum_size = Vector2(0, 44)
@@ -393,7 +404,7 @@ static func ink_button(text: String, primary: bool = true, size: int = 16) -> Bu
 	b.add_theme_stylebox_override("normal", normal)
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", pressed)
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_stylebox_override("focus", focus_ring())
 	b.add_theme_color_override("font_color", G.PAPER if primary else G.INK)
 	b.add_theme_color_override("font_hover_color", Color.WHITE if primary else G.INK)
 	b.add_theme_color_override("font_pressed_color", G.GOLD if primary else G.INK)
@@ -418,14 +429,14 @@ static func ghost_button(text: String, size: int = 17) -> Button:
 	hover.border_color = Color(G.GOLD, 0.45)
 	b.add_theme_stylebox_override("normal", sb)
 	b.add_theme_stylebox_override("hover", hover)
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_stylebox_override("focus", focus_ring())
 	return b
 
 
 static func link_button(text: String, size: int = 11, color: Color = G.CREAM) -> Button:
 	var b := Button.new()
 	b.text = text
-	b.focus_mode = Control.FOCUS_NONE
+	b.focus_mode = Control.FOCUS_ALL
 	b.add_theme_font_size_override("font_size", size)
 	b.add_theme_font_override("font", tracked_font("body", 1))
 	b.add_theme_color_override("font_color", Color(color, 0.82))
@@ -437,7 +448,7 @@ static func link_button(text: String, size: int = 11, color: Color = G.CREAM) ->
 	b.add_theme_stylebox_override("normal", empty)
 	b.add_theme_stylebox_override("hover", empty)
 	b.add_theme_stylebox_override("pressed", empty)
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	b.add_theme_stylebox_override("focus", focus_ring())
 	return b
 
 

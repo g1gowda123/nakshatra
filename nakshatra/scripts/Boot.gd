@@ -43,6 +43,10 @@ func _check_debug_route() -> void:
 		for a in OS.get_cmdline_user_args():
 			if a.begins_with("--screen="):
 				scene_key = a.get_slice("=", 1)
+			elif a == "--demo":
+				# QA capture helper: light all seven lanterns so the finale
+				# certificate can be captured without playing the lessons.
+				G.unlock_all()
 			elif not a.begins_with("--"):
 				scene_key = str(a)
 	var routes := {
@@ -241,6 +245,7 @@ func _top_bar() -> Control:
 	snd.pressed.connect(func():
 		G.sound_on = not G.sound_on
 		G.save_game()
+		Sfx.apply_sound_setting()
 		Sfx.play("click")
 		_rebuild())
 	row.add_child(snd)
