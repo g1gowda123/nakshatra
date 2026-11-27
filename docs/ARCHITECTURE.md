@@ -289,8 +289,10 @@ bash tools/build_web.sh
 
 `export_presets.cfg` uses the **Web** preset with `variant/thread_support=false`
 and the default web release template. `polish_web.py` adds the branded loading
-screen and mobile meta tags; `package_itch.py` zips only the files a browser
-needs plus the licence and credits.
+screen, mobile meta tags, a web app manifest and a service worker that caches
+the HTML, WASM, PCK, worklets and icons after the first load;
+`package_itch.py` zips the browser files, the presenter docs, the licence and
+credits.
 
 ### Serving locally
 

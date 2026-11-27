@@ -49,6 +49,8 @@ Say it once at the start. Do not read it off the slide.
 - [ ] Test the exact URL in the exact browser you will use.
 - [ ] Put the deck URL in a bookmark: `http://127.0.0.1:8060/index.html?scene=seminar`.
       A per-slide bookmark is `&slide=8` (1–12); `&demo=1` sets the finale state.
+- [ ] Optional: use the browser's **Install** action once. The app manifest adds
+      a home-screen icon and shortcuts for the deck and the Sky Lab.
 - [ ] If you will show the finale, open **Checks → Set demo state** once, then reset
       it before you hand the laptop to anyone else.
 
