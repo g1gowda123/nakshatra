@@ -17,3 +17,6 @@ itch/*.zip
 # OS noise
 .DS_Store
 *.tmp
+
+# portable source backups
+dist/
