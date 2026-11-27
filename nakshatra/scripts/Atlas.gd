@@ -83,6 +83,7 @@ func _build_ui() -> void:
 	vignette.material.shader = load("res://shaders/vignette.gdshader")
 	ui_root.add_child(vignette)
 	ui_root.add_child(UI.scrim(true, 156, 0.72))
+	ui_root.add_child(UI.scrim(false, 72, 0.9))
 
 	marker_layer = Control.new()
 	marker_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
