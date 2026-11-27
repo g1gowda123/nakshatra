@@ -130,9 +130,9 @@ func _build_world() -> void:
 
 	# Season labels at the four cardinal points.
 	_add_orbit_label("June solstice", PI, Color("ffd28a"))
-	_add_orbit_label("December solstice", 0.0, Color("9fc6ff"))
+	_add_orbit_label("December solstice", 0.0, Color("cfe4ff"))
 	_add_orbit_label("March equinox", PI * 0.5, Color("b8e6c9"))
-	_add_orbit_label("September equinox", PI * 1.5, Color("b8e6c9"))
+	_add_orbit_label("September equinox", PI * 1.5, Color("d8f5df"))
 
 	# Earth on its tilted pivot.
 	earth_pivot = Node3D.new()
@@ -211,6 +211,13 @@ func _add_orbit_label(text: String, angle: float, color: Color) -> void:
 	l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	l.no_depth_test = true
 	l.position = Vector3(cos(angle) * (ORBIT_R + 3.2), 0.85, sin(angle) * (ORBIT_R + 3.2))
+	if is_equal_approx(angle, 0.0):
+		# December sits at the right edge of the canvas; keep its label inside
+		# the orbit so the control panel never crops it.
+		l.position = Vector3(ORBIT_R - 0.2, 3.4, 0)
+	elif is_equal_approx(angle, PI):
+		# June is parked on Earth; give the label room outside the planet.
+		l.position = Vector3(-(ORBIT_R + 5.0), 1.4, 0)
 	add_child(l)
 
 
@@ -273,7 +280,7 @@ func _build_ui() -> void:
 	vignette.material = ShaderMaterial.new()
 	vignette.material.shader = load("res://shaders/vignette.gdshader")
 	ui_root.add_child(vignette)
-	ui_root.add_child(UI.scrim(true, 156, 0.72))
+	ui_root.add_child(UI.scrim(true, 140, 0.6))
 
 	var outer := UI.margin(UI.pad(), 12, UI.pad(), 12)
 	outer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

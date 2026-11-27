@@ -268,28 +268,44 @@ func _build_earth() -> void:
 	satellite.position = Vector3(1.5, 0.35, 0.5)
 	earth_node.add_child(satellite)
 	satellite_body = MeshInstance3D.new()
-	var box := BoxMesh.new()
-	box.size = Vector3(0.2, 0.2, 0.28)
-	satellite_body.mesh = box
+	var body_sphere := SphereMesh.new()
+	body_sphere.radius = 0.09
+	body_sphere.height = 0.18
+	body_sphere.radial_segments = 16
+	body_sphere.rings = 8
+	satellite_body.mesh = body_sphere
 	var sat_mat := StandardMaterial3D.new()
-	sat_mat.albedo_color = Color(0.72, 0.78, 0.88)
-	sat_mat.metallic = 0.4
-	sat_mat.roughness = 0.4
+	sat_mat.albedo_color = Color(0.82, 0.84, 0.82)
+	sat_mat.metallic = 0.5
+	sat_mat.roughness = 0.35
 	satellite_body.material_override = sat_mat
 	satellite.add_child(satellite_body)
 	for side in [-1, 1]:
 		var panel := MeshInstance3D.new()
 		var pm := BoxMesh.new()
-		pm.size = Vector3(0.42, 0.02, 0.22)
+		pm.size = Vector3(0.34, 0.008, 0.15)
 		panel.mesh = pm
 		var pmat := StandardMaterial3D.new()
-		pmat.albedo_color = Color(0.12, 0.2, 0.48)
+		pmat.albedo_color = Color(0.16, 0.26, 0.52)
 		pmat.emission_enabled = true
 		pmat.emission = Color(0.1, 0.22, 0.7)
-		pmat.emission_energy_multiplier = 0.4
+		pmat.emission_energy_multiplier = 0.25
 		panel.material_override = pmat
-		panel.position = Vector3(0.42 * side, 0, 0)
+		panel.position = Vector3(0.26 * side, 0, 0)
+		panel.rotation_degrees = Vector3(0, 0, 10.0 * side)
 		satellite.add_child(panel)
+	var sat_label := Label3D.new()
+	sat_label.text = "SATELLITE"
+	sat_label.font = UI.body_med_font()
+	sat_label.font_size = 30
+	sat_label.pixel_size = 0.014
+	sat_label.modulate = Color(G.GOLD, 0.95)
+	sat_label.outline_size = 5
+	sat_label.outline_modulate = Color(0.01, 0.02, 0.05, 0.9)
+	sat_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	sat_label.no_depth_test = true
+	sat_label.position = Vector3(0, 0.5, 0)
+	satellite.add_child(sat_label)
 
 	shield_mesh = MeshInstance3D.new()
 	var shm := SphereMesh.new()
