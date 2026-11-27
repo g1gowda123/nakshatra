@@ -9,6 +9,7 @@ built, what it claims, and how those claims are checked.
 | [`DEMO_CARD.md`](DEMO_CARD.md) | You need one printable page beside the laptop. | 1 page |
 | [`SPEAKER_NOTES.md`](SPEAKER_NOTES.md) | The deck cannot run and you need the exact words on paper. | 12 short pages |
 | [`HANDOUT.md`](HANDOUT.md) | You need a one-page takeaway for the audience. | 1 page |
+| [`LESSON_PLAN.md`](LESSON_PLAN.md) | A teacher wants to run a 45-minute class with the lab. | 2 pages |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Someone asks how the game works, or you need to change it. | ~15 min read |
 | [`FEATURE_MATRIX.md`](FEATURE_MATRIX.md) | You need to map a feature to a syllabus topic or a demo moment. | ~8 min read |
 | [`ART_DIRECTION.md`](ART_DIRECTION.md) | You are adding an exhibit, shader or lantern, or explaining the look. | ~10 min read |

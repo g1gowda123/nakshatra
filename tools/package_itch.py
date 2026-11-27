@@ -35,7 +35,8 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
     # the presenter pack travels with the download too
     for f in ["SEMINAR_PLAYBOOK.md", "DEMO_CARD.md", "SPEAKER_NOTES.md",
               "HANDOUT.md", "VIVA_QA.md", "ARCHITECTURE.md", "STATS.md",
-              "QA_REPORT.md", "FEATURE_MATRIX.md", "ART_DIRECTION.md", "README.md"]:
+              "QA_REPORT.md", "FEATURE_MATRIX.md", "ART_DIRECTION.md", "README.md",
+              "LESSON_PLAN.md"]:
         p = os.path.join(ROOT, "docs", f)
         if os.path.exists(p):
             z.write(p, "docs/" + f)

@@ -23,6 +23,9 @@ python3 tools/polish_web.py
 echo "== package =="
 python3 tools/package_itch.py
 
+echo "== verify web =="
+python3 tools/check_web.py
+
 echo "== stats =="
 python3 tools/project_stats.py --write docs/STATS.md
 
