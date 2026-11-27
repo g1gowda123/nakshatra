@@ -316,7 +316,7 @@ a fixed size and saves a PNG. It is not part of the export.
 
 ## Credits and licences
 
-- **Sky data**: HYG Database v3 by David Nash (`astronomynexus.com`),
+- **Sky data**: HYG Database v3 by David Nash (`astronexus.com`),
   **CC BY-SA 4.0**. Constellation and nakshatra line data from **Stellarium
   skycultures**, **GPL-2.0-or-later**. The packaged sky data is distributed under
   the same share-alike terms; see `CREDITS.md`.

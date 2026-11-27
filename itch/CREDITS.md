@@ -3,7 +3,7 @@
 ## Sky catalogue and constellation figures
 
 **HYG Database v3** — David Nash, Astronomy Nexus.
-<https://astronomynexus.org/> · CC BY-SA 4.0.
+<https://astronexus.com/> · CC BY-SA 4.0.
 The file `data_src/hyg.csv` is the source; `nakshatra/data/sky/stars.json` is a reduced, derived catalogue of 8,879 naked-eye stars with positions, magnitudes, B–V colours and distances.
 
 **Stellarium skycultures** — modern (88 IAU constellations) and Indian nakshatra line data.

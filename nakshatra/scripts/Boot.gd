@@ -505,7 +505,7 @@ func _show_credits() -> void:
 	var body := UI.vbox(11)
 	body.add_child(UI.label("Made with care for curious sky-watchers.", 13, G.INK_SOFT))
 	body.add_child(UI.rule(Color(G.INK, 0.18), 1))
-	body.add_child(UI.rich("[b]Sky data[/b]\nHYG Database v3 (David Nash, astronomynexus.com), CC BY-SA 4.0. Constellation and nakshatra line data from Stellarium skycultures (GPL v2), used with gratitude.", 14, G.INK_SOFT))
+	body.add_child(UI.rich("[b]Sky data[/b]\nHYG Database v3 (David Nash, astronexus.com), CC BY-SA 4.0. Constellation and nakshatra line data from Stellarium skycultures (GPL v2), used with gratitude.", 14, G.INK_SOFT))
 	body.add_child(UI.rich("[b]Illustrations[/b]\nOriginal papercut-style art made for this project. No stock images, no external assets.", 14, G.INK_SOFT))
 	body.add_child(UI.rich("[b]Type[/b]\nCormorant Garamond, Noto Serif, Noto Sans and Noto Sans Kannada — SIL Open Font License.", 14, G.INK_SOFT))
 	body.add_child(UI.rich("[b]Everything else[/b]\nCode, design, star shaders and audio are original and offline. Schools may copy and share the game freely.", 14, G.INK_SOFT))
@@ -578,6 +578,9 @@ func _modal(title: String, body: Control, art_path: String = "", caption: String
 
 	var scroll := UI.scroll()
 	scroll.custom_minimum_size = Vector2(0, clampf(UI.viewport_size().y - 440.0, 180.0, 360.0))
+	var tail := Control.new()
+	tail.custom_minimum_size = Vector2(0, 10)
+	body.add_child(tail)
 	scroll.add_child(body)
 	v.add_child(scroll)
 	if footer:
