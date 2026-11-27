@@ -571,7 +571,7 @@ static func app_bar(title: String, subtitle: String = "", back_route: String = "
 		pl.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		pv.add_child(pl)
 
-	if status != null:
+	if status != null and not compact:
 		status.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		row.add_child(status)
 

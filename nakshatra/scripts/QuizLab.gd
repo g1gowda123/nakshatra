@@ -31,6 +31,12 @@ func _ready() -> void:
 		_render()
 	if args.has("--quiz-answer"):
 		_choose(1)
+	if args.has("--quiz-result"):
+		started = true
+		finished = true
+		score = questions.size()
+		index = maxi(0, questions.size() - 1)
+		_render()
 
 
 func _build_world() -> void:
@@ -105,8 +111,9 @@ func _build_ui() -> void:
 
 func _top_bar() -> Control:
 	progress_label = UI.micro("", Color(G.GOLD, 0.9), 9)
-	var acts: Array = [{"text": "LESSON", "fn": func(): G.show_briefing("quiz")}]
+	var acts: Array = []
 	if not UI.is_compact():
+		acts.append({"text": "LESSON", "fn": func(): G.show_briefing("quiz")})
 		acts.append({"text": "SKY ATLAS", "fn": func(): Router.go("res://scenes/Atlas.tscn")})
 	return UI.app_bar("Sky Riddles", "ASSESSMENT  ·  NO TIMER", "res://scenes/Lab.tscn", acts, Vector2i(-1, -1), "THE SKY LAB", progress_label)
 
@@ -138,7 +145,12 @@ func _render() -> void:
 	else:
 		_render_results()
 	if progress_label:
-		progress_label.text = "" if not started else ("%02d / %02d" % [mini(index + 1, questions.size()), questions.size()])
+		if not started:
+			progress_label.text = ""
+		elif UI.is_compact():
+			progress_label.text = "%d/%d" % [mini(index + 1, questions.size()), questions.size()]
+		else:
+			progress_label.text = "%02d / %02d" % [mini(index + 1, questions.size()), questions.size()]
 
 
 func _render_intro() -> void:
@@ -338,8 +350,10 @@ func _render_results() -> void:
 	content_box.add_child(score_row)
 	var big := UI.display("%d" % score, 72, G.CREAM)
 	big.custom_minimum_size.y = 70
+	big.autowrap_mode = TextServer.AUTOWRAP_OFF
 	score_row.add_child(big)
 	var of := UI.heading("/ %d" % total, 24, Color(G.MUTED, 0.8))
+	of.autowrap_mode = TextServer.AUTOWRAP_OFF
 	of.size_flags_vertical = Control.SIZE_SHRINK_END
 	of.custom_minimum_size.y = 34
 	score_row.add_child(of)
