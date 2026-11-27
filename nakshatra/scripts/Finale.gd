@@ -207,7 +207,7 @@ func _certificate() -> Control:
 	name_edit.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_edit.custom_minimum_size = Vector2(0, 44)
 	name_edit.add_theme_font_override("font", UI.serif_font())
-	name_edit.add_theme_font_size_override("font_size", 28)
+	name_edit.add_theme_font_size_override("font_size", 24 if UI.is_compact() else 28)
 	name_edit.add_theme_color_override("font_color", G.INK)
 	name_edit.add_theme_color_override("font_placeholder_color", Color("8a6a3c", 0.7))
 	var nsb := StyleBoxFlat.new()
@@ -231,7 +231,10 @@ func _certificate() -> Control:
 	v.add_child(desc)
 	v.add_child(UI.rule(Color(G.INK, 0.22), 1))
 
-	var stats := UI.micro("SEVEN LANTERNS LIT  ·  RIDDLES: %d OF %d CORRECT" % [G.quiz_best, G.content.get("quiz", []).size()], Color("6b4f2a"), 8)
+	var stats_text := "SEVEN LANTERNS LIT  ·  RIDDLES: %d OF %d CORRECT" % [G.quiz_best, G.content.get("quiz", []).size()]
+	if UI.is_compact():
+		stats_text = "SEVEN LANTERNS LIT\nRIDDLES: %d OF %d CORRECT" % [G.quiz_best, G.content.get("quiz", []).size()]
+	var stats := UI.micro(stats_text, Color("6b4f2a"), 8)
 	stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	stats.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	stats.size_flags_horizontal = Control.SIZE_EXPAND_FILL

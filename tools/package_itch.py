@@ -11,6 +11,7 @@ required = [
     "index.html", "index.js", "index.wasm", "index.pck",
     "index.icon.png", "index.apple-touch-icon.png",
     "index.audio.worklet.js", "index.audio.position.worklet.js",
+    "sw.js", "manifest.webmanifest",
 ]
 for f in required:
     p = os.path.join(WEB, f)
