@@ -203,7 +203,7 @@ func _render_intro() -> void:
 	lesson.pressed.connect(func(): G.show_briefing("quiz"))
 	row.add_child(lesson)
 
-	content_box.add_child(UI.micro("THE EXHIBITS ARE ALWAYS OPEN — IF A QUESTION SURPRISES YOU, VISIT THE MATCHING LAB AFTERWARDS", Color(G.MUTED, 0.65), 8))
+	content_box.add_child(UI.micro("THE EXHIBITS ARE ALWAYS OPEN — IF A QUESTION SURPRISES YOU, VISIT THE MATCHING LAB AFTERWARDS", Color(G.MUTED, 0.82), 8))
 
 
 func _render_question() -> void:

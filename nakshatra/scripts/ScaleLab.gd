@@ -156,17 +156,22 @@ func _build_world() -> void:
 		plab.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		plab.no_depth_test = true
 		var lift := 0.55
+		var side := 0.0
 		if i == 0:
-			lift = 1.35
+			lift = 1.60
+			side = 1.15
 		elif i == 1:
-			lift = 0.50
+			lift = 0.35
+			side = -1.15
 		elif i == 2:
-			lift = 1.25
+			lift = 1.50
+			side = 1.05
 		elif i == 3:
-			lift = 0.45
+			lift = 0.30
+			side = -1.05
 		elif i == 4:
 			lift = 0.85
-		plab.position = Vector3(0, radius + lift, 0)
+		plab.position = Vector3(side, radius + lift, 0)
 		plab.visible = not (UI.is_compact() and i < 4)
 		node.add_child(plab)
 
