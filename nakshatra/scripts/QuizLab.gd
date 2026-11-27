@@ -448,7 +448,7 @@ func _render_results() -> void:
 	content_box.add_child(UI.micro("YOUR SKY  ·  RESULT", Color(G.GOLD, 0.9), 9))
 	var score_row := UI.hbox(8)
 	content_box.add_child(score_row)
-	var big := UI.display("%d" % score, 72, G.CREAM)
+	var big := UI.label("%d" % score, 60, G.CREAM, "body_med")
 	big.custom_minimum_size.y = 70
 	big.autowrap_mode = TextServer.AUTOWRAP_OFF
 	score_row.add_child(big)
@@ -535,11 +535,12 @@ func _render_results() -> void:
 	gap.custom_minimum_size = Vector2(0, 4)
 	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content_box.add_child(gap)
-	var row := UI.hbox(10)
+	var compact := UI.is_compact()
+	var row: BoxContainer = UI.vbox(8) if compact else UI.hbox(10)
 	content_box.add_child(row)
 	var again := UI.button("Try again", false, 15)
-	again.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	again.custom_minimum_size = Vector2(150, 44)
+	again.size_flags_horizontal = Control.SIZE_EXPAND_FILL if compact else Control.SIZE_SHRINK_BEGIN
+	again.custom_minimum_size = Vector2(0 if compact else 150, 44)
 	again.pressed.connect(func():
 		started = false
 		finished = false
@@ -553,8 +554,8 @@ func _render_results() -> void:
 		_render())
 	row.add_child(again)
 	var back := UI.button("Back to the lab   ›", true, 15)
-	back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	back.custom_minimum_size = Vector2(210, 44)
+	back.size_flags_horizontal = Control.SIZE_EXPAND_FILL if compact else Control.SIZE_SHRINK_BEGIN
+	back.custom_minimum_size = Vector2(0 if compact else 210, 44)
 	back.pressed.connect(func(): Router.go("res://scenes/Lab.tscn"))
 	row.add_child(back)
 

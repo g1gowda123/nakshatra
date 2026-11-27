@@ -16,12 +16,19 @@
 - **The default camera looks 28° above the southern horizon**, so the first
   frame contains sky rather than the below-horizon pole.
 - **The title screen prints the live version**, not the stale `V 1.2.1`.
+- **Phone quiz results no longer run off the right edge.** Try again and Back
+  stack full-width on compact screens; the CSV note wraps; the score uses
+  clean lining digits instead of the display face's `IO`-looking numerals.
+- **The Moon challenge says `PHASE HIDDEN`** instead of leaving a lone dash
+  that read like a missing label.
 
 ### Added
 
 - **Tonight at 13° N** (`TONIGHT` or `T`): four bright stars that are 20°–85°
   above the horizon, with altitude and compass direction, plus a short
   observing note. Excludes the Moon and planets, and says so.
+- **Two new Field Guide cards — Eclipses and Tides** — explain the 5° orbital
+  tilt and eclipse nodes, and the two tidal bulges, spring and neap tides.
 - **`TestSky`** locks Polaris, Capella, Sirius, Fomalhaut and Arcturus to
   their textbook altitudes and asserts the south celestial pole is below the
   horizon, so the transform cannot silently mirror again.
