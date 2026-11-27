@@ -14,23 +14,23 @@ or a technical claim.
 | **The Turning Year** | Tilt Earth, orbit it, read noon-Sun altitude and day length at 13°N; “no tilt” experiment | Isolates axial tilt as the cause of seasons — the cleanest experiment in the chapter | `SeasonLab.gd` |
 | **Solar Storm Lab** | Build magnetic stress, release a flare, race a CME, protect a satellite | Shows the light/CME delay that makes space-weather forecasting possible | `SolarLab.gd` |
 | **Black Hole Lab** | Change mass, lower a probe, read the event horizon and gravitational time dilation | Makes an abstract extreme tangible with real formulas and four misconception checks | `BlackHoleLab.gd` |
-| **Sky Riddles** | 14 questions, no timer, an explanation after every answer | Works as a pre-test and post-test; assessment becomes teaching | `QuizLab.gd`, `content.json` |
+| **Sky Riddles** | 14 questions with shuffled options, no timer, an explanation after every answer, and a **Revise** link to the exhibit that teaches it | Works as a pre-test and post-test; a wrong guess has a next step | `QuizLab.gd`, `content.json` |
 | **Field Guide** | Eight written cards on nebulae, supernovae, pulsars, galaxies, gravitational waves, exoplanets | Gives the curious student somewhere to go after the seven lanterns | `FieldGuide.gd` |
 | **Sky Atlas** | Real sky at 13°N, 88 IAU constellations, 28 nakshatras, labels, time slider | Proves the sky data is not a backdrop; students can find the same stars themselves | `Atlas.gd` |
-| **The Finale** | Certificate and rising lanterns when all seven are lit | A finish line that is optional, not a gate; a shareable classroom artifact | `Finale.gd` |
+| **The Finale** | Certificate, rising lanterns and a one-tap **Save certificate** PNG | A finish line that is optional, not a gate; a take-home artifact that stays on the device | `Finale.gd` |
 | **Kannada layer** | Kannada module names and key terms beside the English | Localisation is part of the design, not a translation afterthought | `G.KANNADA`, `content.json` |
-| **Portrait-first UI** | Every screen has a portrait and landscape layout; content scale follows the browser | Works on the device a student already owns | `UI.gd`, `G._apply_content_scale` |
+| **Portrait-first UI** | Every screen has a portrait and landscape layout; content scale follows the browser; compact back controls are 56×44 | Works on the device a student already owns | `UI.gd`, `G._apply_content_scale` |
 | **Offline static build** | One folder; no runtime network calls | A school lab can copy it to a local server or run it from a laptop | `build/web/`, `export_presets.cfg` |
 | **Installable offline PWA** | A generated service worker precaches the HTML, JS, WASM, PCK, worklets and icons; a manifest adds home-screen shortcuts for the deck and Sky Lab | Venue Wi-Fi can fail after the first load; the second visit still works | `tools/polish_web.py`, `sw.js`, `manifest.webmanifest` |
-| **Local save** | Lanterns, quiz best, language, sound and seminar slide index in `user://` | Progress survives a reload without an account | `G.gd` |
+| **Local save** | Lanterns, quiz best/last/previous, language, sound, reduced motion, seminar slide and elapsed time in `user://` | Progress survives a reload without an account | `G.gd` |
 | **Seminar mode** | 12-slide presenter deck inside the same build | A teacher or student can present the project without a separate slide file | `Seminar.gd`, `content.json` |
 | **Speaker notes** | A bottom sheet with a script for each slide; `N` toggles | The presenter does not have to memorise the deck | `Seminar.gd` |
-| **Timer + auto-advance** | Elapsed time; per-slide auto timing; `P` pauses, `A` toggles | Rehearsal and a hands-free attract loop | `Seminar.gd` |
+| **Timer + auto-advance** | Elapsed time that survives exhibit jumps; per-slide auto timing; `P` pauses, `A` toggles, `Home` resets | Rehearsal and a hands-free attract loop | `Seminar.gd` |
 | **Pre-flight checks** | Catalogue, lines, modules, images, scenes, fonts, audio, renderer, viewport, save, network | Catches the failures that actually ruin a live demo | `Seminar.preflight_results()` |
 | **Demo state** | Light all seven lanterns and set the quiz best to 14 | Show the finale and certificate in one click | `G.unlock_all()` |
 | **Figure zoom** | Click any slide figure or press `I` to enlarge it | Makes the dense architecture diagram readable on a projector | `Seminar._show_figure()` |
-| **Deep links + resume** | Open any exhibit from its slide; the deck remembers the slide index | Demo the real thing, come back, carry on | `Seminar._open_lab()`, `G.seminar_index` |
-| **Headless tests** | Contract tests for the deck and the solar flow | A UI-heavy project still has something a CI can run | `tests/` |
+| **Deep links + resume** | Open any exhibit from its slide; the deck remembers the slide index and timer, and **Backspace** returns to it | Demo the real thing, come back, carry on | `Seminar._open_lab()`, `G.seminar_elapsed` |
+| **Headless tests** | Contract tests for the deck, solar flow, content and the Moon-phase model/direction | A UI-heavy project still has something a CI can run | `tests/` |
 | **Written docs** | Playbook, architecture, feature matrix, viva Q&A, stats, demo card | The project can be handed over and defended | `docs/` |
 
 ## 2. Curriculum map

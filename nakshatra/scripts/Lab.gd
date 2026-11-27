@@ -350,6 +350,8 @@ func _build_fireflies() -> void:
 	mat.disable_receive_shadows = true
 	p.material_override = mat
 	add_child(p)
+	if G.reduced_motion:
+		p.emitting = false
 
 
 var _sky_lanterns: Array[Node3D] = []
@@ -496,7 +498,7 @@ func _show_menu() -> void:
 	center.add_child(sheet)
 	var v := UI.vbox(9)
 	sheet.add_child(v)
-	v.add_child(UI.micro("NAKSHATRA  ·  MENU", Color("8a6a3c"), 9))
+	v.add_child(UI.micro("NAKSHATRA  ·  MENU", Color("6f5228"), 9))
 	v.add_child(UI.heading("The Sky Lab", 27, G.INK))
 	v.add_child(UI.rule(Color(G.INK, 0.22), 1))
 	var present := UI.ink_button("Seminar mode", true, 15)
@@ -532,6 +534,13 @@ func _show_menu() -> void:
 		overlay.queue_free()
 		_show_menu())
 	v.add_child(snd)
+	var motion := UI.ink_button("Motion: " + ("Reduced" if G.reduced_motion else "Full"), false, 15)
+	motion.pressed.connect(func():
+		G.reduced_motion = not G.reduced_motion
+		G.save_game()
+		overlay.queue_free()
+		_show_menu())
+	v.add_child(motion)
 	v.add_child(UI.rule(Color(G.INK, 0.15), 1))
 	var close := UI.ink_button("Close", true, 15)
 	close.pressed.connect(func(): overlay.queue_free())
@@ -887,9 +896,12 @@ func _process(delta: float) -> void:
 				nx *= 0.2
 				ny *= 0.2
 		var target := _base_cam_pos + Vector3(nx * 0.5, -ny * 0.25 + sin(_move_t * 0.4) * 0.06, 0)
-		cam.position = cam.position.lerp(target, delta * 2.0)
-		cam.look_at(_base_look + Vector3(nx * 0.7, -ny * 0.35, 0), Vector3.UP)
+		if not G.reduced_motion:
+			cam.position = cam.position.lerp(target, delta * 2.0)
+			cam.look_at(_base_look + Vector3(nx * 0.7, -ny * 0.35, 0), Vector3.UP)
 		_update_hover(mouse, vp)
+	if G.reduced_motion:
+		return
 	for i in _sky_lanterns.size():
 		var n := _sky_lanterns[i]
 		n.position.y += _sky_lantern_speeds[i] * delta

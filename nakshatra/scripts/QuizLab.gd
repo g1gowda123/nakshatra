@@ -30,6 +30,13 @@ var content_box: VBoxContainer
 var panel: PanelContainer
 var progress_label: Label
 var page_scroll: ScrollContainer
+# Options are shuffled at render time. A fixed key — even a balanced A,B,C,D
+# cycle — is learnable in one pass and turns the check into a pattern game.
+var _order: Array[int] = []
+var _correct_display := -1
+var _order_index := -1
+var _shuffle_gen := 0
+var _order_gen := -1
 
 
 func _ready() -> void:
@@ -45,7 +52,7 @@ func _ready() -> void:
 		started = true
 		_render()
 	if args.has("--quiz-answer"):
-		_choose(int(questions[0].get("answer", 1)))
+		_choose(_correct_display)
 	if args.has("--quiz-result"):
 		started = true
 		finished = true
@@ -242,6 +249,7 @@ func _render_intro() -> void:
 		wrong.clear()
 		answered = false
 		chosen = -1
+		_shuffle_gen += 1
 		_render())
 	row.add_child(start)
 	var lesson := UI.link_button("READ THE LESSON FIRST", 10)
@@ -275,8 +283,16 @@ func _render_question() -> void:
 
 	var letters := ["A", "B", "C", "D"]
 	var options: Array = q.get("options", [])
-	for i in options.size():
-		var b := UI.button("%s      %s" % [letters[i], str(options[i])], false, 16)
+	if _order_index != index or _order_gen != _shuffle_gen or _order.size() != options.size():
+		_order.clear()
+		for i in options.size():
+			_order.append(i)
+		_order.shuffle()
+		_order_index = index
+		_order_gen = _shuffle_gen
+		_correct_display = _order.find(int(q.get("answer", 0)))
+	for i in _order.size():
+		var b := UI.button("%s      %s" % [letters[i], str(options[_order[i]])], false, 16)
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		b.custom_minimum_size = Vector2(0, 50)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -292,19 +308,24 @@ func _render_question() -> void:
 		var ohov := osb.duplicate() as StyleBoxFlat
 		ohov.bg_color = Color(0.075, 0.105, 0.16, 0.95)
 		ohov.border_color = Color(G.GOLD, 0.6)
+		var opress := osb.duplicate() as StyleBoxFlat
+		opress.bg_color = Color(0.028, 0.042, 0.07, 0.98)
+		opress.border_color = Color(G.GOLD, 0.85)
 		b.add_theme_stylebox_override("normal", osb)
 		b.add_theme_stylebox_override("hover", ohov)
+		b.add_theme_stylebox_override("pressed", opress)
+		b.add_theme_stylebox_override("focus", UI.focus_ring())
 		b.pressed.connect(_choose.bind(i))
 		if answered:
 			b.disabled = true
-			if i == int(q.get("answer", -1)):
+			if i == _correct_display:
 				_style_answer(b, G.TEAL)
 			elif i == chosen:
 				_style_answer(b, G.ROSE)
 		content_box.add_child(b)
 
 	if answered:
-		var correct := int(q.get("answer", -1)) == chosen
+		var correct := _correct_display == chosen
 		var verdict_box := PanelContainer.new()
 		var vsb := StyleBoxFlat.new()
 		vsb.bg_color = Color((G.TEAL if correct else G.VERMILION), 0.08)
@@ -344,6 +365,7 @@ func _style_answer(b: Button, color: Color) -> void:
 	sb.content_margin_bottom = 10
 	b.add_theme_stylebox_override("normal", sb)
 	b.add_theme_stylebox_override("disabled", sb)
+	b.add_theme_stylebox_override("pressed", sb)
 	b.add_theme_color_override("font_disabled_color", color)
 
 
@@ -353,14 +375,21 @@ func _choose(i: int) -> void:
 	answered = true
 	chosen = i
 	var q: Dictionary = questions[index]
-	var correct := int(q.get("answer", -1))
-	if i == correct:
+	var opts: Array = q.get("options", [])
+	var correct_original := int(q.get("answer", -1))
+	var picked_original := int(_order[i]) if i >= 0 and i < _order.size() else -1
+	if picked_original == correct_original:
 		score += 1
 		Sfx.play("success")
 	else:
 		Sfx.play("soft_error")
 		var topic := str(QUIZ_TOPICS[index]) if index < QUIZ_TOPICS.size() else ""
-		wrong.append({"q": str(q.get("q", "")), "answer": str((q.get("options", []) as Array)[correct]), "why": str(q.get("why", "")), "topic": topic})
+		wrong.append({
+			"q": str(q.get("q", "")),
+			"answer": str(opts[correct_original]) if correct_original >= 0 and correct_original < opts.size() else "",
+			"why": str(q.get("why", "")),
+			"topic": topic,
+		})
 	_render()
 
 
@@ -449,6 +478,7 @@ func _render_results() -> void:
 		wrong.clear()
 		answered = false
 		chosen = -1
+		_shuffle_gen += 1
 		_render())
 	row.add_child(again)
 	var back := UI.button("Back to the lab   ›", true, 15)
@@ -469,6 +499,8 @@ func _message(pct: int) -> String:
 
 
 func _process(delta: float) -> void:
+	if G.reduced_motion:
+		return
 	if sky:
 		sky.sidereal_deg = fmod(sky.sidereal_deg + delta * 0.4, 360.0)
 		sky.set_sidereal(sky.sidereal_deg)

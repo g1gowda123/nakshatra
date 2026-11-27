@@ -21,6 +21,7 @@ var auto_left := DEFAULT_SECONDS
 var auto_total := DEFAULT_SECONDS
 var timer_running := true
 var elapsed := 0.0
+var _save_acc := 0.0
 var notes_visible := false
 
 var _portrait := false
@@ -85,6 +86,8 @@ class ArtFrame:
 
 func _ready() -> void:
 	_load_slides()
+	elapsed = G.seminar_elapsed
+	G.seminar_return = false
 	var portrait_now := UI.is_portrait()
 	if not portrait_now:
 		_set_deck_canvas()
@@ -417,7 +420,7 @@ func _top_bar() -> Control:
 		var full := _bar_button("Full · F")
 		full.pressed.connect(_toggle_fullscreen)
 		bar.add_child(full)
-		var exit := _bar_button("Exit")
+		var exit := _bar_button("Sky Lab")
 		exit.pressed.connect(_exit)
 		bar.add_child(exit)
 
@@ -617,17 +620,17 @@ func _build_text_column(parent: Control, scrollable: bool = false) -> void:
 	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	v.add_child(gap)
 
-	bullets_box = UI.vbox(8)
-	bullets_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	bullets_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	v.add_child(bullets_box)
-
 	stats_box = HFlowContainer.new()
 	stats_box.add_theme_constant_override("h_separation", 6)
 	stats_box.add_theme_constant_override("v_separation", 6)
 	stats_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stats_box.visible = false
 	v.add_child(stats_box)
+
+	bullets_box = UI.vbox(8)
+	bullets_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bullets_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	v.add_child(bullets_box)
 
 
 func _build_visual_column(parent: Control) -> void:
@@ -665,7 +668,7 @@ func _build_visual_column(parent: Control) -> void:
 	cap_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cap_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(cap_row)
-	caption_lbl = UI.label("", 12, Color(G.CREAM, 0.88))
+	caption_lbl = UI.label("", 14, Color(G.CREAM, 0.9))
 	caption_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	if _portrait:
 		caption_lbl.custom_minimum_size.x = UI.viewport_size().x - 160
@@ -675,8 +678,8 @@ func _build_visual_column(parent: Control) -> void:
 	cap_row.add_child(caption_lbl)
 
 	fig_btn = UI.ghost_button("ENLARGE", 10)
-	fig_btn.custom_minimum_size = Vector2(96, 34)
-	fig_btn.add_theme_font_size_override("font_size", 9)
+	fig_btn.custom_minimum_size = Vector2(104, 38)
+	fig_btn.add_theme_font_size_override("font_size", 10)
 	fig_btn.tooltip_text = "Enlarge this figure (I)"
 	fig_btn.pressed.connect(_show_figure)
 	cap_row.add_child(fig_btn)
@@ -806,7 +809,7 @@ func _apply_slide() -> void:
 	var stats: Array = s.get("stats", [])
 	stats_box.visible = not stats.is_empty()
 	for st in stats:
-		stats_box.add_child(UI.pill(str(st), G.TEAL, 12))
+		stats_box.add_child(UI.pill(str(st), G.TEAL, 14))
 
 	var img := str(s.get("image", ""))
 	if img != "" and ResourceLoader.exists(img):
@@ -931,7 +934,8 @@ func _go(target: int, manual: bool = true) -> void:
 func _next() -> void:
 	Sfx.play("click")
 	if index >= slides.size() - 1:
-		_toast("End of the deck — open the Sky Lab or press L for this exhibit.")
+		# The closing slide is the frame to leave on; a clicker press should
+		# not paint a toast across it.
 		return
 	_go(index + 1, true)
 
@@ -950,6 +954,9 @@ func _open_lab() -> void:
 	var path := str(s.get("lab", ""))
 	if path != "" and ResourceLoader.exists(path):
 		Sfx.play("lantern")
+		G.seminar_elapsed = elapsed
+		G.seminar_return = true
+		G.save_game()
 		G.refresh_content_scale()
 		Router.go(path)
 	else:
@@ -958,6 +965,9 @@ func _open_lab() -> void:
 
 func _exit() -> void:
 	Sfx.play("click")
+	G.seminar_elapsed = elapsed
+	G.seminar_return = false
+	G.save_game()
 	G.refresh_content_scale()
 	Router.go(LAB_PATH)
 
@@ -1250,10 +1260,19 @@ func _check_row(row: Dictionary) -> Control:
 
 func preflight_results() -> Array:
 	var rows: Array = []
-	rows.append(_row("Star catalogue", "%s stars" % _num(StarDB.hips.size()), StarDB.hips.size() > 1000))
-	rows.append(_row("Constellations", "%d IAU figures" % StarDB.constellations.size(), StarDB.constellations.size() >= 88))
-	rows.append(_row("Nakshatras", "%d figures" % StarDB.nakshatras.size(), StarDB.nakshatras.size() >= 27))
+	rows.append(_row("Star catalogue", "%s stars" % _num(StarDB.hips.size()), StarDB.hips.size() == 8879))
+	rows.append(_row("Constellations", "%d IAU figures" % StarDB.constellations.size(), StarDB.constellations.size() == 88))
+	rows.append(_row("Nakshatras", "%d figures" % StarDB.nakshatras.size(), StarDB.nakshatras.size() == 28))
 	rows.append(_row("Lessons", "%d modules" % G.MODULES.size(), G.MODULES.size() == 7))
+
+	var copy_ok := true
+	for s in slides:
+		if (s.get("stats", []) as Array).is_empty():
+			copy_ok = false
+		for b in s.get("bullets", []):
+			if str(b).length() > 120:
+				copy_ok = false
+	rows.append(_row("Deck copy", "stats + short bullets", copy_ok))
 
 	var image_ok := 0
 	for s in slides:
@@ -1385,10 +1404,16 @@ func _toast(message: String) -> void:
 func _process(delta: float) -> void:
 	if timer_running:
 		elapsed += delta
+		_save_acc += delta
+		if _save_acc >= 5.0:
+			_save_acc = 0.0
+			G.seminar_elapsed = elapsed
+			G.save_game()
 	if timer_lbl:
 		timer_lbl.text = "TIME " + _clock(elapsed)
+		timer_lbl.add_theme_color_override("font_color", G.VERMILION if elapsed > 510.0 else Color(G.MUTED, 1.0))
 
-	if sky:
+	if sky and not G.reduced_motion:
 		sky.set_sidereal(sky.sidereal_deg + delta * 0.22)
 
 	for i in _lanterns.size():
@@ -1428,6 +1453,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_LEFT, KEY_PAGEUP:
 			_prev()
 		KEY_HOME:
+			elapsed = 0.0
+			G.seminar_elapsed = 0.0
 			_go(0, true)
 		KEY_END:
 			_go(slides.size() - 1, true)
@@ -1454,6 +1481,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				_close_checks()
 				return
 			if OS.has_feature("web") and bool(JavaScriptBridge.eval("!!document.fullscreenElement", true)):
+				return
+			if index >= slides.size() - 1:
+				G.seminar_elapsed = elapsed
+				G.seminar_return = false
+				G.save_game()
+				G.refresh_content_scale()
+				Router.go("res://scenes/Boot.tscn")
 				return
 			_exit()
 

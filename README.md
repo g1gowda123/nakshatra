@@ -11,8 +11,9 @@ account, no network calls at play time.
 **Play the current build:** https://g1gowda123.github.io/nakshatra/  
 **Source:** https://github.com/g1gowda123/nakshatra
 
-**v1.2.1 — The hand-made hill, presenter polish.** A procedural lantern hill,
-paper-and-ink shaders, a real-sky hunt, a readable Atlas and a festival finale.
+**v1.3.0 — The studio pass.** A verified Moon-phase model, a quiz that shuffles
+its answers, a take-home certificate, keyboard access, reduced motion, and a
+deck that survives its own live-demo loop.
 The same build includes a twelve-slide presenter deck with speaker notes, a
 timer, auto-advance, a pre-flight check and one-click jumps into the live
 exhibits. The deck also takes per-slide deep links (`?scene=seminar&slide=8`)
@@ -44,8 +45,9 @@ Then:
 - **I** or click the figure — enlarge the architecture diagram or any screenshot.
 - **A** — auto-advance. **P** — pause the timer. **Esc** — back to the Sky Lab.
 
-The deck remembers its slide in the local save. Open an exhibit, demo it, return
-to the Sky Lab, press **Present**, and the deck resumes. **Home** restarts it.
+The deck remembers its slide **and its timer** in the local save. Open an exhibit,
+demo it, press **Backspace** (or the gold **PRESENT · DECK** link), and the deck
+resumes where you stopped. **Home** restarts the deck and the clock.
 
 Start with [`docs/DEMO_CARD.md`](docs/DEMO_CARD.md) for the printable one-page
 route, then [`docs/SEMINAR_PLAYBOOK.md`](docs/SEMINAR_PLAYBOOK.md) for the full
@@ -169,7 +171,8 @@ full UI translation — an honest limitation and a clear next step.
 | `L` | Open the live exhibit on this slide |
 | `I` | Enlarge the current figure |
 | `P` | Pause / resume the timer |
-| `Esc` | Close an overlay, then return to the Sky Lab |
+| `Backspace` | From a live exhibit: return to the deck at the same slide |
+| `Esc` | Close an overlay, then return to the Sky Lab (last slide: title) |
 | Click the figure | Enlarge it |
 
 ---

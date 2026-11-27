@@ -404,7 +404,8 @@ func set_hover(value: bool) -> void:
 
 
 func _process(delta: float) -> void:
-	phase += delta
+	var motion := not G.reduced_motion
+	phase += delta if motion else 0.0
 	_hover_t = minf(_hover_t + delta, 1.0)
 	_pop = maxf(_pop - delta * 3.4, 0.0)
 	# A single writer for the pop: activate() raises _pop, this decays it and
@@ -414,9 +415,9 @@ func _process(delta: float) -> void:
 	var target := (1.0 + (0.055 if _hover else 0.0)) * pop
 	_swing.scale = _swing.scale.lerp(Vector3.ONE * target, delta * 7.0)
 	# A slow, organic pendulum; the paper body is light, the pole is not.
-	_swing.rotation.z = sin(phase * 0.9) * 0.025 + (_hover_t * 0.02 if _hover else 0.0)
-	_swing.rotation.x = cos(phase * 0.7) * 0.018
-	var flicker := 0.965 + sin(phase * 7.1) * 0.025 + sin(phase * 13.7 + 1.7) * 0.012
+	_swing.rotation.z = sin(phase * 0.9) * 0.025 + (_hover_t * 0.02 if _hover else 0.0) if motion else 0.0
+	_swing.rotation.x = cos(phase * 0.7) * 0.018 if motion else 0.0
+	var flicker := 0.965 + sin(phase * 7.1) * 0.025 + sin(phase * 13.7 + 1.7) * 0.012 if motion else 1.0
 	if _body_mat:
 		_body_mat.set_shader_parameter("flicker", flicker)
 	if _light:
@@ -429,7 +430,7 @@ func _process(delta: float) -> void:
 		a = move_toward(a, 1.0 if _hover else 0.0, delta * 5.0)
 		_title_label.modulate.a = a
 		_title_label.visible = _hover or a > 0.01
-	position.y = base_y + sin(phase * 0.55) * 0.012
+	position.y = base_y + (sin(phase * 0.55) * 0.012 if motion else 0.0)
 
 
 func activate() -> void:

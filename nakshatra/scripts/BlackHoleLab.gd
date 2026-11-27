@@ -15,7 +15,7 @@ var orbit_ring: MeshInstance3D
 var disk_mat: ShaderMaterial
 
 var mass_suns := 10.0
-var distance_rs := 4.0
+var distance_rs := 2.2
 var probe_angle := 0.0
 var stage := 0
 var feedback := ""
@@ -350,7 +350,7 @@ func _build_ui() -> void:
 	lower_btn = UI.button("Lower probe", false, 13)
 	lower_btn.custom_minimum_size = Vector2(0, 44)
 	lower_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	lower_btn.pressed.connect(func(): _nudge(-0.15))
+	lower_btn.pressed.connect(func(): _nudge(-0.25))
 	buttons.add_child(lower_btn)
 	pull_btn = UI.button("Pull back", false, 13)
 	pull_btn.custom_minimum_size = Vector2(0, 44)

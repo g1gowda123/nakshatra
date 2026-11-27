@@ -99,7 +99,6 @@ func _guide_to_current() -> void:
 	feedback = ""
 	round_complete = false
 	_update_ui()
-	_refresh_target_glows()
 
 
 func _refresh_target_glows() -> void:

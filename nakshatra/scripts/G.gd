@@ -24,8 +24,8 @@ const INK_SOFT := Color("4a5366")
 
 const SAVE_PATH := "user://nakshatra_save.json"
 
-const VERSION := "1.2.1"
-const EDITION := "Seminar edition"
+const VERSION := "1.3.0"
+const EDITION := "Studio edition"
 
 var visited: Dictionary = {}
 var quiz_best: int = 0
@@ -36,10 +36,13 @@ var lang: String = "en"          # "en" or "kn"
 var story_seen: bool = false
 var player_name: String = ""
 var sound_on: bool = true
+var reduced_motion: bool = false
 var briefing_seen: Dictionary = {}
 var pending_guide := false
 var content: Dictionary = {}
 var seminar_index: int = 0
+var seminar_elapsed: float = 0.0
+var seminar_return: bool = false
 
 ## Kannada key terms (UI shows these under English labels in Kannada mode).
 const KANNADA := {
@@ -58,6 +61,10 @@ const KANNADA := {
 
 func _ready() -> void:
 	load_game()
+	if OS.has_feature("web"):
+		var prefers = JavaScriptBridge.eval("window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches", true)
+		if prefers is bool and bool(prefers):
+			reduced_motion = true
 	load_content()
 	_apply_content_scale()
 	get_tree().root.size_changed.connect(_apply_content_scale)
@@ -101,6 +108,31 @@ func refresh_content_scale() -> void:
 	# leaving, so the next scene gets the responsive game scale back.
 	_last_css = Vector2.ZERO
 	_apply_content_scale()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	# Godot will not start keyboard navigation from "nothing focused", so a
+	# laptop user pressing Tab on a fresh screen got no response at all. Seed
+	# focus on the first Tab; after that the engine owns the focus chain.
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_TAB:
+		if get_viewport().gui_get_focus_owner() == null:
+			focus_first()
+	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_BACKSPACE:
+		if seminar_return:
+			get_viewport().set_input_as_handled()
+			Router.go("res://scenes/Seminar.tscn")
+
+
+func focus_first(scene: Node = null) -> void:
+	var root: Node = scene if scene != null else get_tree().current_scene
+	if root == null:
+		return
+	var controls := root.find_children("*", "Button", true, false)
+	for c in controls:
+		var b := c as Button
+		if b and b.is_visible_in_tree() and not b.disabled and b.focus_mode != Control.FOCUS_NONE:
+			b.grab_focus()
+			return
 
 
 func load_content() -> void:
@@ -190,6 +222,7 @@ func reset_progress() -> void:
 	quiz_prev = -1
 	quiz_attempts = 0
 	seminar_index = 0
+	seminar_elapsed = 0.0
 	save_game()
 	progress_changed.emit()
 
@@ -229,7 +262,9 @@ func save_game() -> void:
 		"story_seen": story_seen,
 		"name": player_name,
 		"sound": sound_on,
+		"reduced_motion": reduced_motion,
 		"seminar_index": seminar_index,
+		"seminar_elapsed": seminar_elapsed,
 		"briefing_seen": briefing_seen,
 	}
 	var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
@@ -257,7 +292,9 @@ func load_game() -> void:
 	story_seen = bool(parsed.get("story_seen", false))
 	player_name = str(parsed.get("name", ""))
 	sound_on = bool(parsed.get("sound", true))
+	reduced_motion = bool(parsed.get("reduced_motion", false))
 	seminar_index = int(parsed.get("seminar_index", 0))
+	seminar_elapsed = float(parsed.get("seminar_elapsed", 0.0))
 	briefing_seen = parsed.get("briefing_seen", {})
 
 

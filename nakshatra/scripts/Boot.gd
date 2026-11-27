@@ -142,6 +142,8 @@ func _build_world() -> void:
 
 
 func _process(delta: float) -> void:
+	if G.reduced_motion:
+		return
 	_t += delta
 	if sky:
 		sky.sidereal_deg = fmod(sky.sidereal_deg + delta * 0.35, 360.0)

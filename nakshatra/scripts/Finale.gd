@@ -315,6 +315,8 @@ func _save_certificate(actions: Control, save_btn: Button, name_edit: LineEdit) 
 
 
 func _process(delta: float) -> void:
+	if G.reduced_motion:
+		return
 	for i in lanterns.size():
 		phases[i] += delta * 0.7
 		lanterns[i].position.y += speeds[i] * delta

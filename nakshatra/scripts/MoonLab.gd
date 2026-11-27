@@ -3,6 +3,10 @@ extends Node3D
 
 const ORBIT_RADIUS := 6.6
 const ORBIT_TILT := 0.34
+# The Moon travels in the -angle direction: full at 0°, new at 180°, waxing on
+# the 0-180 half. Drag, buttons and hints all use this one sign so the name, the
+# lit fraction and the motion can never disagree.
+const ORBIT_SIGN := -1.0
 const EARTH_RADIUS := 2.15
 const MOON_RADIUS := 1.0
 
@@ -28,6 +32,7 @@ var _updating_slider := false
 var slider: HSlider
 var phase_label: Label
 var illum_label: Label
+var note_label: Label
 var prompt_label: Label
 var feedback_label: Label
 var progress_row: HBoxContainer
@@ -46,6 +51,9 @@ func _ready() -> void:
 	_set_angle(angle_deg)
 	set_process(true)
 	G.maybe_briefing(ui_root, "moon")
+	if OS.get_cmdline_user_args().has("--moon-check"):
+		_set_angle(140.0)
+		_check.call_deferred()
 
 
 func _build_world() -> void:
@@ -76,7 +84,7 @@ func _build_world() -> void:
 	sm.radial_segments = 32
 	sm.rings = 16
 	sun.mesh = sm
-	sun.position = Vector3(-12.5, 3.4, -5.0)
+	sun.position = Vector3(-12.5, 0.0, 0.0)
 	sun.material_override = _shader_mat("res://shaders/sun.gdshader")
 	add_child(sun)
 	var sun_glow := Sprite3D.new()
@@ -94,7 +102,7 @@ func _build_world() -> void:
 	sun_light.light_color = Color(1.0, 0.94, 0.82)
 	sun_light.light_energy = 1.55
 	add_child(sun_light)
-	sun_light.look_at_from_position(Vector3(-12.5, 3.4, -5.0), Vector3.ZERO, Vector3.UP)
+	sun_light.look_at_from_position(Vector3(-12.5, 0.0, 0.0), Vector3.ZERO, Vector3.UP)
 
 	earth = MeshInstance3D.new()
 	var em := SphereMesh.new()
@@ -203,7 +211,8 @@ func _update_inset_camera() -> void:
 	var a := deg_to_rad(angle_deg)
 	var moon_dir := moon.position.normalized()
 	var offset := moon_dir * (EARTH_RADIUS + 0.35) + Vector3(0, 0.05, 0)
-	inset_cam.look_at_from_position(offset, moon.global_position, Vector3.UP)
+	var up := Vector3.UP if absf(moon_dir.dot(Vector3.UP)) < 0.98 else Vector3.FORWARD
+	inset_cam.look_at_from_position(offset, moon.global_position, up)
 	if inset_view:
 		inset_view.render_target_update_mode = SubViewport.UPDATE_ONCE
 
@@ -212,9 +221,15 @@ func _phase() -> Dictionary:
 	var a := deg_to_rad(angle_deg)
 	var sun_dir := Vector3(-1, 0, 0)
 	var moon_dir := Vector3(cos(a), 0, sin(a))
-	var cos_elong := sun_dir.dot(moon_dir)
-	var illum := clampf((1.0 - cos_elong) * 0.5, 0.0, 1.0)
-	# New moon is at 180°, full at 0°. Moving 180°›360° is waxing.
+	var illum := clampf((1.0 - sun_dir.dot(moon_dir)) * 0.5, 0.0, 1.0)
+	# The panel and the inset must agree: derive the lit fraction from the
+	# actual Sun–Moon–Earth vectors, not from an idealised flat orbit.
+	if earth and moon:
+		var to_earth := (earth.global_position - moon.global_position).normalized()
+		# The key light travels along +X (Sun at -X). The lit hemisphere faces -X.
+		illum = clampf((1.0 - to_earth.dot(Vector3.RIGHT)) * 0.5, 0.0, 1.0)
+	# New moon is at 180°, full at 0°. The Moon travels in the -angle direction,
+	# so 180°›0° is waxing and 0°›180° is waning.
 	var waxing := angle_deg < 180.0
 	var name := ""
 	if illum < 0.03:
@@ -239,12 +254,22 @@ func _phase_kannada(name: String) -> String:
 
 func _update_readout() -> void:
 	var p := _phase()
+	var hide := not completed and challenge_index < challenges.size()
 	if phase_label:
-		phase_label.text = str(p["name"])
+		phase_label.text = "—" if hide else str(p["name"])
 	if illum_label:
-		illum_label.text = "%d%% of the face lit" % int(round(float(p["illum"]) * 100.0))
+		illum_label.text = "Set the geometry, then check." if hide else "%d%% of the face lit" % int(round(float(p["illum"]) * 100.0))
 	if phase_kn_label:
-		phase_kn_label.text = _phase_kannada(str(p["name"]))
+		phase_kn_label.text = "" if hide else _phase_kannada(str(p["name"]))
+	if note_label:
+		note_label.text = "" if hide else _phase_note(str(p["name"]))
+
+
+func _phase_note(name: String) -> String:
+	for p in G.content.get("moon", {}).get("phases", []):
+		if str(p.get("name", "")) == name:
+			return str(p.get("note", ""))
+	return ""
 
 
 func _build_ui() -> void:
@@ -286,7 +311,7 @@ func _build_ui() -> void:
 		v.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		body.add_child(v)
 		v.add_child(UI.spacer(true, true))
-		panel_root.custom_minimum_size = Vector2(0, clampf(UI.viewport_size().y * 0.50, 320, 460))
+		panel_root.custom_minimum_size = Vector2(0, clampf(UI.viewport_size().y * 0.56, 320, 500))
 		panel_root.size_flags_vertical = Control.SIZE_SHRINK_END
 		v.add_child(panel_root)
 	else:
@@ -371,14 +396,22 @@ func _fill_panel() -> void:
 		v.add_child(phase_kn_label)
 	illum_label = UI.label("", 13, G.MUTED)
 	v.add_child(illum_label)
+	note_label = UI.label("", 12, Color(G.MUTED, 0.9))
+	note_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note_label.max_lines_visible = 2
+	note_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	if not UI.is_compact():
+		v.add_child(note_label)
 
 	v.add_child(UI.divider())
 
+	# The task and its controls stay pinned below the scroll: a student must
+	# never be able to press Check without seeing the prompt on a phone.
 	prompt_label = UI.label("", 14, G.CREAM)
 	prompt_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	v.add_child(prompt_label)
+	outer.add_child(prompt_label)
 	progress_row = UI.hbox(5)
-	v.add_child(progress_row)
+	outer.add_child(progress_row)
 
 	slider = HSlider.new()
 	slider.min_value = 0
@@ -390,22 +423,23 @@ func _fill_panel() -> void:
 		if _updating_slider:
 			return
 		_set_angle(val))
-	v.add_child(slider)
+	if not UI.is_compact():
+		outer.add_child(slider)
 
 
 	var row := UI.hbox(6)
 	outer.add_child(row)
-	var minus := UI.ghost_button("−15°", 15)
-	minus.custom_minimum_size = Vector2(72, 40)
+	var minus := UI.ghost_button("‹ Earlier", 14)
+	minus.custom_minimum_size = Vector2(88, 40)
 	minus.pressed.connect(func():
 		Sfx.play("click")
-		_set_angle(angle_deg - 15.0))
+		_set_angle(angle_deg - 15.0 * ORBIT_SIGN))
 	row.add_child(minus)
-	var plus := UI.ghost_button("+15°", 15)
-	plus.custom_minimum_size = Vector2(72, 40)
+	var plus := UI.ghost_button("Later ›", 14)
+	plus.custom_minimum_size = Vector2(88, 40)
 	plus.pressed.connect(func():
 		Sfx.play("click")
-		_set_angle(angle_deg + 15.0))
+		_set_angle(angle_deg + 15.0 * ORBIT_SIGN))
 	row.add_child(plus)
 	hint_btn = UI.ghost_button("Hint", 15)
 	hint_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -417,11 +451,11 @@ func _fill_panel() -> void:
 	check_btn.pressed.connect(_check)
 	outer.add_child(check_btn)
 
-	feedback_label = UI.label("", 13, G.GOLD)
+	feedback_label = UI.label("", 12, G.GOLD)
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	feedback_label.max_lines_visible = 3
+	feedback_label.max_lines_visible = 4
 	feedback_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	feedback_label.custom_minimum_size = Vector2(0, 54)
+	feedback_label.custom_minimum_size = Vector2(0, 64)
 	outer.add_child(feedback_label)
 
 	_update_challenge_ui()
@@ -470,15 +504,13 @@ func _check() -> void:
 	if ok:
 		attempts = 0
 		feedback_label.add_theme_color_override("font_color", G.TEAL)
-		feedback_label.text = "%s. %s" % [str(p["name"]), _why(str(p["target"]))]
+		feedback_label.text = "%s. %s" % [str(p["name"]), _why(target)]
 		Sfx.play("success")
 		challenge_index += 1
 		_update_challenge_ui()
+		_update_readout()
 		if challenge_index >= challenges.size():
 			_show_finish_card()
-		else:
-			await get_tree().create_timer(1.0).timeout
-			feedback_label.text = ""
 	else:
 		attempts += 1
 		Sfx.play("soft_error")
@@ -492,7 +524,7 @@ func _why(target: String) -> String:
 			return "Only a thin slice of the sunlit half faces us, and it is growing. In the evening sky the bright edge points toward the Sun, which has just set."
 		"first_quarter":
 			return "Half of the sunlit half is visible: the Moon is a quarter of the way around its orbit. It rises around noon and sets around midnight."
-		"full_moon":
+		"full":
 			return "Earth is between the Sun and the Moon, so the entire sunlit half faces us. The Moon rises at sunset and stays up all night."
 		"waning_crescent":
 			return "The lit slice is shrinking and rises before dawn. In a few days the Moon will pass between Earth and the Sun and vanish from our night sky."
@@ -537,6 +569,7 @@ func _show_finish_card() -> void:
 	completed = true
 	G.complete("moon")
 	_update_challenge_ui()
+	_update_readout()
 	var overlay := Control.new()
 	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -560,6 +593,9 @@ func _show_finish_card() -> void:
 	v.add_child(UI.heading("You have read the Moon.", 30))
 	var p := _phase()
 	v.add_child(UI.label("You ended on a %s. Notice that you did not change the Moon's shape — only where we see it from." % str(p["name"]).to_lower(), 16))
+	var note := _phase_note(str(p["name"]))
+	if note != "":
+		v.add_child(UI.label(note, 14, Color(G.GOLD, 0.92)))
 	v.add_child(UI.divider())
 	for f in G.content.get("moon", {}).get("facts", []):
 		v.add_child(UI.label("•  " + str(f), 14, G.MUTED))
@@ -576,7 +612,8 @@ func _show_finish_card() -> void:
 		completed = false
 		challenge_index = 0
 		_set_angle(210)
-		_update_challenge_ui())
+		_update_challenge_ui()
+		_update_readout())
 	row.add_child(again)
 
 
@@ -609,16 +646,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		var motion := event as InputEventMouseMotion
 		var dx: float = motion.position.x - _drag_last.x
 		_drag_last = motion.position
-		_set_angle(angle_deg + dx * 0.55)
+		_set_angle(angle_deg + dx * 0.55 * ORBIT_SIGN)
 	elif event is InputEventScreenTouch:
 		_dragging = event.pressed
 		_drag_last = event.position
 	elif event is InputEventScreenDrag:
 		var drag := event as InputEventScreenDrag
-		_set_angle(angle_deg + drag.relative.x * 0.55)
+		_set_angle(angle_deg + drag.relative.x * 0.55 * ORBIT_SIGN)
 
 
 func _process(delta: float) -> void:
+	if G.reduced_motion:
+		return
 	if earth:
 		earth.rotation.y += delta * 0.035
 	if sun:

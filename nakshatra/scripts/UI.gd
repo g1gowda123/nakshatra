@@ -212,6 +212,8 @@ static func label(text: String, size: int = 18, color: Color = G.CREAM, font_kin
 			l.add_theme_font_override("font", body_med_font())
 		"kannada":
 			l.add_theme_font_override("font", kannada_font())
+			l.add_theme_constant_override("line_spacing", 4)
+			l.custom_minimum_size.y = int(float(size) * 1.6)
 		_:
 			l.add_theme_font_override("font", body_font())
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -413,7 +415,7 @@ static func ink_button(text: String, primary: bool = true, size: int = 16) -> Bu
 
 static func ghost_button(text: String, size: int = 17) -> Button:
 	var b := button(text, false, size)
-	b.custom_minimum_size = Vector2(0, 38)
+	b.custom_minimum_size = Vector2(0, 44 if is_compact() else 38)
 	b.add_theme_font_size_override("font_size", maxi(11, size - 5))
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.02, 0.032, 0.058, 0.25)
@@ -442,7 +444,7 @@ static func link_button(text: String, size: int = 11, color: Color = G.CREAM) ->
 	b.add_theme_color_override("font_color", Color(color, 0.82))
 	b.add_theme_color_override("font_hover_color", G.GOLD)
 	b.add_theme_color_override("font_pressed_color", G.GOLD)
-	b.custom_minimum_size = Vector2(0, 30)
+	b.custom_minimum_size = Vector2(44, 44) if is_compact() else Vector2(0, 30)
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var empty := StyleBoxEmpty.new()
 	b.add_theme_stylebox_override("normal", empty)
@@ -524,9 +526,9 @@ static func app_bar(title: String, subtitle: String = "", back_route: String = "
 	var row := hbox(14)
 	wrap.add_child(row)
 
-	var back := link_button("‹" + ("   " + back_label if back_label != "" and not compact else ""), 11)
+	var back := link_button("‹" + ("   " + back_label if back_label != "" and not compact else ("  LAB" if compact else "")), 11)
 	back.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	back.custom_minimum_size = Vector2(0, 32)
+	back.custom_minimum_size = Vector2(56, 44) if compact else Vector2(0, 32)
 	if back_route != "":
 		back.pressed.connect(func():
 			Sfx.play("click")
@@ -585,6 +587,16 @@ static func app_bar(title: String, subtitle: String = "", back_route: String = "
 	if status != null and not compact:
 		status.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		row.add_child(status)
+
+	# When a slide opens a live exhibit, the walk back must be one key, not a
+	# trip through the hub. Backspace does the same from anywhere in a lab.
+	if G.seminar_return:
+		var deck := link_button("PRESENT  ·  DECK", 11)
+		deck.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		deck.custom_minimum_size = Vector2(44 if compact else 0, 44 if compact else 32)
+		deck.add_theme_color_override("font_color", G.GOLD)
+		deck.pressed.connect(func(): Router.go("res://scenes/Seminar.tscn"))
+		row.add_child(deck)
 
 	for a in actions:
 		var d: Dictionary = a

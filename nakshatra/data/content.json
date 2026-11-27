@@ -299,7 +299,7 @@
       "hint": "Find a giant W or M made of five bright stars, low in the northern sky.",
       "story": "Cassiopeia was a queen doomed to circle the pole on her throne. Indian sky watchers also read these stars as Sharmishtha, a queen in an old story of pride and friendship.",
       "science": "Its five brightest stars are 230 to 550 light-years away. From India the constellation stays low in the north and is best seen on autumn evenings.",
-      "nakshatra": "Cassiopeia lies in the northern sky, near the region of the nakshatra Uttara Bhadrapada."
+      "nakshatra": "Cassiopeia is far north of the Moon’s path, so it is not one of the 27 nakshatras — but Indian sky lore reads these stars as Sharmishtha, a queen of the lunar dynasty."
     },
     {
       "id": "Sco",
@@ -411,7 +411,7 @@
     },
     {
       "answer": "Saturn",
-      "prompt": "I wear rings made of billions of pieces of ice and rock. Who am I?"
+      "prompt": "My sunlight takes about 80 minutes to reach you. Who am I?"
     },
     {
       "answer": "Mercury",
@@ -419,7 +419,7 @@
     },
     {
       "answer": "Uranus",
-      "prompt": "I am tipped on my side and roll around the Sun. Who am I?"
+      "prompt": "You see me as I was about four hours ago. Who am I?"
     }
   ],
   "seasons": {
@@ -494,7 +494,7 @@
       "why": "Venus is farther from the Sun than Mercury, but its thick carbon-dioxide atmosphere traps heat. Its surface is about 465°C — hotter than Mercury."
     },
     {
-      "q": "The Saptarishi is another name for which constellation?",
+      "q": "The seven Saptarishi stars form the bowl and handle of which constellation?",
       "options": [
         "Orion",
         "Scorpius",
@@ -502,7 +502,7 @@
         "Ursa Major"
       ],
       "answer": 3,
-      "why": "The seven sages of Indian sky lore are the seven bright stars of Ursa Major — the Great Bear, also called the Big Dipper or the Plough."
+      "why": "The seven sages of Indian sky lore are the seven brightest stars of Ursa Major. Those seven form the Big Dipper (the Plough), an asterism inside the larger constellation."
     },
     {
       "q": "What is the main cause of seasons on Earth?",
@@ -607,7 +607,7 @@
       "q": "Which statement about black holes is true?",
       "options": [
         "They suck in everything from far away",
-        "Their gravity far away is the same as any mass of the same size",
+        "Far away, they pull just like any ordinary object of the same mass",
         "They have a solid surface",
         "They are all the same size"
       ],
@@ -689,7 +689,7 @@
         "prompt": "Which statement about black holes is true?",
         "options": [
           "They suck in everything from far away",
-          "Their gravity far away is the same as any mass of the same size",
+          "Far away, they pull just like any ordinary object of the same mass",
           "They have a solid surface",
           "They are all the same size"
         ],
@@ -787,7 +787,12 @@
         "lab": "res://scenes/Lab.tscn",
         "lab_label": "Enter the Sky Lab",
         "seconds": 45,
-        "sky": "stars"
+        "sky": "stars",
+        "stats": [
+          "7 exhibits",
+          "8,879 stars",
+          "0 installs"
+        ]
       },
       {
         "kicker": "WHY THIS EXISTS",
@@ -805,7 +810,12 @@
         "lab": "",
         "lab_label": "",
         "seconds": 50,
-        "sky": "stars"
+        "sky": "stars",
+        "stats": [
+          "Classes 6–9",
+          "13° N",
+          "one real sky"
+        ]
       },
       {
         "kicker": "THE DESIGN",
@@ -823,7 +833,12 @@
         "lab": "res://scenes/Lab.tscn",
         "lab_label": "Open the Sky Lab",
         "seconds": 50,
-        "sky": "stars"
+        "sky": "stars",
+        "stats": [
+          "free choice",
+          "no locks",
+          "one static folder"
+        ]
       },
       {
         "kicker": "EXHIBIT 01",
@@ -840,8 +855,12 @@
         "caption": "The Moon's Mask: orbit on the left, the view from Earth on the right.",
         "lab": "res://scenes/MoonLab.tscn",
         "lab_label": "Open the Moon's Mask",
-        "seconds": 55,
-        "sky": "stars"
+        "seconds": 50,
+        "sky": "stars",
+        "stats": [
+          "29.5-day month",
+          "4 challenges"
+        ]
       },
       {
         "kicker": "EXHIBIT 02",
@@ -850,7 +869,7 @@
         "bullets": [
           "Tap three stars to thread Saptarishi, Mriga, Sharmishtha, Vrishchika or Hamsa.",
           "A constellation is a pattern we agree to see, not a group of stars that are close.",
-          "The same sky carries the 27 nakshatras and the 88 IAU constellations.",
+          "The same sky carries the 27 nakshatras (28 drawn figures) and the 88 IAU constellations.",
           "Star colour and brightness reveal temperature and distance."
         ],
         "note": "This exhibit is about interpretation. The lines are not in the sky; people drew them. Students hunt five patterns, tapping three stars at a time. Each unlock tells the story and the science: the stars in one pattern can be hundreds of light-years apart, and the pattern itself changes over tens of thousands of years. The nakshatra layer shows the same stars through two astronomical traditions.",
@@ -858,8 +877,12 @@
         "caption": "Thread the Stars: tap three stars to unlock the pattern and its story.",
         "lab": "res://scenes/StarLab.tscn",
         "lab_label": "Open Thread the Stars",
-        "seconds": 55,
-        "sky": "lines"
+        "seconds": 50,
+        "sky": "lines",
+        "stats": [
+          "27 nakshatras",
+          "88 constellations"
+        ]
       },
       {
         "kicker": "EXHIBIT 03",
@@ -876,8 +899,12 @@
         "caption": "The Long Road: the inner planets huddle close; Neptune is far out in the dark.",
         "lab": "res://scenes/ScaleLab.tscn",
         "lab_label": "Open The Long Road",
-        "seconds": 55,
-        "sky": "stars"
+        "seconds": 50,
+        "sky": "stars",
+        "stats": [
+          "8.3 light-minutes",
+          "4.1 light-hours"
+        ]
       },
       {
         "kicker": "EXHIBIT 04",
@@ -894,8 +921,12 @@
         "caption": "The Turning Year at 13°N, with the noon Sun and day length live.",
         "lab": "res://scenes/SeasonLab.tscn",
         "lab_label": "Open The Turning Year",
-        "seconds": 55,
-        "sky": "stars"
+        "seconds": 50,
+        "sky": "stars",
+        "stats": [
+          "23.4° tilt",
+          "13° N"
+        ]
       },
       {
         "kicker": "EXHIBIT 05",
@@ -912,8 +943,12 @@
         "caption": "Solar Storm Lab: the flare, the CME, and the satellite in the path.",
         "lab": "res://scenes/SolarLab.tscn",
         "lab_label": "Open Solar Storm Lab",
-        "seconds": 60,
-        "sky": "stars"
+        "seconds": 50,
+        "sky": "stars",
+        "stats": [
+          "8 min 20 s",
+          "CME: hours behind"
+        ]
       },
       {
         "kicker": "EXHIBIT 06",
@@ -930,8 +965,12 @@
         "caption": "Black Hole Lab: event horizon, photon ring and a clock that tells the truth.",
         "lab": "res://scenes/BlackHoleLab.tscn",
         "lab_label": "Open Black Hole Lab",
-        "seconds": 60,
-        "sky": "stars"
+        "seconds": 50,
+        "sky": "stars",
+        "stats": [
+          "2.95 km / M☉",
+          "clock 0.5×"
+        ]
       },
       {
         "kicker": "THE CLASSROOM",
@@ -948,8 +987,13 @@
         "caption": "Sky Riddles: fourteen questions, an explanation after every answer.",
         "lab": "res://scenes/QuizLab.tscn",
         "lab_label": "Open Sky Riddles",
-        "seconds": 55,
-        "sky": "nakshatra"
+        "seconds": 50,
+        "sky": "nakshatra",
+        "stats": [
+          "14 questions",
+          "pre / post",
+          "no timer"
+        ]
       },
       {
         "kicker": "UNDER THE HOOD",
@@ -966,8 +1010,13 @@
         "caption": "The build pipeline: catalogue to browser, with no server in the loop.",
         "lab": "res://scenes/Atlas.tscn",
         "lab_label": "Open the Sky Atlas",
-        "seconds": 60,
-        "sky": "lines"
+        "seconds": 50,
+        "sky": "lines",
+        "stats": [
+          "1 draw call",
+          "8,879 stars",
+          "0 servers"
+        ]
       },
       {
         "kicker": "THE POINT",
@@ -982,10 +1031,14 @@
         "note": "The measure of this project is not how it looks on a gaming laptop. It is whether it works on the phone a student already owns, the projector a classroom already has, and a school network with no internet. That is why the export is a static folder, why the layout is portrait-first, and why Kannada terms sit beside the English. The next step is a teacher dashboard that can export class results without a server, and a “tonight’s sky” mode that tells a student what to look for after the seminar.",
         "image": "res://assets/seminar/certificate_detail.webp",
         "caption": "The finale: a certificate, rising lanterns, and a class that read the sky.",
-        "lab": "res://scenes/Lab.tscn",
-        "lab_label": "Hand over the Sky Lab",
+        "lab": "res://scenes/Finale.tscn",
+        "lab_label": "Light the lanterns",
         "seconds": 55,
-        "sky": "stars"
+        "sky": "stars",
+        "stats": [
+          "g1gowda123.github.io/nakshatra",
+          "free · offline · no account"
+        ]
       }
     ]
   }

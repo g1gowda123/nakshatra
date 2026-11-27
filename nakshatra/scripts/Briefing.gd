@@ -7,7 +7,7 @@ const PAPER := G.PAPER
 const PAPER_DEEP := G.PAPER_DEEP
 const INK := G.INK
 const INK_SOFT := G.INK_SOFT
-const GOLD_DARK := Color("8a6a3c")
+const GOLD_DARK := Color("6f5228")
 
 
 static func show(host: Node, id: String, on_start: Callable = Callable()) -> Control:
@@ -49,9 +49,11 @@ static func show(host: Node, id: String, on_start: Callable = Callable()) -> Con
 	hv.add_child(top_row)
 	var kicker := UI.micro("SKY NOTE %02d  ·  %s" % [idx + 1, str(info.get("tag", ""))], GOLD_DARK, 9)
 	kicker.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	kicker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	kicker.clip_text = true
+	kicker.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	top_row.add_child(kicker)
-	top_row.add_child(UI.spacer())
-	top_row.add_child(UI.micro("%02d  /  %02d" % [idx + 1, G.MODULES.size()], Color(INK_SOFT, 0.8), 8))
+	top_row.add_child(UI.micro("%02d  /  %02d" % [idx + 1, G.MODULES.size()], INK_SOFT, 8))
 
 	var title_row := UI.hbox(10)
 	hv.add_child(title_row)
@@ -88,7 +90,7 @@ static func show(host: Node, id: String, on_start: Callable = Callable()) -> Con
 	if UI.is_compact() or UI.is_portrait():
 		if art_path != "" and ResourceLoader.exists(art_path):
 			body.add_child(_art_plate(art_path, info, Vector2(0, 170)))
-		var content := UI.margin(0, 12, 0, 10)
+		var content := UI.margin(16, 12, 16, 10)
 		content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		body.add_child(content)
 		v = UI.vbox(8)
@@ -107,9 +109,9 @@ static func show(host: Node, id: String, on_start: Callable = Callable()) -> Con
 		content.add_child(v)
 		text_w = minf(560.0, vp.x - 70.0)
 	v.add_child(_para(str(lesson.get("big_idea", info.get("objective", ""))), 19 if not UI.is_compact() else 17, INK, text_w, "serif"))
-	for para in lesson.get("paragraphs", []):
-		v.add_child(_para(str(para), 15, INK_SOFT, text_w))
 
+	# Goal before detail: a Class 6 reader should know what they will do
+	# before the page asks them to hold five paragraphs in their head.
 	var do_text := str(lesson.get("what_you_do", ""))
 	if do_text != "":
 		var box := PanelContainer.new()
@@ -130,6 +132,9 @@ static func show(host: Node, id: String, on_start: Callable = Callable()) -> Con
 		bv.add_child(UI.label("WHAT YOU'LL DO", 10, GOLD_DARK, "body_med"))
 		bv.add_child(_para(do_text, 14, INK, text_w - 30.0))
 
+	for para in lesson.get("paragraphs", []):
+		v.add_child(_para(str(para), 15, INK_SOFT, text_w))
+
 	var terms: Array = lesson.get("terms", [])
 	if terms.size() > 0:
 		v.add_child(_rule())
@@ -143,7 +148,7 @@ static func show(host: Node, id: String, on_start: Callable = Callable()) -> Con
 
 	var credit := str(info.get("art_credit", ""))
 	if credit != "":
-		v.add_child(_para(credit, 9, Color(INK_SOFT, 0.75), text_w))
+		v.add_child(_para(credit, 9, INK_SOFT, text_w))
 
 	var facts: Array = info.get("facts", [])
 	if facts.size() > 0:
@@ -197,8 +202,8 @@ static func _art_plate(path: String, info: Dictionary, size: Vector2) -> Control
 	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	art_wrap.add_child(art)
-	var cap := UI.micro(str(info.get("art_credit", "PLATE  ·  " + str(info.get("title", "")))), Color(INK_SOFT, 0.8), 8)
-	cap.clip_text = true
+	var cap := UI.micro(str(info.get("art_credit", "PLATE  ·  " + str(info.get("title", "")))), INK_SOFT, 8)
+	cap.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	cap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	wrap.add_child(cap)
 	return wrap

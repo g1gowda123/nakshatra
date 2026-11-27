@@ -99,21 +99,21 @@ static screenshots in the deck and skip the live jumps.
 | Time | Slide | Beat | Transition |
 |---:|---|---|---|
 | 0:00 | 1 · Nakshatra | Hook + one-sentence pitch | “Let me show you why this needed to be built.” |
-| 0:40 | 2 · Why | The visual subject / non-visual classroom gap | “So the constraint became the design.” |
-| 1:30 | 3 · Design + hub | Explain first, free choice, real sky; seven lanterns | “Here is what that looks like.” |
-| 2:20 | 4 · Moon | Drag the Moon, live phase inset | “The Moon does not change shape.” |
-| 3:10 | 5 · Stars | Saptarishi, nakshatras, real distances | “The lines are not in the sky.” |
-| 4:00 | 6 · Scale | Orrery, light-minutes, Venus riddle | “Space is mostly nothing.” |
-| 4:50 | 7 · Seasons | Tilt on/off at 13°N | “The tilt is the cause.” |
-| 5:40 | 8 · Solar storm | Flare → CME → aurora, shield | “The delay is the forecast window.” |
-| 6:30 | 9 · Black hole | Horizon, clock, EHT physics | “Gravity slows time.” |
-| 7:20 | 10 · Classroom | Pre/post test, certificate, Kannada, offline | “This is how a school uses it.” |
-| 8:10 | 11 · Engineering | Data pipeline, web export, one static folder | “Under the hood…” |
-| 9:00 | 12 · Close | Invitation + roadmap | “The lab is open. Questions?” |
-| 9:45 | — | Q&A | “What would you like to try first?” |
+| 0:45 | 2 · Why | The visual subject / non-visual classroom gap | “So the constraint became the design.” |
+| 1:35 | 3 · Design + hub | Explain first, free choice, real sky; seven lanterns | “Here is what that looks like.” |
+| 2:25 | 4 · Moon | Drag the Moon, live phase inset | “The Moon does not change shape.” |
+| 3:15 | 5 · Stars | Saptarishi, nakshatras, real distances | “The lines are not in the sky.” |
+| 4:05 | 6 · Scale | Orrery, light-minutes, Venus riddle | “Space is mostly nothing.” |
+| 4:55 | 7 · Seasons | Tilt on/off at 13°N | “The tilt is the cause.” |
+| 5:45 | 8 · Solar storm | Flare → CME → aurora, shield | “The delay is the forecast window.” |
+| 6:35 | 9 · Black hole | Horizon, clock, EHT physics | “Gravity slows time.” |
+| 7:25 | 10 · Classroom | Pre/post test, certificate, Kannada, offline | “This is how a school uses it.” |
+| 8:15 | 11 · Engineering | Data pipeline, web export, one static folder | “Under the hood…” |
+| 9:05 | 12 · Close | Invitation + roadmap | “The lab is open. Questions?” |
+| 10:00 | — | Q&A | “What would you like to try first?” |
 
-The slide counter says **12**. If you are running late, cut slides 3, 7 and 11
-and keep the exhibits.
+The slide counter says **12**. The budgets total 600 s, including both live-demo
+jumps. If you are running late, use the literal cut order below; do not improvise it.
 
 ---
 
@@ -291,17 +291,18 @@ tight. It still shows the product and the engineering.
 ### B. Deck + two exhibits (recommended)
 
 1. Slide 4 → **Open the Moon’s Mask**.
-2. Drag the Moon; point at the inset; come back with `‹`.
-3. In the Sky Lab, press **Present**. The deck resumes on the Moon slide.
-4. Slide 9 → **Open Black Hole Lab**; lower the probe; come back.
-5. Press **Present** again. Finish the deck.
+2. Drag the Moon; point at the inset; press **Backspace** (or the gold
+   **PRESENT · DECK** link) to return to the same slide.
+3. Slide 9 → **Open Black Hole Lab**; lower the probe; **Backspace** back.
+4. Finish the deck.
 
-The deck stores its slide index in the local save, so “Present” resumes where
-you stopped. **Home** restarts from slide 1.
+The deck stores its slide index *and its timer* in the local save, so the
+return lands where you stopped and the clock keeps counting. **Home** restarts
+the deck and resets the timer.
 
 ### C. Free roam (after the talk)
 
-Press **Exit** or **Sky Lab**. Hand the laptop to the audience. Every exhibit is
+Press **Sky Lab**. Hand the laptop to the audience. Every exhibit is
 open. Press **Present** in the Sky Lab to return to the deck.
 
 ---
@@ -320,7 +321,8 @@ open. Press **Present** in the Sky Lab to return to the deck.
 | `L` | Open the live exhibit attached to this slide |
 | `I` | Enlarge the current figure |
 | `P` | Pause / resume the rehearsal timer |
-| `Esc` | Close a figure/check overlay, then return to the Sky Lab |
+| `Backspace` | From a live exhibit: return to the deck at the same slide |
+| `Esc` | Close a figure/check overlay, then return to the Sky Lab (from the last slide: title screen) |
 | Click the figure | Enlarge it |
 | Click a footer dot | Jump straight to that slide |
 | Footer buttons | Back / Next / Open exhibit / Sky Lab |
@@ -367,17 +369,18 @@ slides only stores the slide index.
 
 ## The 5-minute cut
 
+Run **1 → 2 → 4 → 8 → 11 → 12** in 5:00:
+
 1. **1 · Nakshatra** — 20 s.
 2. **2 · Why** — 40 s.
-3. **3 · Design + hub** — 40 s.
-4. **4 · Moon** — 70 s, live if possible.
-5. **8 · Solar storm** or **9 · Black hole** — 70 s, pick the one that fits the audience.
-6. **11 · Engineering** — 40 s, one sentence on the data pipeline.
-7. **12 · Close** — 20 s.
+3. **4 · Moon** — 80 s, live if possible.
+4. **8 · Solar storm** — 80 s.
+5. **11 · Engineering** — 60 s, one sentence on the data pipeline.
+6. **12 · Close** — 40 s, then Q&A.
 
-Skip slides 3, 6, 7, 8 and 11. If the audience is younger, keep the Moon and
-the Sky Lab and skip the black hole. If the audience is technical, keep the
-black hole and the architecture figure.
+Technical rooms: swap **8** for **9 · Black hole**. Younger rooms: drop **11**
+and give the Moon another minute. The order is literal; there is no second
+skip list.
 
 ---
 

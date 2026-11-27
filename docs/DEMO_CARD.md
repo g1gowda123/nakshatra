@@ -41,7 +41,7 @@
 - [ ] Press **F** — fullscreen, top bar and footer visible.
 - [ ] Click once — audio allowed.
 - [ ] If showing the finale: **D → Set demo state**.
-- [ ] Open the deck **just before** you speak; the timer starts at 00:00.
+- [ ] Open the deck **just before** you speak; the timer resumes from the last run. Press **Home** to reset it.
 
 ## If it breaks
 

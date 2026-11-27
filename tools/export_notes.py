@@ -24,7 +24,7 @@ def main():
         "(or **Seminar mode** on the title screen).",
         "",
         "Keys: `→` next · `←` back · `N` notes · `A` auto · `D` checks ·",
-        "`F` fullscreen · `L` open the attached exhibit · `I` enlarge · `P` pause.",
+        "`F` fullscreen · `L` open the attached exhibit · `Backspace` return to the deck · `I` enlarge · `P` pause.",
         "",
         "---",
         "",
@@ -54,7 +54,7 @@ def main():
     lines += [
         "## Before you start",
         "",
-        "- [ ] Open the deck early; the timer starts at 00:00.",
+        "- [ ] Open the deck early; the timer resumes where you left it. **Home** resets it.",
         "- [ ] Press **D** — every row green.",
         "- [ ] Press **F** — fullscreen.",
         "- [ ] Click once — audio allowed.",

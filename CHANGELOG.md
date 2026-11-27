@@ -1,5 +1,70 @@
 # Changelog
 
+## Unreleased — The studio pass
+
+### Fixed
+
+- **The Moon lab now moves in the direction its labels describe.** Drag,
+  Earlier/Later and the hint all use one `ORBIT_SIGN`; stepping later from a
+  waning crescent crosses new moon into waxing with the lit fraction rising.
+  A headless `TestMoonFlow` locks the five cardinal phases and the direction.
+- **Correct answers explain the geometry.** `_check` was passing a missing
+  `p["target"]` to `_why`; it now passes the challenge target, the `full`
+  branch is reachable, and the explanation stays on screen instead of being
+  erased after one second.
+- **The phase name is hidden during a challenge.** The student reads the inset
+  and the prompt, not a label that already contains the answer. The black-hole
+  option that said gravity is the same "for the same size" now says "same
+  mass", matching its own explanation.
+- **The quiz cannot be beaten by a key pattern.** Options are shuffled at
+  render time and the index is remapped, so A/B/C/D cycling no longer scores.
+  Wrong answers offer a one-tap **Revise** link to the exhibit that teaches
+  them, and a repeat attempt shows the change since last time.
+- **The star hunt no longer pre-highlights its targets.** Hint still glows
+  three stars when asked; the hunt itself is a search again.
+- **The scale riddles ask about light-time**, not just planet trivia: Saturn
+  at ~80 light-minutes and Neptune at ~4 light-hours.
+- **The seasons lab shows distance from the Sun** every month, and the no-tilt
+  check now requires June so the student sees distance unchanged while the
+  seasons vanish. The equinox check requires a real tilt.
+- **Phone back control is 56×44, not 4×32.** The compact app bar labels it
+  `‹ LAB` and reserves a real hit area.
+- **Solar Storm Lab's lesson page no longer overflows 390 px.** The kicker
+  ellipsizes, the page keeps its gutter, and the image credit wraps.
+- **Lesson pages lead with "What you'll do"** before the long paragraphs, and
+  body text aligns with the header (16 px, not 0).
+- **Small paper labels meet contrast**: `GOLD_DARK` is now `#6f5228`, faded
+  secondary labels are full-opacity, and Kannada labels get vertical room.
+- **Sound off means silence.** The ambient bed is stopped and restarted with
+  the setting instead of ignoring it.
+- **Keyboard access works.** Buttons opt into focus with a gold focus ring;
+  the first Tab seeds focus, and Router scenes keep the chain.
+- **Reduced motion is a setting.** It stops sky drift, camera parallax,
+  lantern sway/flicker, fireflies and festival motion while keeping every
+  tap/hover/verdict transition. On the web it follows
+  `prefers-reduced-motion` by default.
+- **The certificate can be saved** as a PNG from the finale, with the action
+  row hidden for the capture; the file never leaves the device.
+- **Quiz pages reset to the top** when the next riddle opens.
+
+### Changed — seminar
+
+- **The rehearsal timer survives the demo.** It is saved with the deck and
+  restored on return; it turns vermilion after 8:30 and `Home` resets it.
+- **One key back to the deck.** Opening an exhibit sets `G.seminar_return`;
+  labs show a gold **PRESENT · DECK** link and accept **Backspace**.
+- **Slide budgets total 600 s** (45 + ten 50 s slides + 55), matching the run
+  sheet instead of overrunning it by 55 s.
+- **Every slide has a stat row** above the bullets (7 exhibits, 8,879 stars,
+  1 draw call, 2.95 km/M☉, the live URL). The closing slide opens the finale,
+  not the hub, and the last-slide clicker press is a silent no-op.
+- **Pre-flight checks exact numbers**: 8,879 stars, 88 constellations, 28
+  nakshatras, plus a deck-copy row for stats and bullet length.
+- **Portrait slides cap the figure at 24%** and add a "scroll for more" cue;
+  the note column can no longer collapse to a one-character wrap.
+- **Deck copy fixes**: 27 nakshatras (28 drawn figures), Saptarishi as the
+  seven-star asterism inside Ursa Major, and Cassiopeia is not a nakshatra.
+
 ## Unreleased — The almanac edition
 
 ### Changed

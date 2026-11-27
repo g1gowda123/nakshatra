@@ -27,6 +27,7 @@ var _portrait := false
 var _compact := false
 
 var month_label: Label
+var dist_label: Label
 var tilt_label: Label
 var day_bar: ProgressBar
 var day_label: Label
@@ -354,6 +355,8 @@ func _fill_panel() -> void:
 
 	month_label = UI.label("June", 22, G.CREAM, "serif")
 	v.add_child(month_label)
+	dist_label = UI.label("", 12, G.MUTED)
+	v.add_child(dist_label)
 	var ms := HSlider.new()
 	ms.min_value = 1
 	ms.max_value = 12
@@ -493,6 +496,9 @@ func _noon_alt() -> float:
 func _update_meters() -> void:
 	if month_label:
 		month_label.text = MONTHS[int(clampf(round(month) - 1.0, 0.0, 11.0))]
+	if dist_label:
+		var d := 149.6 - 2.5 * cos(TAU * (month - 1.0) / 12.0)
+		dist_label.text = "%.1f million km from the Sun" % d
 	if tilt_label:
 		tilt_label.text = "Axial tilt: %.1f°" % tilt
 	if day_bar:
@@ -530,9 +536,9 @@ func _check() -> void:
 		"december":
 			ok = absf(month - 12.0) <= 0.7 and tilt >= 10.0
 		"equinox":
-			ok = (absf(month - 3.0) <= 0.7 or absf(month - 9.0) <= 0.7)
+			ok = (absf(month - 3.0) <= 0.7 or absf(month - 9.0) <= 0.7) and tilt >= 10.0
 		"notilt":
-			ok = tilt < 1.0
+			ok = tilt < 1.0 and absf(month - 6.0) <= 0.7
 	if ok:
 		_solved = true
 		feedback.add_theme_color_override("font_color", G.TEAL)
@@ -563,7 +569,7 @@ func _nudge(id: String) -> String:
 		"june": return "Not yet. Look for the month when the north pole leans most toward the Sun — around mid-year."
 		"december": return "Not yet. Find the month when the north pole leans away from the Sun."
 		"equinox": return "Not yet. Look for a month when Earth's axis is side-on to the Sun."
-		"notilt": return "Set the axial tilt slider close to 0° and watch the daylight bar."
+		"notilt": return "Set the axial tilt close to 0° in June and watch the daylight bar."
 	return "Try another position."
 
 
