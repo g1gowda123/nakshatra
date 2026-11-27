@@ -26,6 +26,13 @@ func _check_debug_route() -> void:
 	if OS.get_cmdline_user_args().has("--skip-briefing"):
 		for id in G.MODULES:
 			G.briefing_seen[id] = true
+	# QA capture helper: --modal=story|teacher|credits opens a title modal.
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--modal="):
+			match a.get_slice("=", 1):
+				"story": _show_story.call_deferred()
+				"teacher": _show_teacher.call_deferred()
+				"credits": _show_credits.call_deferred()
 	if OS.has_feature("web"):
 		var q = JavaScriptBridge.eval("window.location.search", true)
 		if q is String:
@@ -453,8 +460,8 @@ func _show_story() -> void:
 	go.pressed.connect(func():
 		_clear_overlay()
 		Router.go("res://scenes/Lab.tscn"))
-	body.add_child(go)
-	_modal("The Lantern Festival", body, "res://assets/art/story_festival.webp", "PLATE II  ·  THE FESTIVAL ON THE HILL")
+	go.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_modal("The Lantern Festival", body, "res://assets/art/story_festival.webp", "PLATE II  ·  THE FESTIVAL ON THE HILL", go)
 
 
 func _show_teacher() -> void:
@@ -471,14 +478,13 @@ func _show_teacher() -> void:
 	body.add_child(UI.label("Suggested flow: five minutes of free exploration › the Sky Riddles as a pre-test › two exhibits › the same riddles as a post-test › a five-minute sky walk outside.", 14, G.INK_SOFT))
 	body.add_child(UI.rule(Color(G.INK, 0.18), 1))
 	var row := UI.hbox(10)
-	body.add_child(row)
 	var close := UI.ink_button("Close", true, 15)
 	close.pressed.connect(_clear_overlay)
 	row.add_child(close)
 	var reset := UI.ink_button("Reset all progress", false, 13)
 	reset.pressed.connect(_confirm_reset)
 	row.add_child(reset)
-	_modal("For teachers", body)
+	_modal("For teachers", body, "", "", row)
 
 
 func _confirm_reset() -> void:
@@ -507,11 +513,11 @@ func _show_credits() -> void:
 	body.add_child(UI.rule(Color(G.INK, 0.18), 1))
 	var close := UI.ink_button("Close", true, 15)
 	close.pressed.connect(_clear_overlay)
-	body.add_child(close)
-	_modal("Credits & sources", body, "res://assets/art/plates/plate_atlas.webp", "PLATE III  ·  THE SKY ATLAS")
+	close.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_modal("Credits & sources", body, "res://assets/art/plates/plate_atlas.webp", "PLATE III  ·  THE SKY ATLAS", close)
 
 
-func _modal(title: String, body: Control, art_path: String = "", caption: String = "") -> void:
+func _modal(title: String, body: Control, art_path: String = "", caption: String = "", footer: Control = null) -> void:
 	_clear_overlay()
 	overlay = Control.new()
 	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -543,6 +549,7 @@ func _modal(title: String, body: Control, art_path: String = "", caption: String
 
 	var v := UI.vbox(12)
 	sheet.add_child(v)
+	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	var top := UI.hbox(10)
 	v.add_child(top)
@@ -562,7 +569,7 @@ func _modal(title: String, body: Control, art_path: String = "", caption: String
 		art.texture = load(art_path)
 		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		art.custom_minimum_size = Vector2(0, 132)
+		art.custom_minimum_size = Vector2(0, 132 if UI.viewport_size().y >= 680 else 96)
 		art.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		art.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		v.add_child(art)
@@ -570,9 +577,11 @@ func _modal(title: String, body: Control, art_path: String = "", caption: String
 			v.add_child(UI.micro(caption, Color("8a6a3c"), 8))
 
 	var scroll := UI.scroll()
-	scroll.custom_minimum_size = Vector2(0, minf(UI.viewport_size().y * 0.5, 400))
+	scroll.custom_minimum_size = Vector2(0, clampf(UI.viewport_size().y - 440.0, 180.0, 360.0))
 	scroll.add_child(body)
 	v.add_child(scroll)
+	if footer:
+		v.add_child(footer)
 	UI.fade_in(overlay, 0.0, 0.25)
 
 
