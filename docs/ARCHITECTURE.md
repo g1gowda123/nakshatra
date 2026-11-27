@@ -312,6 +312,7 @@ Do not open `index.html` with `file://`; the WASM and PCK need HTTP.
 |---|---|
 | `tests/TestSeminar.tscn` | Instantiates the deck; asserts 12 slides, every image and lab resolves, speaker notes exist, pre-flight is green, notes open/close, figure zoom works, number formatting |
 | `tests/TestSolarFlow.tscn` | Drives SolarLab through an unshielded flare, then a shielded flare, and checks the stage/feedback |
+| `tests/TestMoonFlow.tscn` | Locks the five cardinal phases, the Moon’s travel direction, the geometry feedback and the hidden challenge readout |
 | `tests/Capture.tscn` | Dev-only screenshot harness: loads any scene at a fixed size and saves a PNG (never exported) |
 | `tests/DeckCapture.tscn` | Dev-only deck-figure harness: loads a scene, can force demo state, a flare or a quiz question, and saves a PNG |
 | `tools/run_tests.sh` | Runs the headless tests and fails if any prints `TEST FAIL` |

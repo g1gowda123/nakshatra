@@ -123,7 +123,15 @@ func _build_ui() -> void:
 	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(center)
+	# Short browser windows and the 780x437 compact laptop layout cannot fit
+	# the whole certificate plus its actions; make the column scroll instead
+	# of hiding the Save button below the fold.
+	var scroll := UI.scroll()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	col.add_child(scroll)
+	center.custom_minimum_size.y = maxf(240.0, UI.viewport_size().y - 150.0)
+	scroll.add_child(center)
 
 	if not G.all_done():
 		center.add_child(_not_yet_card())
@@ -265,7 +273,7 @@ func _certificate() -> Control:
 	var save := UI.ghost_button("Save this certificate  ↓", 12)
 	save.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	save.custom_minimum_size = Vector2(0, 38)
-	save.pressed.connect(func(): _save_certificate(row, save, name_edit))
+	save.pressed.connect(func(): _save_certificate(row, save, name_edit, p))
 	wrap.add_child(save)
 
 	var note := UI.micro("EVERYTHING STAYS ON YOUR DEVICE  ·  NO ACCOUNT, NO UPLOAD", Color(G.MUTED, 0.7), 8)
@@ -276,7 +284,7 @@ func _certificate() -> Control:
 	return wrap
 
 
-func _save_certificate(actions: Control, save_btn: Button, name_edit: LineEdit) -> void:
+func _save_certificate(actions: Control, save_btn: Button, name_edit: LineEdit, panel: Control) -> void:
 	if save_btn.disabled:
 		return
 	save_btn.disabled = true
@@ -287,7 +295,15 @@ func _save_certificate(actions: Control, save_btn: Button, name_edit: LineEdit) 
 	await RenderingServer.frame_post_draw
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
-	var img := get_viewport().get_texture().get_image()
+	var full := get_viewport().get_texture().get_image()
+	var img := full
+	if panel:
+		var pad := 18
+		var r := panel.get_global_rect().grow(pad)
+		var bounds := Rect2(Vector2.ZERO, Vector2(full.get_width(), full.get_height()))
+		r = r.intersection(bounds)
+		if r.size.x > 40 and r.size.y > 40:
+			img = full.get_region(Rect2i(r))
 	var png := img.save_png_to_buffer()
 	if OS.has_feature("web"):
 		var b64 := Marshalls.raw_to_base64(png)

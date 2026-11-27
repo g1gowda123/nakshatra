@@ -250,7 +250,7 @@ runs on itch.io without special COOP/COEP headers and on phones without
 bash tools/run_tests.sh
 ```
 
-This runs three headless contract tests:
+This runs four headless contract tests:
 
 - `tests/TestContent.tscn` — 7 modules, 14 questions, 8 planets, 8 Field Guide
   cards, 5 hunts, 4 scale riddles, 12 seminar slides, every image and lab path,
@@ -260,6 +260,8 @@ This runs three headless contract tests:
   formatting is correct.
 - `tests/TestSolarFlow.tscn` — an unshielded flare asks for the shield, a
   shielded flare reaches the challenge, and the stage stays stable.
+- `tests/TestMoonFlow.tscn` — the five cardinal phases, the orbit direction,
+  the corrected geometry feedback, and the hidden challenge readout.
 
 Visual work uses `tests/Capture.tscn`, a dev-only harness that loads any scene at
 a fixed size and saves a PNG. It is not part of the export.

@@ -119,6 +119,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			focus_first()
 	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_BACKSPACE:
 		if seminar_return:
+			var owner := get_viewport().gui_get_focus_owner()
+			if owner is LineEdit or owner is TextEdit:
+				return
 			get_viewport().set_input_as_handled()
 			Router.go("res://scenes/Seminar.tscn")
 
