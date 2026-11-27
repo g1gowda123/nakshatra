@@ -322,24 +322,31 @@ func _render_question() -> void:
 		b.custom_minimum_size = Vector2(0, 50)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		var osb := StyleBoxFlat.new()
-		osb.bg_color = Color(0.043, 0.063, 0.098, 0.85)
-		osb.border_color = Color(G.GOLD, 0.24)
-		osb.set_border_width_all(1)
-		osb.set_corner_radius_all(2)
+		osb.bg_color = Color(0.05, 0.04, 0.085, 0.92)
+		osb.border_color = Color(G.CREAM, 0.35)
+		osb.set_border_width_all(2)
+		osb.set_corner_radius_all(0)
 		osb.content_margin_left = 20
 		osb.content_margin_right = 20
 		osb.content_margin_top = 10
 		osb.content_margin_bottom = 10
+		osb.shadow_color = Color(0, 0, 0, 0.4)
+		osb.shadow_size = 1
+		osb.shadow_offset = Vector2(3, 3)
 		var ohov := osb.duplicate() as StyleBoxFlat
-		ohov.bg_color = Color(0.075, 0.105, 0.16, 0.95)
-		ohov.border_color = Color(G.GOLD, 0.6)
+		ohov.bg_color = G.GOLD
+		ohov.border_color = G.INK
+		ohov.shadow_offset = Vector2(5, 5)
 		var opress := osb.duplicate() as StyleBoxFlat
-		opress.bg_color = Color(0.028, 0.042, 0.07, 0.98)
-		opress.border_color = Color(G.GOLD, 0.85)
+		opress.bg_color = G.VERMILION
+		opress.border_color = G.INK
+		opress.shadow_offset = Vector2(1, 1)
 		b.add_theme_stylebox_override("normal", osb)
 		b.add_theme_stylebox_override("hover", ohov)
 		b.add_theme_stylebox_override("pressed", opress)
 		b.add_theme_stylebox_override("focus", UI.focus_ring())
+		b.add_theme_color_override("font_hover_color", G.INK)
+		b.add_theme_color_override("font_pressed_color", G.CREAM)
 		b.pressed.connect(_choose.bind(i))
 		if answered:
 			b.disabled = true
@@ -418,8 +425,10 @@ func _choose(i: int) -> void:
 	if picked_original == correct_original:
 		score += 1
 		Sfx.play("success")
+		Juice.stamp("CORRECT", G.TEAL)
 	else:
 		Sfx.play("soft_error")
+		Juice.stamp("NOT QUITE — READ ON", G.VERMILION, G.CREAM)
 		wrong.append({
 			"q": str(q.get("q", "")),
 			"answer": correct_text,

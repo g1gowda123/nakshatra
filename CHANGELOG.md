@@ -1,5 +1,35 @@
 # Changelog
 
+## v1.5.0 — The loud sky · 2026-11-27
+
+### Changed
+
+- **The interface is now a poster, not a dashboard.** Anton replaces the quiet
+  display serif for headings and controls; the palette is ink, acid yellow,
+  vermilion and electric cyan; corners are square and shadows are hard offset
+  blocks. Cream paper remains for reading surfaces.
+- **Every control answers the hand.** Buttons lift on hover, squash on press,
+  spring back on release, tick quietly and throw a spark at the pointer. The
+  hub cards lift, straighten and glow; the title screen opens with a moving
+  ticker; correct and wrong answers land a physical stamp.
+- **The hub is a lantern rail.** The uniform 4×2 dashboard became a fanned
+  row of seven numbered posters with state stickers (`START`, `LIT`); compact
+  screens fall back to the 4-column grid, portrait keeps the scrollable rows.
+- **The Moon lab is a mission card.** Sticker labels, a huge `PHASE HIDDEN`
+  headline, a poster prompt and a hard-framed Earth view; the prompt and check
+  stay pinned on phones.
+- **Answer options and quiz results join the same language.** The four options
+  are hard-edged rows that flood gold on hover and stamp `CORRECT` or
+  `NOT QUITE — READ ON` above the card.
+- **The Field Guide and briefing buttons** now use the poster button, with
+  keyboard focus retained.
+
+### Fixed
+
+- **A lone `—` in the Moon challenge** became an intentional `PHASE HIDDEN`
+  state instead of a missing-label glitch.
+- **The satellite label no longer hides under the Solar Storm panel.**
+
 ## v1.4.0 — The true sky · 2026-11-27
 
 ### Fixed

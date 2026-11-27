@@ -591,10 +591,15 @@ func _cards() -> Control:
 	shelf.add_child(v)
 
 	var head := UI.hbox(8)
+	head.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	v.add_child(head)
-	head.add_child(UI.micro("SEVEN EXHIBITS", Color(G.GOLD, 0.9), 8))
-	head.add_child(UI.spacer())
-	head.add_child(UI.micro("OPEN IN ANY ORDER" + ("  ·  SCROLL" if UI.is_portrait() else ""), Color(G.MUTED, 0.7), 8))
+	var rail_title := UI.heading("PICK A LANTERN", 24, G.CREAM)
+	rail_title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	rail_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(rail_title)
+	var order_tag := UI.sticker("NO LOCKS  ·  ANY ORDER", G.TEAL, G.INK, 1.2)
+	order_tag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	head.add_child(order_tag)
 
 	if UI.is_portrait():
 		var scroll := ScrollContainer.new()
@@ -607,17 +612,22 @@ func _cards() -> Control:
 		scroll.add_child(card_list)
 		for id in ORDER:
 			card_list.add_child(_module_row(id))
-	else:
+	elif UI.is_compact():
 		var grid := GridContainer.new()
-		grid.columns = 4 if UI.viewport_size().x >= 1100 else 3
-		grid.add_theme_constant_override("h_separation", 8)
-		grid.add_theme_constant_override("v_separation", 8)
+		grid.columns = 4
+		grid.add_theme_constant_override("h_separation", 6)
+		grid.add_theme_constant_override("v_separation", 6)
 		grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		v.add_child(grid)
 		for id in ORDER:
 			grid.add_child(_module_card(id))
-		if grid.columns == 4:
-			grid.add_child(_colophon_card())
+	else:
+		var rail := HBoxContainer.new()
+		rail.add_theme_constant_override("separation", 5)
+		rail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		v.add_child(rail)
+		for id in ORDER:
+			rail.add_child(_module_poster(id))
 	return shelf
 
 
@@ -771,6 +781,89 @@ func _module_card(id: String) -> Control:
 	return b
 
 
+func _module_poster(id: String) -> Control:
+	var info := G.module_info(id)
+	var done := G.is_done(id)
+	var current := _first_incomplete() == id
+	var idx := ORDER.find(id) + 1
+	var accent: Color = [G.VERMILION, G.GOLD, G.TEAL, G.ROSE, G.VERMILION, G.TEAL, G.GOLD][idx - 1]
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(0, 128)
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	b.focus_mode = Control.FOCUS_ALL
+	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	b.rotation = deg_to_rad(-0.7 if idx % 2 == 0 else 0.6)
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color(0.055, 0.043, 0.095, 0.98)
+	normal.border_color = Color(G.CREAM, 0.3)
+	normal.set_border_width_all(2)
+	normal.set_corner_radius_all(0)
+	normal.content_margin_left = 0
+	normal.content_margin_right = 0
+	normal.content_margin_top = 0
+	normal.content_margin_bottom = 0
+	normal.shadow_color = Color(0, 0, 0, 0.55)
+	normal.shadow_size = 2
+	normal.shadow_offset = Vector2(5, 5)
+	var hover := normal.duplicate() as StyleBoxFlat
+	hover.bg_color = Color(0.09, 0.07, 0.15, 1.0)
+	hover.border_color = accent
+	hover.shadow_color = Color(accent, 0.5)
+	hover.shadow_offset = Vector2(7, 7)
+	b.add_theme_stylebox_override("normal", normal)
+	b.add_theme_stylebox_override("hover", hover)
+	b.add_theme_stylebox_override("pressed", hover)
+	b.add_theme_stylebox_override("focus", UI.focus_ring())
+	b.pressed.connect(func():
+		Sfx.play("click")
+		Juice.stamp(str(info.get("title", id)).to_upper(), accent)
+		_open_module(id))
+	b.mouse_entered.connect(func(): b.z_index = 8)
+	b.mouse_exited.connect(func(): b.z_index = 0)
+	UI.juice_button(b)
+
+	var stripe := ColorRect.new()
+	stripe.color = accent
+	stripe.custom_minimum_size = Vector2(0, 7)
+	stripe.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	b.add_child(stripe)
+
+	var m := UI.margin(8, 8, 8, 5)
+	m.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	b.add_child(m)
+	var box := UI.vbox(3)
+	m.add_child(box)
+
+	var top := UI.hbox(4)
+	box.add_child(top)
+	var num := UI.display("%02d" % idx, 23, accent)
+	num.autowrap_mode = TextServer.AUTOWRAP_OFF
+	num.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	top.add_child(num)
+	top.add_child(UI.spacer())
+	if done:
+		top.add_child(UI.sticker("LIT", G.TEAL, G.INK, -6.0))
+	elif current:
+		top.add_child(UI.sticker("START", G.VERMILION, G.CREAM, 5.0))
+
+	box.add_child(_thumb(str(info.get("art", "")), 40))
+	var title := UI.label(str(info.get("title", id)), 13, G.CREAM, "display")
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title.max_lines_visible = 2
+	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	title.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	box.add_child(title)
+
+	var bottom := UI.hbox(4)
+	box.add_child(bottom)
+	bottom.add_child(UI.micro(str(info.get("minutes", "")), Color(G.MUTED, 0.85), 8))
+	bottom.add_child(UI.spacer())
+	bottom.add_child(UI.micro("OPEN  ›", accent, 8))
+	return b
+
+
 func _module_row(id: String) -> Control:
 	var info := G.module_info(id)
 	var done := G.is_done(id)
@@ -790,7 +883,11 @@ func _module_row(id: String) -> Control:
 	b.add_theme_stylebox_override("focus", UI.focus_ring())
 	b.pressed.connect(func():
 		Sfx.play("click")
+		Juice.stamp(str(info.get("title", id)).to_upper(), G.GOLD)
 		_open_module(id))
+	UI.juice_button(b)
+	b.mouse_entered.connect(func(): b.z_index = 8)
+	b.mouse_exited.connect(func(): b.z_index = 0)
 	b.add_child(_accent_bar(current, done))
 
 	var m := UI.margin(9, 6, 10, 6)
@@ -806,7 +903,7 @@ func _module_row(id: String) -> Control:
 	h.add_child(v)
 	var kn_row := str(info.get("kannada", ""))
 	var use_kn_row := G.lang == "kn" and kn_row != ""
-	var title := UI.label(kn_row if use_kn_row else str(info.get("title", id)), 15 if not use_kn_row else 14, G.CREAM, "kannada" if use_kn_row else "serif")
+	var title := UI.label(kn_row if use_kn_row else str(info.get("title", id)), 17 if not use_kn_row else 14, G.CREAM, "kannada" if use_kn_row else "display")
 	title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title.clip_text = true
 	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS

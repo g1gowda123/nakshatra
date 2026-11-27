@@ -57,7 +57,7 @@ static func show(host: Node) -> Control:
 	var scroll := ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
-	scroll.custom_minimum_size = Vector2(0, minf(UI.viewport_size().y - 280.0, 620.0))
+	scroll.custom_minimum_size = Vector2(0, minf(UI.viewport_size().y - 320.0, 560.0))
 	col.add_child(scroll)
 	var body := UI.vbox(0)
 	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -99,20 +99,33 @@ static func show(host: Node) -> Control:
 		if link != "":
 			var b := Button.new()
 			b.text = "Open the lab  ›"
-			b.focus_mode = Control.FOCUS_NONE
-			b.custom_minimum_size = Vector2(0, 38)
-			b.add_theme_font_size_override("font_size", 14)
-			b.add_theme_font_override("font", UI.body_med_font())
+			b.focus_mode = Control.FOCUS_ALL
+			b.text = "OPEN THE LAB  ›"
+			b.custom_minimum_size = Vector2(0, 40)
+			b.add_theme_font_size_override("font_size", 13)
+			b.add_theme_font_override("font", UI.display_font())
 			var bsb := StyleBoxFlat.new()
-			bsb.bg_color = Color(1, 1, 1, 0.3)
-			bsb.border_color = Color(INK, 0.3)
-			bsb.set_border_width_all(1)
-			bsb.set_corner_radius_all(2)
+			bsb.bg_color = G.INK
+			bsb.border_color = G.INK
+			bsb.set_border_width_all(2)
+			bsb.set_corner_radius_all(0)
+			bsb.shadow_color = Color(0, 0, 0, 0.35)
+			bsb.shadow_size = 1
+			bsb.shadow_offset = Vector2(3, 3)
 			bsb.content_margin_left = 16
 			bsb.content_margin_right = 16
+			var bhov := bsb.duplicate() as StyleBoxFlat
+			bhov.bg_color = G.VERMILION
+			bhov.border_color = G.INK
+			var bpress := bsb.duplicate() as StyleBoxFlat
+			bpress.bg_color = G.GOLD
+			bpress.shadow_offset = Vector2(1, 1)
 			b.add_theme_stylebox_override("normal", bsb)
-			b.add_theme_color_override("font_color", INK)
-			b.add_theme_color_override("font_hover_color", INK)
+			b.add_theme_stylebox_override("hover", bhov)
+			b.add_theme_stylebox_override("pressed", bpress)
+			b.add_theme_stylebox_override("focus", UI.focus_ring())
+			b.add_theme_color_override("font_color", G.PAPER)
+			b.add_theme_color_override("font_hover_color", G.INK)
 			var path := "res://scenes/MoonLab.tscn"
 			if link == "flares":
 				path = "res://scenes/SolarLab.tscn"
@@ -121,6 +134,7 @@ static func show(host: Node) -> Control:
 			b.pressed.connect(func():
 				overlay.queue_free()
 				Router.go(path))
+			UI.juice_button(b)
 			cv.add_child(b)
 
 	var footer := UI.margin(24, 8, 24, 18)

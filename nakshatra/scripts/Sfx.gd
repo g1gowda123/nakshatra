@@ -8,6 +8,7 @@ var _gesture_seen := false
 
 const SFX := {
 	"click": "res://audio/click.wav",
+	"tick": "res://audio/tick.wav",
 	"chime": "res://audio/chime.wav",
 	"success": "res://audio/success.wav",
 	"soft_error": "res://audio/soft_error.wav",

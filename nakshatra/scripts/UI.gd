@@ -5,7 +5,8 @@ extends RefCounted
 ## All type is Cormorant Garamond (display) + Noto Sans (text); the UI is
 ## built from rules and plates, not glowing pills.
 
-const FONT_DISPLAY_PATH := "res://assets/fonts/CormorantGaramond-Variable.ttf"
+const FONT_DISPLAY_PATH := "res://assets/fonts/Anton-Regular.ttf"
+const FONT_EDITORIAL_PATH := "res://assets/fonts/CormorantGaramond-Variable.ttf"
 const FONT_SERIF_PATH := "res://assets/fonts/NotoSerif-Bold.ttf"
 const FONT_BODY_PATH := "res://assets/fonts/NotoSans-Regular.ttf"
 const FONT_BODY_MED_PATH := "res://assets/fonts/NotoSans-Medium.ttf"
@@ -14,6 +15,7 @@ const GRAIN_PATH := "res://assets/fx/grain.png"
 
 static var _theme: Theme
 static var _display: Font
+static var _editorial: Font
 static var _serif: Font
 static var _body: Font
 static var _body_med: Font
@@ -44,13 +46,19 @@ static func _variant(base: Font, weight: int, tracking: int = 0) -> Font:
 
 static func display_font() -> Font:
 	if _display == null:
-		_display = _variant(_load_font(FONT_DISPLAY_PATH), 500)
+		_display = _load_font(FONT_DISPLAY_PATH)
 	return _display
+
+
+static func editorial_font() -> Font:
+	if _editorial == null:
+		_editorial = _variant(_load_font(FONT_EDITORIAL_PATH), 600)
+	return _editorial
 
 
 static func serif_font() -> Font:
 	if _serif == null:
-		_serif = _variant(_load_font(FONT_DISPLAY_PATH), 600)
+		_serif = _variant(_load_font(FONT_EDITORIAL_PATH), 600)
 	return _serif
 
 
@@ -253,7 +261,7 @@ static func rich(text: String, size: int = 18, color: Color = G.CREAM) -> RichTe
 
 
 static func heading(text: String, size: int = 40, color: Color = G.CREAM) -> Label:
-	var l := label(text, size, color, "serif")
+	var l := label(text, size, color, "display")
 	l.add_theme_constant_override("line_spacing", 0)
 	return l
 
@@ -281,17 +289,17 @@ static func panel(pad: int = 20, alpha: float = 0.9) -> PanelContainer:
 		theme()
 	var p := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.031, 0.047, 0.078, alpha)
-	sb.border_color = Color(0.851, 0.702, 0.424, 0.16)
+	sb.bg_color = Color(0.035, 0.028, 0.065, alpha)
+	sb.border_color = Color(G.CREAM, 0.45)
 	sb.set_border_width_all(1)
-	sb.set_corner_radius_all(3)
+	sb.set_corner_radius_all(0)
 	sb.content_margin_left = pad
 	sb.content_margin_right = pad
 	sb.content_margin_top = pad
 	sb.content_margin_bottom = pad
-	sb.shadow_color = Color(0, 0, 0, 0.45)
-	sb.shadow_size = 18
-	sb.shadow_offset = Vector2(0, 8)
+	sb.shadow_color = Color(0, 0, 0, 0.6)
+	sb.shadow_size = 2
+	sb.shadow_offset = Vector2(7, 7)
 	p.add_theme_stylebox_override("panel", sb)
 	p.mouse_filter = Control.MOUSE_FILTER_PASS
 	return p
@@ -301,16 +309,16 @@ static func paper(pad: int = 22) -> PanelContainer:
 	var p := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = G.PAPER
-	sb.border_color = Color(0.322, 0.231, 0.11, 0.35)
-	sb.set_border_width_all(1)
-	sb.set_corner_radius_all(2)
+	sb.border_color = G.INK
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(0)
 	sb.content_margin_left = pad
 	sb.content_margin_right = pad
 	sb.content_margin_top = pad
 	sb.content_margin_bottom = pad
-	sb.shadow_color = Color(0, 0, 0, 0.5)
-	sb.shadow_size = 26
-	sb.shadow_offset = Vector2(0, 12)
+	sb.shadow_color = Color(0, 0, 0, 0.7)
+	sb.shadow_size = 2
+	sb.shadow_offset = Vector2(8, 8)
 	p.add_theme_stylebox_override("panel", sb)
 	p.mouse_filter = Control.MOUSE_FILTER_PASS
 	return p
@@ -333,42 +341,48 @@ static func focus_ring() -> StyleBoxFlat:
 	## which made the whole game unreachable with Tab on a laptop.
 	var sb := StyleBoxFlat.new()
 	sb.draw_center = false
-	sb.border_color = Color(1.0, 0.86, 0.55, 0.95)
-	sb.set_border_width_all(2)
-	sb.set_corner_radius_all(2)
+	sb.border_color = G.GOLD
+	sb.set_border_width_all(3)
+	sb.set_corner_radius_all(0)
 	return sb
 
 
 static func button(text: String, primary: bool = false, size: int = 19) -> Button:
 	var b := Button.new()
-	b.text = text
+	b.text = text.to_upper()
 	b.focus_mode = Control.FOCUS_ALL
-	b.add_theme_font_size_override("font_size", maxi(12, size - 5))
-	b.add_theme_font_override("font", tracked_font("body", 1))
-	b.custom_minimum_size = Vector2(0, 46)
+	b.add_theme_font_size_override("font_size", maxi(13, size - 3))
+	b.add_theme_font_override("font", display_font())
+	b.custom_minimum_size = Vector2(0, 50)
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 	var normal := StyleBoxFlat.new()
-	normal.bg_color = G.CREAM if primary else Color(0.043, 0.062, 0.098, 0.72)
-	normal.border_color = G.CREAM if primary else Color(G.GOLD, 0.26)
-	normal.set_border_width_all(1)
-	normal.set_corner_radius_all(2)
-	normal.content_margin_left = 22
-	normal.content_margin_right = 22
-	normal.content_margin_top = 11
-	normal.content_margin_bottom = 11
+	normal.bg_color = G.GOLD if primary else Color(0.065, 0.05, 0.11, 0.95)
+	normal.border_color = G.INK if primary else G.CREAM
+	normal.set_border_width_all(2)
+	normal.set_corner_radius_all(0)
+	normal.content_margin_left = 20
+	normal.content_margin_right = 20
+	normal.content_margin_top = 12
+	normal.content_margin_bottom = 12
+	normal.shadow_color = Color(0, 0, 0, 0.55)
+	normal.shadow_size = 2
+	normal.shadow_offset = Vector2(5, 5)
 
 	var hover := normal.duplicate() as StyleBoxFlat
-	hover.bg_color = Color("ffffff") if primary else Color(0.075, 0.105, 0.16, 0.9)
-	hover.border_color = G.CREAM if primary else Color(G.GOLD, 0.6)
+	hover.bg_color = G.CREAM if primary else G.GOLD
+	hover.border_color = G.INK
+	hover.shadow_offset = Vector2(7, 7)
 
 	var pressed := normal.duplicate() as StyleBoxFlat
-	pressed.bg_color = Color("e6d8be") if primary else Color(0.028, 0.042, 0.07, 0.95)
-	pressed.border_color = G.CREAM if primary else Color(G.GOLD, 0.4)
+	pressed.bg_color = G.VERMILION
+	pressed.border_color = G.INK
+	pressed.shadow_offset = Vector2(1, 1)
 
 	var disabled := normal.duplicate() as StyleBoxFlat
-	disabled.bg_color = Color(0.06, 0.075, 0.1, 0.6)
-	disabled.border_color = Color(1, 1, 1, 0.08)
+	disabled.bg_color = Color(0.08, 0.07, 0.1, 0.7)
+	disabled.border_color = Color(1, 1, 1, 0.18)
+	disabled.shadow_size = 0
 
 	b.add_theme_stylebox_override("normal", normal)
 	b.add_theme_stylebox_override("hover", hover)
@@ -376,62 +390,85 @@ static func button(text: String, primary: bool = false, size: int = 19) -> Butto
 	b.add_theme_stylebox_override("disabled", disabled)
 	b.add_theme_stylebox_override("focus", focus_ring())
 	b.add_theme_color_override("font_color", G.INK if primary else G.CREAM)
-	b.add_theme_color_override("font_hover_color", G.INK if primary else Color.WHITE)
-	b.add_theme_color_override("font_pressed_color", G.INK if primary else G.GOLD)
-	b.add_theme_color_override("font_disabled_color", Color(1, 1, 1, 0.3))
+	b.add_theme_color_override("font_hover_color", G.INK)
+	b.add_theme_color_override("font_pressed_color", G.CREAM)
+	b.add_theme_color_override("font_disabled_color", Color(1, 1, 1, 0.28))
+	juice_button(b)
 	return b
 
 
 static func ink_button(text: String, primary: bool = true, size: int = 16) -> Button:
 	var b := Button.new()
-	b.text = text
+	b.text = text.to_upper()
 	b.focus_mode = Control.FOCUS_ALL
-	b.add_theme_font_size_override("font_size", maxi(11, size - 4))
-	b.add_theme_font_override("font", tracked_font("body", 1))
-	b.custom_minimum_size = Vector2(0, 44)
+	b.add_theme_font_size_override("font_size", maxi(12, size - 3))
+	b.add_theme_font_override("font", display_font())
+	b.custom_minimum_size = Vector2(0, 46)
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var normal := StyleBoxFlat.new()
-	normal.bg_color = G.INK if primary else Color(1, 1, 1, 0.25)
-	normal.border_color = G.INK if primary else Color(G.INK, 0.4)
-	normal.set_border_width_all(1)
-	normal.set_corner_radius_all(2)
-	normal.content_margin_left = 20
-	normal.content_margin_right = 20
+	normal.bg_color = G.INK if primary else Color(1, 1, 1, 0.3)
+	normal.border_color = G.INK
+	normal.set_border_width_all(2)
+	normal.set_corner_radius_all(0)
+	normal.content_margin_left = 18
+	normal.content_margin_right = 18
 	normal.content_margin_top = 10
 	normal.content_margin_bottom = 10
+	normal.shadow_color = Color(G.VERMILION, 0.55)
+	normal.shadow_size = 2
+	normal.shadow_offset = Vector2(4, 4)
 	var hover := normal.duplicate() as StyleBoxFlat
-	hover.bg_color = Color("26314a") if primary else Color(1, 1, 1, 0.55)
+	hover.bg_color = G.VERMILION if primary else G.GOLD
+	hover.border_color = G.INK
+	hover.shadow_color = Color(G.INK, 0.5)
 	var pressed := normal.duplicate() as StyleBoxFlat
-	pressed.bg_color = Color("090d16") if primary else Color(1, 1, 1, 0.15)
+	pressed.bg_color = Color("090711") if primary else Color(G.CREAM, 0.75)
+	pressed.shadow_offset = Vector2(1, 1)
 	b.add_theme_stylebox_override("normal", normal)
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", pressed)
 	b.add_theme_stylebox_override("focus", focus_ring())
 	b.add_theme_color_override("font_color", G.PAPER if primary else G.INK)
-	b.add_theme_color_override("font_hover_color", Color.WHITE if primary else G.INK)
-	b.add_theme_color_override("font_pressed_color", G.GOLD if primary else G.INK)
+	b.add_theme_color_override("font_hover_color", G.CREAM if primary else G.INK)
+	b.add_theme_color_override("font_pressed_color", G.CREAM if primary else G.INK)
+	juice_button(b)
 	return b
 
 
 static func ghost_button(text: String, size: int = 17) -> Button:
-	var b := button(text, false, size)
-	b.custom_minimum_size = Vector2(0, 44 if is_compact() else 38)
-	b.add_theme_font_size_override("font_size", maxi(11, size - 5))
+	var b := Button.new()
+	b.text = text.to_upper()
+	b.focus_mode = Control.FOCUS_ALL
+	b.add_theme_font_size_override("font_size", maxi(12, size - 3))
+	b.add_theme_font_override("font", display_font())
+	b.custom_minimum_size = Vector2(0, 46 if is_compact() else 42)
+	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.02, 0.032, 0.058, 0.25)
-	sb.border_color = Color(G.GOLD, 0.14)
+	sb.bg_color = Color(0.02, 0.016, 0.04, 0.35)
+	sb.border_color = Color(G.CREAM, 0.5)
 	sb.set_border_width_all(1)
-	sb.set_corner_radius_all(2)
+	sb.set_corner_radius_all(0)
 	sb.content_margin_left = 14
 	sb.content_margin_right = 14
-	sb.content_margin_top = 7
-	sb.content_margin_bottom = 7
+	sb.content_margin_top = 8
+	sb.content_margin_bottom = 8
 	var hover := sb.duplicate() as StyleBoxFlat
-	hover.bg_color = Color(0.06, 0.09, 0.14, 0.6)
-	hover.border_color = Color(G.GOLD, 0.45)
+	hover.bg_color = G.GOLD
+	hover.border_color = G.INK
+	hover.shadow_color = Color(0, 0, 0, 0.45)
+	hover.shadow_size = 2
+	hover.shadow_offset = Vector2(4, 4)
+	var pressed := sb.duplicate() as StyleBoxFlat
+	pressed.bg_color = G.VERMILION
+	pressed.border_color = G.INK
 	b.add_theme_stylebox_override("normal", sb)
 	b.add_theme_stylebox_override("hover", hover)
+	b.add_theme_stylebox_override("pressed", pressed)
 	b.add_theme_stylebox_override("focus", focus_ring())
+	b.add_theme_color_override("font_color", G.CREAM)
+	b.add_theme_color_override("font_hover_color", G.INK)
+	b.add_theme_color_override("font_pressed_color", G.CREAM)
+	juice_button(b)
 	return b
 
 
@@ -717,18 +754,92 @@ static func margin(l: int, t: int, r: int, b: int) -> MarginContainer:
 	return m
 
 
+static func _juice_to(b: Control, target: Vector2, rot: float, dur: float) -> void:
+	if G.reduced_motion:
+		return
+	if b.size.x > 1.0:
+		b.pivot_offset = b.size * 0.5
+	var old = b.get_meta("_juice_tw", null)
+	if old is Tween:
+		old.kill()
+	var tw := b.create_tween().set_parallel(true)
+	tw.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(b, "scale", target, dur)
+	tw.tween_property(b, "rotation", rot, dur)
+	b.set_meta("_juice_tw", tw)
+
+
+static func juice_button(b: Button) -> void:
+	## Every control answers the hand: hover lifts, press squashes, release
+	## springs back. This is the cheapest way to make the whole surface feel alive.
+	if b.has_meta("_juiced"):
+		return
+	b.set_meta("_juiced", true)
+	b.mouse_entered.connect(func():
+		_juice_to(b, Vector2(1.035, 1.035), deg_to_rad(-0.6), 0.14)
+		Sfx.play("tick", -28.0, randf_range(0.92, 1.12)))
+	b.mouse_exited.connect(func(): _juice_to(b, Vector2.ONE, 0.0, 0.18))
+	b.button_down.connect(func(): _juice_to(b, Vector2(0.95, 0.95), deg_to_rad(0.4), 0.06))
+	b.button_up.connect(func():
+		_juice_to(b, Vector2(1.03, 1.03), deg_to_rad(-0.3), 0.12)
+		if not G.reduced_motion:
+			Juice.burst(b.get_global_mouse_position(), G.GOLD))
+	b.focus_entered.connect(func(): _juice_to(b, Vector2(1.02, 1.02), 0.0, 0.12))
+	b.focus_exited.connect(func(): _juice_to(b, Vector2.ONE, 0.0, 0.14))
+
+
+static func marquee(text: String, color: Color = G.GOLD, size: int = 14) -> Control:
+	var m: Control = preload("res://scripts/Marquee.gd").new()
+	m.setup(text, color, size)
+	return m
+
+
+static func sticker(text: String, bg: Color = G.VERMILION, fg: Color = G.CREAM, rot: float = -2.0) -> PanelContainer:
+	var p := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = bg
+	sb.border_color = G.INK
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(0)
+	sb.content_margin_left = 10
+	sb.content_margin_right = 10
+	sb.content_margin_top = 4
+	sb.content_margin_bottom = 4
+	sb.shadow_color = Color(0, 0, 0, 0.55)
+	sb.shadow_size = 1
+	sb.shadow_offset = Vector2(3, 3)
+	p.add_theme_stylebox_override("panel", sb)
+	var l := label(text.to_upper(), 12, fg, "display")
+	l.autowrap_mode = TextServer.AUTOWRAP_OFF
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	p.add_child(l)
+	p.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.rotation = deg_to_rad(rot)
+	p.resized.connect(func(): p.pivot_offset = p.size * 0.5)
+	return p
+
+
+static func slash(color: Color = G.VERMILION, height: int = 12) -> ColorRect:
+	var r := ColorRect.new()
+	r.color = color
+	r.custom_minimum_size = Vector2(0, height)
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return r
+
+
 ## A framed image plate: cream mat, hairline, image window, optional caption.
 static func image_plate(tex: Texture2D, height: float, caption: String = "", rotate_deg: float = 0.0) -> Control:
 	var wrap := vbox(7)
 	var frame := Panel.new()
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color("efe4cf")
-	sb.border_color = Color(0.2, 0.14, 0.06, 0.55)
-	sb.set_border_width_all(1)
-	sb.set_corner_radius_all(2)
-	sb.shadow_color = Color(0, 0, 0, 0.55)
-	sb.shadow_size = 22
-	sb.shadow_offset = Vector2(0, 10)
+	sb.bg_color = G.PAPER
+	sb.border_color = G.INK
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(0)
+	sb.shadow_color = Color(0, 0, 0, 0.6)
+	sb.shadow_size = 2
+	sb.shadow_offset = Vector2(7, 7)
 	frame.add_theme_stylebox_override("panel", sb)
 	frame.custom_minimum_size = Vector2(0, height)
 	frame.size_flags_horizontal = Control.SIZE_EXPAND_FILL

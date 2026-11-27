@@ -255,18 +255,22 @@ static func _paper_button(text: String, primary: bool) -> Button:
 	b.text = text
 	b.focus_mode = Control.FOCUS_ALL
 	b.custom_minimum_size = Vector2(0, 46)
-	b.add_theme_font_size_override("font_size", 12)
-	b.add_theme_font_override("font", UI.tracked_font("body", 1))
+	b.text = text.to_upper()
+	b.add_theme_font_size_override("font_size", 13)
+	b.add_theme_font_override("font", UI.display_font())
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var normal := StyleBoxFlat.new()
 	normal.bg_color = INK if primary else Color(1, 1, 1, 0.3)
-	normal.border_color = INK if primary else Color(INK, 0.35)
-	normal.set_border_width_all(1)
-	normal.set_corner_radius_all(2)
+	normal.border_color = INK
+	normal.set_border_width_all(2)
+	normal.set_corner_radius_all(0)
+	normal.shadow_color = Color(0, 0, 0, 0.45)
+	normal.shadow_size = 2
+	normal.shadow_offset = Vector2(4, 4)
 	normal.content_margin_left = 20
 	normal.content_margin_right = 20
 	var hover := normal.duplicate() as StyleBoxFlat
-	hover.bg_color = Color("2b3850") if primary else Color(1, 1, 1, 0.6)
+	hover.bg_color = G.VERMILION if primary else G.GOLD
 	var pressed := normal.duplicate() as StyleBoxFlat
 	pressed.bg_color = Color("090d16") if primary else Color(1, 1, 1, 0.2)
 	b.add_theme_stylebox_override("normal", normal)
@@ -274,6 +278,7 @@ static func _paper_button(text: String, primary: bool) -> Button:
 	b.add_theme_stylebox_override("pressed", pressed)
 	b.add_theme_stylebox_override("focus", UI.focus_ring())
 	b.add_theme_color_override("font_color", PAPER if primary else INK)
-	b.add_theme_color_override("font_hover_color", Color.WHITE if primary else INK)
-	b.add_theme_color_override("font_pressed_color", G.GOLD if primary else INK)
+	b.add_theme_color_override("font_hover_color", G.CREAM if primary else INK)
+	b.add_theme_color_override("font_pressed_color", G.CREAM if primary else INK)
+	UI.juice_button(b)
 	return b

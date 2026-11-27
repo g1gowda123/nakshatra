@@ -258,11 +258,11 @@ func _update_readout() -> void:
 	if phase_label:
 		if hide:
 			phase_label.text = "PHASE HIDDEN"
-			phase_label.add_theme_font_size_override("font_size", 11)
-			phase_label.add_theme_color_override("font_color", Color(G.MUTED, 0.8))
+			phase_label.add_theme_font_size_override("font_size", 24)
+			phase_label.add_theme_color_override("font_color", G.VERMILION)
 		else:
 			phase_label.text = str(p["name"])
-			phase_label.add_theme_font_size_override("font_size", 23)
+			phase_label.add_theme_font_size_override("font_size", 24)
 			phase_label.add_theme_color_override("font_color", G.CREAM)
 	if illum_label:
 		illum_label.text = "Set the geometry, then check." if hide else "%d%% of the face lit" % int(round(float(p["illum"]) * 100.0))
@@ -358,33 +358,34 @@ func _fill_panel() -> void:
 	var scroll := UI.scroll()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	outer.add_child(scroll)
-	var v := UI.vbox(6)
+	var v := UI.vbox(5)
 	v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(v)
 
 	var head := UI.hbox(8)
 	v.add_child(head)
-	var from_label := UI.micro("FROM EARTH", Color(G.GOLD, 0.9), 8)
-	from_label.autowrap_mode = TextServer.AUTOWRAP_OFF
-	head.add_child(from_label)
+	head.add_child(UI.sticker("FROM EARTH", G.TEAL, G.INK, -2.0))
 	head.add_child(UI.spacer())
 	if not UI.is_compact():
-		head.add_child(UI.pill("live", G.TEAL, 11))
+		head.add_child(UI.sticker("LIVE", G.VERMILION, G.CREAM, 2.0))
 
 	var center_frame := CenterContainer.new()
 	v.add_child(center_frame)
 	var frame := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.039, 0.063, 0.11, 1.0)
-	sb.border_color = Color(G.GOLD, 0.35)
-	sb.set_border_width_all(1)
-	sb.set_corner_radius_all(2)
+	sb.border_color = G.CREAM
+	sb.set_border_width_all(2)
+	sb.set_corner_radius_all(0)
+	sb.shadow_color = Color(0, 0, 0, 0.55)
+	sb.shadow_size = 2
+	sb.shadow_offset = Vector2(5, 5)
 	sb.content_margin_left = 2
 	sb.content_margin_right = 2
 	sb.content_margin_top = 2
 	sb.content_margin_bottom = 2
 	frame.add_theme_stylebox_override("panel", sb)
-	var side := 138 if not UI.is_portrait() else 104
+	var side := 138 if not UI.is_portrait() else 92
 	frame.custom_minimum_size = Vector2(side, side)
 	frame.clip_contents = true
 	center_frame.add_child(frame)
@@ -396,7 +397,8 @@ func _fill_panel() -> void:
 	inset_view.render_target_update_mode = SubViewport.UPDATE_ONCE
 	frame.add_child(svc)
 
-	phase_label = UI.label("Waxing Crescent", 23, G.CREAM, "serif")
+	phase_label = UI.label("Waxing Crescent", 24, G.CREAM, "display")
+	phase_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	v.add_child(phase_label)
 	phase_kn_label = UI.label("", 14, Color(G.GOLD, 0.85), "kannada")
 	if not UI.is_compact():
@@ -414,7 +416,8 @@ func _fill_panel() -> void:
 
 	# The task and its controls stay pinned below the scroll: a student must
 	# never be able to press Check without seeing the prompt on a phone.
-	prompt_label = UI.label("", 14, G.CREAM)
+	outer.add_child(UI.micro("YOUR MOVE", G.GOLD, 8))
+	prompt_label = UI.label("", 19, G.CREAM, "display")
 	prompt_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	outer.add_child(prompt_label)
 	progress_row = UI.hbox(5)
@@ -430,6 +433,8 @@ func _fill_panel() -> void:
 		if _updating_slider:
 			return
 		_set_angle(val))
+	slider.drag_started.connect(func(): Sfx.play("whoosh", -26.0, 1.1))
+	slider.drag_ended.connect(func(_v): Sfx.play("tick", -26.0, 0.9))
 	if not UI.is_compact():
 		outer.add_child(slider)
 
@@ -513,6 +518,7 @@ func _check() -> void:
 		feedback_label.add_theme_color_override("font_color", G.TEAL)
 		feedback_label.text = "%s. %s" % [str(p["name"]), _why(target)]
 		Sfx.play("success")
+		Juice.stamp("NAILED IT", G.TEAL)
 		challenge_index += 1
 		_update_challenge_ui()
 		_update_readout()
@@ -521,6 +527,7 @@ func _check() -> void:
 	else:
 		attempts += 1
 		Sfx.play("soft_error")
+		Juice.stamp("NOT YET — LOOK AGAIN", G.VERMILION, G.CREAM)
 		feedback_label.add_theme_color_override("font_color", G.ROSE)
 		feedback_label.text = _nudge(target, p)
 

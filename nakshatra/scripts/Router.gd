@@ -23,6 +23,8 @@ func _ready() -> void:
 	_fade.visible = false
 	add_child(_fade)
 
+
+
 	var center := CenterContainer.new()
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -79,6 +81,8 @@ func _show_status(path: String) -> void:
 	var tw := create_tween().set_parallel(true)
 	tw.tween_property(_title, "modulate:a", 1.0, 0.35)
 	tw.tween_property(_sub, "modulate:a", 1.0, 0.35).set_delay(0.08)
+
+
 
 
 func go(path: String, hold: float = 0.0) -> void:

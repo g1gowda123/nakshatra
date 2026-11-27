@@ -11,21 +11,23 @@ low-poly demo, and so that the viva panel can see *why* each choice was made.
 
 ## 1. The north star
 
-**An observatory almanac, handled by hand.**
+**An observatory almanac, torn out and taped to a wall.**
 
-The reference is not a AAA space game. It is a small printed star atlas, a
-paper lantern, a brass meridian ring, and a hill at 9 p.m. The build should feel
-like someone set it down on a table for you: cream paper, iron-gall ink,
-vermillion accents, gold leaf, and a sky that is allowed to be dark.
+The reference is a small printed star atlas, a paper lantern, a brass meridian
+ring, and a hill at 9 p.m. — then a teenager's poster wall: oversized condensed
+type, acid-yellow stickers, red bars, hard offset shadows, and a ticker that
+never quite sits still. Cream paper stays for reading; the menu is allowed to
+be loud.
 
 Three rules follow from that:
 
 1. **Texture before polygon count.** A shader with paper grain and warm light
    pools reads richer than a high-poly asset with a flat material.
-2. **One warm light, one cool dark.** Every scene is a warm point of attention
-   inside a cool blue-black field. Do not add a third emotional colour.
-3. **Motion is breathing, not bouncing.** Lanterns sway; stars drift; the
-   camera floats by a few centimetres. Nothing snaps, springs or confettis.
+2. **One warm light, one cool dark, one electric hit.** The night is ink; the
+   attention is acid yellow; vermilion and cyan are punctuation, not fields.
+3. **Motion is percussion.** Hover lifts, press squashes, release springs, a
+   result gets one stamp. Then the screen holds still. No ambient confetti;
+   no animation that fights the text.
 
 ---
 
@@ -35,14 +37,14 @@ Three rules follow from that:
 
 | Token | Hex | Use |
 |---|---|---|
-| `G.BG` | `#060910` | The night itself. Never pure black; pure black kills depth. |
-| `G.INK` | `#2a1608` | Printed ink on paper, painted lantern numbers. |
-| `G.CREAM` | `#f2e8d5` | Paper, primary type, the certificate. |
-| `G.GOLD` | `#d9b36c` | Brass, constellation lines, the one accent that means “look”. |
-| `G.GOLD_SOFT` | `#b8915a` | Secondary gold; labels and rules that should not shout. |
-| `G.VERMILION` | `#cf6b4a` | The seal, the danger state, a single warm interruption. |
-| `G.TEAL` | `#8fc7b8` | Nakshatra lines, hints, the “alive” state. |
-| `G.MUTED` | `#aeb8ca` | Supporting copy. Never below 70% opacity on the night field. |
+| `G.BG` | `#080710` | The night itself. Never pure black; pure black kills depth. |
+| `G.INK` | `#191322` | Printed ink on paper, hard borders, button text. |
+| `G.CREAM` | `#fff6e4` | Paper, primary type, the certificate. |
+| `G.GOLD` | `#ffd23f` | Acid attention: CTA, constellation lines, the one accent that means “look”. |
+| `G.GOLD_SOFT` | `#e6b92e` | Secondary gold; rules that should not shout. |
+| `G.VERMILION` | `#ff4b3a` | The seal, the stamp, a single warm interruption. |
+| `G.TEAL` | `#5ff2e3` | Nakshatra lines, hints, the “alive” state. |
+| `G.MUTED` | `#bcb4ce` | Supporting copy. Never below 70% opacity on the night field. |
 
 Rules:
 
@@ -52,6 +54,11 @@ Rules:
   hint rings, or a “found” state.
 - Vermilion is rare. If three things on screen are vermilion, none of them is
   an accent any more.
+- **Type:** Anton for every heading and control; Noto Sans for body; Noto Sans
+  Kannada for the local script. Corners are square (0–1 px), borders are 2 px,
+  shadows are hard offsets (4–8 px), never soft glows.
+- **Reaction:** every button has hover lift, press squash, release spring, a
+  quiet tick and a spark. A result is a physical stamp, not a grey toast.
 
 ### Type
 

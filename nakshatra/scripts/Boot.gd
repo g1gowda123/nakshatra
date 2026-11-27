@@ -312,49 +312,54 @@ func _build_portrait_body(body: Control) -> void:
 
 func _add_title_block(parent: VBoxContainer, title_size: int) -> void:
 	var compact_land := UI.is_compact() and not UI.is_portrait()
-	var col := UI.vbox(7)
+	var title_px := title_size
+	if not compact_land and not UI.is_portrait():
+		title_px = maxi(title_size, 96)
+	var col := UI.vbox(6)
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	parent.add_child(col)
 
-	var kicker := UI.tracked("A FREE-CHOICE SKY LAB   ·   CLASSES 6–9", 9 if compact_land else 10, Color(G.GOLD_SOFT, 0.95), 2)
-	col.add_child(kicker)
+	var badges := UI.hbox(7)
+	badges.add_child(UI.sticker("CLASSES 6–9", G.VERMILION, G.CREAM, -2.0))
+	badges.add_child(UI.sticker("FREE CHOICE", G.TEAL, G.INK, 1.4))
+	col.add_child(badges)
 
-	var title := UI.display("Nakshatra", title_size, G.CREAM)
+	var title := UI.display("NAKSHATRA", title_px, G.CREAM)
 	title.autowrap_mode = TextServer.AUTOWRAP_OFF
-	title.custom_minimum_size.y = title_size * 0.82
+	title.custom_minimum_size.y = title_px * 0.86
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	col.add_child(title)
 
-	var sub := UI.tracked("THE SKY WEAVERS", int(clampf(title_size * 0.18, 11, 15)), Color(G.GOLD, 0.95), 6)
-	col.add_child(sub)
+	var sub_row := UI.hbox(8)
+	sub_row.add_child(UI.slash(G.VERMILION, 7))
+	var sub := UI.sticker("THE SKY WEAVERS", G.VERMILION, G.CREAM, -1.2)
+	sub_row.add_child(sub)
+	col.add_child(sub_row)
 
-	var kannada := UI.label("ನಕ್ಷತ್ರ  ·  ಆಕಾಶ ನೇಯುವವರು", int(clampf(title_size * 0.22, 14, 19)), Color(G.GOLD, 0.62), "kannada")
+	var kannada := UI.label("ನಕ್ಷತ್ರ  ·  ಆಕಾಶ ನೇಯುವವರು", int(clampf(title_px * 0.17, 13, 17)), Color(G.CREAM, 0.8), "kannada")
 	col.add_child(kannada)
 
-	var gap := UI.rule(Color(G.GOLD, 0.18), 1)
-	gap.custom_minimum_size = Vector2(0, 1)
-	col.add_child(gap)
+	var thick := UI.rule(G.GOLD, 3)
+	thick.custom_minimum_size = Vector2(84, 3)
+	col.add_child(thick)
 
-	var tag := UI.label("Seven lanterns on a hill. One real sky. Choose any path.", int(clampf(title_size * 0.22, 15, 19)), G.CREAM)
+	var tag := UI.label("SEVEN LANTERNS ON A HILL. ONE REAL SKY.", int(clampf(title_px * 0.2, 15, 21)), G.CREAM, "display")
+	tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(tag)
 
-	var tag2 := UI.label("A free-choice night lab for middle school — at home on a phone, or on the classroom wall.", 14, Color(G.MUTED, 0.95))
+	var tag2 := UI.label("Pick any path. No locks, no order — just the sky above Chandragiri.", 14, Color(G.MUTED, 0.98))
 	if not compact_land:
 		col.add_child(tag2)
 
-	var gap2 := Control.new()
-	gap2.custom_minimum_size = Vector2(0, 5)
-	gap2.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(gap2)
-
-	var buttons := UI.vbox(12)
+	var buttons := UI.vbox(9)
 	col.add_child(buttons)
 
-	var begin := UI.button("Begin the night   ›", true, 20)
-	begin.custom_minimum_size = Vector2(250 if not compact_land else 220, 48)
+	var begin := UI.button("Begin the night   ›", true, 22)
+	begin.custom_minimum_size = Vector2(310 if not compact_land else 240, 56)
 	begin.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	begin.pressed.connect(func():
 		Sfx.play("lantern")
+		Juice.stamp("THE HILL IS OPEN", G.GOLD)
 		Router.go("res://scenes/Lab.tscn"))
 	buttons.add_child(begin)
 
@@ -383,12 +388,16 @@ func _add_title_block(parent: VBoxContainer, title_size: int) -> void:
 		_show_story())
 	links.add_child(story)
 
+	var ticker := UI.marquee("SEVEN LANTERNS  ·  ONE REAL SKY  ·  PICK ANY PATH  ·  NO LOCKS  ·  ", G.GOLD, 14)
+	ticker.custom_minimum_size.y = 22
+	col.add_child(ticker)
+
 
 func _add_postcard(parent: Control, size: Vector2, rotate: bool) -> void:
 	var tex: Texture2D = null
 	if ResourceLoader.exists("res://assets/art/plates/plate_title.webp"):
 		tex = load("res://assets/art/plates/plate_title.webp")
-	var plate := UI.image_plate(tex, size.y, "PLATE I  ·  THE LANTERN HILL  ·  13° N", -1.2 if rotate else 0.0)
+	var plate := UI.image_plate(tex, maxf(90.0, size.y - 24.0), "PLATE I  ·  THE LANTERN HILL  ·  13° N", -1.2 if rotate else 0.0)
 	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if parent is Control and not (parent is VBoxContainer):
 		plate.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -520,7 +529,7 @@ func _show_credits() -> void:
 	body.add_child(UI.rule(Color(G.INK, 0.18), 1))
 	body.add_child(UI.rich("[b]Sky data[/b]\nHYG Database v3 (David Nash, astronexus.com), CC BY-SA 4.0. Constellation and nakshatra line data from Stellarium skycultures (GPL v2), used with gratitude.", 14, G.INK_SOFT))
 	body.add_child(UI.rich("[b]Illustrations[/b]\nOriginal papercut-style art made for this project. No stock images, no external assets.", 14, G.INK_SOFT))
-	body.add_child(UI.rich("[b]Type[/b]\nCormorant Garamond, Noto Serif, Noto Sans and Noto Sans Kannada — SIL Open Font License.", 14, G.INK_SOFT))
+	body.add_child(UI.rich("[b]Type[/b]\nAnton, Cormorant Garamond, Noto Sans and Noto Sans Kannada — SIL Open Font License.", 14, G.INK_SOFT))
 	body.add_child(UI.rich("[b]Everything else[/b]\nCode, design, star shaders and audio are original and offline. Schools may copy and share the game freely.", 14, G.INK_SOFT))
 	body.add_child(UI.label("A note on scale: planet sizes and distances are exaggerated or compressed so they can share a screen. The numbers are real; the drawing is a diagram.", 13, G.INK_SOFT))
 	body.add_child(UI.rule(Color(G.INK, 0.18), 1))
