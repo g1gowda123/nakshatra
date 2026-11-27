@@ -1,0 +1,992 @@
+{
+  "town": "Chandragiri",
+  "modules": {
+    "moon": {
+      "title": "The Moon's Mask",
+      "kannada": "ಚಂದ್ರನ ಮುಖ",
+      "tag": "Moon phases",
+      "minutes": "5 min",
+      "blurb": "Drag the Moon around Earth and see why its shape changes in our sky.",
+      "art": "res://assets/art/plates/plate_moon.webp",
+      "color": "f2d49b",
+      "objective": "Explain why the Moon has phases, name the eight phases, and connect them to the Sun–Earth–Moon geometry.",
+      "curriculum": "Moon phases · Earth–Moon–Sun system",
+      "lesson": {
+        "big_idea": "The Moon never changes shape. We simply see different amounts of its sunlit half.",
+        "paragraphs": [
+          "The Moon is a dark, rocky world. At any moment, half of it is lit by the Sun and half is in shadow. The Moon does not make its own light; it reflects sunlight.",
+          "As the Moon orbits Earth, the angle between the Sun, Earth and Moon changes. Sometimes the lit half faces away from us (new moon), sometimes it faces us fully (full moon), and sometimes we see only a thin slice.",
+          "When the lit part is growing, we call it waxing — Shukla Paksha in the Indian calendar. When it is shrinking, it is waning — Krishna Paksha. One full cycle takes about 29.5 days.",
+          "The far side of the Moon is not permanently dark. It receives just as much sunlight as the near side; we simply never see it from Earth."
+        ],
+        "what_you_do": "Drag the Moon around Earth and watch the live 'view from Earth'. Match four phases. After every attempt, the note explains the geometry you just created.",
+        "terms": [
+          "new moon · ಅಮಾವಾಸ್ಯೆ",
+          "full moon · ಹುಣ್ಣಿಮೆ",
+          "waxing · ಶುಕ್ಲ ಪಕ್ಷ",
+          "waning · ಕೃಷ್ಣ ಪಕ್ಷ"
+        ]
+      }
+    },
+    "stars": {
+      "title": "Thread the Stars",
+      "kannada": "ನಕ್ಷತ್ರಗಳ ದಾರ",
+      "tag": "Constellations",
+      "minutes": "6 min",
+      "blurb": "Hunt for the star patterns behind India's oldest sky stories.",
+      "art": "res://assets/art/plates/plate_stars.webp",
+      "color": "9fd8f0",
+      "objective": "Recognise five constellations, use star patterns to navigate the sky, and connect Indian nakshatra names to the same stars.",
+      "curriculum": "Stars and the Solar System · constellations",
+      "lesson": {
+        "big_idea": "A constellation is a pattern people agreed to see — not a group of stars that are close together.",
+        "paragraphs": [
+          "The sky has no drawn lines. People connected bright stars into pictures to remember them and to tell stories. Different cultures connected the same stars in different ways.",
+          "The stars in one pattern can lie hundreds of light-years apart. They look close only because they happen to line up from Earth. Over tens of thousands of years, that pattern will slowly change.",
+          "Indian sky watchers divided the Moon's path into 27 nakshatras. The same stars appear in modern constellations such as Ursa Major (Saptarishi) and Orion (Mriga)."
+        ],
+        "what_you_do": "Hunt five patterns. Tap three of their stars, then read the story and the science behind each one.",
+        "terms": [
+          "Saptarishi · ಸಪ್ತರ್ಷಿ",
+          "Mriga · ಮೃಗಶಿರ",
+          "nakshatra · ನಕ್ಷತ್ರ",
+          "light-year · ಜ್ಯೋತಿರ್ವರ್ಷ"
+        ]
+      }
+    },
+    "scale": {
+      "title": "The Long Road",
+      "kannada": "ದೀರ್ಘ ದಾರಿ",
+      "tag": "Solar scale",
+      "minutes": "7 min",
+      "blurb": "Travel from the Sun to Neptune and feel how empty space really is.",
+      "art": "res://assets/art/plates/plate_planets.webp",
+      "color": "f0b98a",
+      "objective": "Order the planets, compare their sizes and years, and feel the true emptiness of the solar system using light-minutes.",
+      "curriculum": "The Solar System · scale and light-time",
+      "lesson": {
+        "big_idea": "The solar system is almost entirely empty space.",
+        "paragraphs": [
+          "Astronomers measure distance in astronomical units (AU). One AU is the average distance from Earth to the Sun: about 15 crore km.",
+          "Light is the fastest thing in the universe, yet it takes 8.3 minutes to reach Earth and more than 4 hours to reach Neptune. Those light-minutes are a better way to feel the scale than a number on a page.",
+          "Planet sizes are just as surprising: about 1,300 Earths would fit inside Jupiter, and the Sun holds 99.8% of the solar system's mass. The orrery is compressed so all eight planets can share a screen; the numbers on the cards are real."
+        ],
+        "what_you_do": "Tap planets for their data, compare true distances and true sizes, and answer four riddles.",
+        "terms": [
+          "astronomical unit · ಖಗೋಳ ಘಟಕ",
+          "light-minute · ಬೆಳಕಿನ ನಿಮಿಷ",
+          "orbit · ಕಕ್ಷೆ",
+          "planet · ಗ್ರಹ"
+        ]
+      }
+    },
+    "seasons": {
+      "title": "The Turning Year",
+      "kannada": "ತಿರುಗುವ ವರ್ಷ",
+      "tag": "Seasons & tilt",
+      "minutes": "6 min",
+      "blurb": "Tilt the Earth and discover why June is hot in India.",
+      "art": "res://assets/art/plates/plate_seasons.webp",
+      "color": "b9d6a8",
+      "objective": "Show that seasons come from Earth's 23.4° tilt, not distance, and find solstices and equinoxes.",
+      "curriculum": "Motions of the Earth · seasons and day length",
+      "lesson": {
+        "big_idea": "Earth's 23.4° tilt — not its distance from the Sun — gives us seasons.",
+        "paragraphs": [
+          "Earth's axis is tilted 23.4° to its orbit. As Earth travels around the Sun, the Northern and Southern Hemispheres take turns leaning toward the Sun.",
+          "When your hemisphere leans toward the Sun, sunlight arrives more directly and days are longer: summer. When it leans away, the Sun is lower and days are shorter: winter.",
+          "At the equinoxes, the terminator passes through both poles and day and night are nearly equal everywhere. Near the equator the change in day length is small, but the noon Sun's height still changes a lot.",
+          "Earth is actually closest to the Sun in early January. Distance is not what makes the seasons."
+        ],
+        "what_you_do": "Move through the year, find the solstices and an equinox, then set the tilt to zero and watch the seasons vanish.",
+        "terms": [
+          "solstice · ಅಯನಾಂತ",
+          "equinox · ವಿಷುವತ್ ಸಂಕ್ರಾಂತಿ",
+          "axial tilt · ಅಕ್ಷದ ಓರೆ",
+          "day length · ಹಗಲಿನ ಉದ್ದ"
+        ]
+      }
+    },
+    "flares": {
+      "title": "Solar Storm Lab",
+      "kannada": "ಸೌರ ಚಂಡಮಾರುತ",
+      "tag": "Solar flares & space weather",
+      "minutes": "8 min",
+      "blurb": "Stress the Sun's magnetic field, trigger a flare, and race a coronal mass ejection to Earth.",
+      "art": "res://assets/art/plates/plate_flares.webp",
+      "color": "ffb066",
+      "objective": "Explain solar flares, coronal mass ejections, auroras and space weather — and why light arrives before the storm.",
+      "curriculum": "The Sun and space weather · magnetic fields",
+      "lesson": {
+        "big_idea": "The Sun's magnetic field can snap and release a flare — a blast of light and charged particles that can reach Earth.",
+        "paragraphs": [
+          "The Sun is a giant ball of plasma. Its magnetic field is twisted by the Sun's rotation and by rising and falling convection, especially around dark patches called sunspots.",
+          "When tangled field lines snap and reconnect, they release a solar flare: a sudden burst of X-rays and ultraviolet light. A coronal mass ejection (CME) — billions of tonnes of charged particles — may follow.",
+          "The flare's light reaches Earth in about 8 minutes. The CME can take 15 hours to 3 days. When those particles reach Earth, our magnetic field guides them toward the poles, where they excite oxygen and nitrogen and make auroras.",
+          "Space weather can disturb satellites, GPS, radio and power grids. The 1859 Carrington Event sent auroras as far as the tropics. India's Aditya-L1 spacecraft watches the Sun from the L1 point to give early warning."
+        ],
+        "what_you_do": "Build up magnetic stress, trigger a flare, race a CME to Earth, protect a satellite, and explain why the aurora arrives later than the light.",
+        "terms": [
+          "solar flare · ಸೌರ ಜ್ವಾಲೆ",
+          "coronal mass ejection · ಕರೋನಾ ರಾಶಿ ಹೊರಹೊಮ್ಮುವಿಕೆ",
+          "sunspot · ಸೂರ್ಯಕಲೆ",
+          "aurora · ಧ್ರುವ ಜ್ಯೋತಿ"
+        ]
+      },
+      "art_credit": "Real image: NASA / Solar Dynamics Observatory (public domain)"
+    },
+    "blackhole": {
+      "title": "Black Hole Lab",
+      "kannada": "ಕಪ್ಪು ಕುಳಿ",
+      "tag": "Gravity, light & time",
+      "minutes": "9 min",
+      "blurb": "Lower a probe toward the event horizon and watch its clock slow down.",
+      "art": "res://assets/art/plates/plate_blackhole.webp",
+      "color": "d9a7ff",
+      "objective": "Explain event horizons, accretion disks, black-hole detection and gravitational time dilation.",
+      "curriculum": "Gravity and extreme objects · Einstein's universe",
+      "lesson": {
+        "big_idea": "A black hole is gravity so concentrated that nothing — not even light — can escape its event horizon.",
+        "paragraphs": [
+          "When a very massive star runs out of fuel, its core can collapse into a black hole. The mass is packed into a region so small that the escape velocity exceeds the speed of light.",
+          "The event horizon is not a solid surface. It is a boundary in space: anything that crosses it is gone from our view. The 'black' part is the absence of light that can escape.",
+          "Around a black hole, gas spirals in and heats up, forming a glowing accretion disk. Magnetic fields can launch jets. We detect black holes from the motion of stars, from X-rays, from gravitational waves, and from the shadows imaged by the Event Horizon Telescope.",
+          "Black holes are not cosmic vacuum cleaners. Far away, their gravity is the same as any mass. If the Sun were replaced by a black hole of the same mass, Earth would keep orbiting — but it would freeze.",
+          "Near a black hole, clocks slow down compared with clocks far away. Einstein predicted this gravitational time dilation; it is measured in GPS, gravitational-wave detectors and precise laboratory clocks."
+        ],
+        "what_you_do": "Change the black hole's mass, lower a probe toward the event horizon, and compare its clock with Earth's.",
+        "terms": [
+          "event horizon · ಘಟನೆ ಕ್ಷಿತಿಜ",
+          "accretion disk · ಸಂಚಯನ ಬಿಂಬ",
+          "time dilation · ಕಾಲ ವಿಸ್ತರಣೆ",
+          "black hole · ಕಪ್ಪು ಕುಳಿ"
+        ]
+      },
+      "art_credit": "Real image: Event Horizon Telescope Collaboration (CC BY 4.0)"
+    },
+    "quiz": {
+      "title": "Sky Riddles",
+      "kannada": "ಆಕಾಶ ಒಗಟುಗಳು",
+      "tag": "14 questions",
+      "minutes": "10 min",
+      "blurb": "A friendly check of everything you have discovered — no timer.",
+      "art": "res://assets/art/plates/plate_quiz.webp",
+      "color": "e9b7c8",
+      "objective": "Check understanding of moon phases, constellations, planetary scale and seasons — with explanations for every answer.",
+      "curriculum": "Revision · Classes 6–9 earth and space topics",
+      "lesson": {
+        "big_idea": "A friendly check — and every answer teaches something.",
+        "paragraphs": [
+          "These questions bring together the Moon, stars, planets, seasons and the new cosmic extremes. There is no timer and no penalty for a wrong answer.",
+          "Use the same set before and after a lesson to see how your ideas have changed. Read every explanation, even when you are right."
+        ],
+        "what_you_do": "Answer fourteen questions. Read the explanation after each one, then review your score.",
+        "terms": [
+          "pre-test · ಪೂರ್ವ ಪರೀಕ್ಷೆ",
+          "post-test · ಅನಂತರ ಪರೀಕ್ಷೆ"
+        ]
+      }
+    }
+  },
+  "moon": {
+    "intro": "Half of the Moon is always lit by the Sun. What changes is how much of that lit half we can see from Earth.",
+    "phases": [
+      {
+        "name": "New Moon",
+        "kannada": "ಅಮಾವಾಸ್ಯೆ",
+        "illum": 0.0,
+        "note": "The Moon is between Earth and the Sun. Its lit side faces away from us, so the night sky looks moonless."
+      },
+      {
+        "name": "Waxing Crescent",
+        "kannada": "ಶುಕ್ಲ ಪಕ್ಷದ ಚಂದ್ರ",
+        "illum": 0.22,
+        "note": "A thin slice appears in the evening sky. 'Waxing' means growing."
+      },
+      {
+        "name": "First Quarter",
+        "kannada": "ಅಷ್ಟಮಿ",
+        "illum": 0.5,
+        "note": "Half of the Moon's disc is lit. It rises around noon and sets around midnight."
+      },
+      {
+        "name": "Waxing Gibbous",
+        "kannada": "ಶುಕ್ಲ ಪೂರ್ಣಿಮೆಗೆ ಮುನ್ನ",
+        "illum": 0.78,
+        "note": "More than half is lit and still growing."
+      },
+      {
+        "name": "Full Moon",
+        "kannada": "ಹುಣ್ಣಿಮೆ",
+        "illum": 1.0,
+        "note": "Earth is between the Sun and the Moon, so the whole sunlit face is visible. It rises at sunset."
+      },
+      {
+        "name": "Waning Gibbous",
+        "kannada": "ಕೃಷ್ಣ ಪಕ್ಷ",
+        "illum": 0.78,
+        "note": "Still mostly lit, but shrinking. 'Waning' means getting smaller."
+      },
+      {
+        "name": "Last Quarter",
+        "kannada": "ಕೃಷ್ಣ ಅಷ್ಟಮಿ",
+        "illum": 0.5,
+        "note": "Half lit again — the opposite half. It rises around midnight."
+      },
+      {
+        "name": "Waning Crescent",
+        "kannada": "ಕೃಷ್ಣ ಚಂದ್ರ",
+        "illum": 0.22,
+        "note": "A thin morning Moon, visible before sunrise."
+      }
+    ],
+    "challenges": [
+      {
+        "id": "waxing_crescent",
+        "prompt": "Make a waxing crescent — the thin evening Moon.",
+        "target": "waxing_crescent"
+      },
+      {
+        "id": "first_quarter",
+        "prompt": "Make a first quarter — half lit and growing.",
+        "target": "first_quarter"
+      },
+      {
+        "id": "full",
+        "prompt": "Make a full moon.",
+        "target": "full"
+      },
+      {
+        "id": "waning_crescent",
+        "prompt": "Make a waning crescent — the thin morning Moon.",
+        "target": "waning_crescent"
+      }
+    ],
+    "facts": [
+      "The Moon does not make its own light. It reflects sunlight.",
+      "The far side of the Moon is not always dark — it gets just as much sunlight as the near side. We simply never see it from Earth.",
+      "The Moon is about 3,84,400 km away. Light takes about 1.3 seconds to cross that gap.",
+      "A 'lunar month' from one new moon to the next lasts about 29.5 days."
+    ],
+    "learn": "Half of the Moon is always sunlit. From Earth we see different amounts of that lit half as the Moon orbits us. When the Moon is between Earth and the Sun, the lit side faces away — a new moon. When Earth is between the Sun and the Moon, the whole lit face is visible — a full moon. The boundary between day and night on the Moon is called the terminator."
+  },
+  "star_hunts": [
+    {
+      "id": "UMa",
+      "name": "Saptarishi",
+      "western": "Ursa Major",
+      "kannada": "ಸಪ್ತರ್ಷಿ",
+      "hint": "Look for a long ladle: four stars make the bowl, three make the handle. The two stars at the bowl's edge point to Dhruva, the Pole Star.",
+      "story": "In India, these seven bright stars are the Saptarishi — seven sages who guard the northern sky. Other cultures saw a bear, a wagon, or a plough.",
+      "science": "The seven stars are not close together. They lie roughly 60 to 120 light-years from us. Their pattern is a line-of-sight coincidence that will slowly change over thousands of years.",
+      "nakshatra": "Saptarishi is part of the constellation Ursa Major. In the nakshatra system, its stars help define the sky's northern direction."
+    },
+    {
+      "id": "Ori",
+      "name": "Mriga",
+      "western": "Orion",
+      "kannada": "ಮೃಗಶಿರ",
+      "hint": "Search for three stars in a neat row — Orion's Belt. Two bright shoulders above, two bright knees below.",
+      "story": "Orion the Hunter strides across the winter sky. Indian sky watchers linked his stars to Mriga, the deer, and to Kalpurusha, the cosmic being.",
+      "science": "Betelgeuse (Ardra) is a red supergiant about 700 times wider than the Sun. Rigel is a blue supergiant. The Belt stars are about 1,300 light-years away.",
+      "nakshatra": "Betelgeuse is the nakshatra Ardra. The Orion region also holds Mrigashira, the deer's head — one of the 27 lunar mansions."
+    },
+    {
+      "id": "Cas",
+      "name": "Sharmishtha",
+      "western": "Cassiopeia",
+      "kannada": "ಶರ್ಮಿಷ್ಠೆ",
+      "hint": "Find a giant W or M made of five bright stars, low in the northern sky.",
+      "story": "Cassiopeia was a queen doomed to circle the pole on her throne. Indian sky watchers also read these stars as Sharmishtha, a queen in an old story of pride and friendship.",
+      "science": "Its five brightest stars are 230 to 550 light-years away. From India the constellation stays low in the north and is best seen on autumn evenings.",
+      "nakshatra": "Cassiopeia lies in the northern sky, near the region of the nakshatra Uttara Bhadrapada."
+    },
+    {
+      "id": "Sco",
+      "name": "Vrishchika",
+      "western": "Scorpius",
+      "kannada": "ವೃಶ್ಚಿಕ",
+      "hint": "Look for a curved tail with a red heart. The red star is Jyeshtha — Antares.",
+      "story": "Scorpius is the scorpion whose sting ended Orion's pride. In the sky the two are never seen together: when the scorpion rises, the hunter sets.",
+      "science": "Antares is a red supergiant about 700 times the Sun's diameter, roughly 550 light-years away. Its name means 'rival of Mars' because of its colour.",
+      "nakshatra": "Antares is Jyeshtha, the eldest, the 18th nakshatra."
+    },
+    {
+      "id": "Cyg",
+      "name": "Hamsa",
+      "western": "Cygnus",
+      "kannada": "ಹಂಸ",
+      "hint": "Find a great cross flying along the Milky Way. The bright star at its tail is Deneb.",
+      "story": "Hamsa, the swan, flies down the river of the Milky Way. In Greek stories, Zeus took the form of a swan and placed it among the stars.",
+      "science": "Deneb is one of the most luminous stars we can see — roughly 200,000 times the Sun's brightness — about 2,600 light-years away. It is the tail of the swan.",
+      "nakshatra": "Cygnus flies beside Shravana, the nakshatra of listening, whose bright star is Altair in the neighbouring eagle, Aquila."
+    }
+  ],
+  "planets": [
+    {
+      "name": "Mercury",
+      "kannada": "ಬುಧ",
+      "au": 0.39,
+      "radius_km": 2440,
+      "year_days": 88,
+      "color": "b8b1a6",
+      "fact": "The smallest planet. A year here lasts only 88 Earth days — and a day lasts longer than its year.",
+      "clue": "I am the hottest... no, I am the fastest. My year is just 88 Earth days."
+    },
+    {
+      "name": "Venus",
+      "kannada": "ಶುಕ್ರ",
+      "au": 0.72,
+      "radius_km": 6052,
+      "year_days": 225,
+      "color": "f0d8a8",
+      "fact": "The hottest planet — about 465°C. A thick carbon-dioxide atmosphere traps heat in a runaway greenhouse effect.",
+      "clue": "I am the hottest planet, wrapped in thick clouds."
+    },
+    {
+      "name": "Earth",
+      "kannada": "ಭೂಮಿ",
+      "au": 1.0,
+      "radius_km": 6371,
+      "year_days": 365.25,
+      "color": "5b9bd5",
+      "fact": "The only world we know with liquid-water oceans and life. Sunlight takes about 8 minutes 20 seconds to reach us.",
+      "clue": "I have oceans, life, and one large Moon."
+    },
+    {
+      "name": "Mars",
+      "kannada": "ಮಂಗಳ",
+      "au": 1.52,
+      "radius_km": 3390,
+      "year_days": 687,
+      "color": "c1683f",
+      "fact": "Home of Olympus Mons, a volcano nearly three times the height of Everest. Its red colour comes from iron oxide — rust.",
+      "clue": "I am red, rusty, and have the tallest volcano in the solar system."
+    },
+    {
+      "name": "Jupiter",
+      "kannada": "ಗುರು",
+      "au": 5.2,
+      "radius_km": 69911,
+      "year_days": 4333,
+      "color": "d9b38c",
+      "fact": "More massive than all the other planets combined. The Great Red Spot is a storm wider than Earth.",
+      "clue": "I am the giant with a storm bigger than Earth."
+    },
+    {
+      "name": "Saturn",
+      "kannada": "ಶನಿ",
+      "au": 9.58,
+      "radius_km": 58232,
+      "year_days": 10759,
+      "color": "e8cf9a",
+      "fact": "Its rings are billions of pieces of ice and rock, from dust grains to house-sized boulders.",
+      "clue": "I wear the largest rings of ice and rock."
+    },
+    {
+      "name": "Uranus",
+      "kannada": "ಯುರೇನಸ್",
+      "au": 19.2,
+      "radius_km": 25362,
+      "year_days": 30687,
+      "color": "93dede",
+      "fact": "Uranus rolls on its side: its axis is tilted about 98° to its orbit. It takes 84 Earth years to go around the Sun.",
+      "clue": "I am tipped on my side and roll around the Sun."
+    },
+    {
+      "name": "Neptune",
+      "kannada": "ನೆಪ್ಚೂನ್",
+      "au": 30.05,
+      "radius_km": 24622,
+      "year_days": 60190,
+      "color": "4f6dd8",
+      "fact": "The windiest world: speeds reach about 2,000 km/h. One Neptune year lasts 165 Earth years.",
+      "clue": "I am the farthest planet and my winds are the fastest."
+    }
+  ],
+  "scale_riddles": [
+    {
+      "answer": "Venus",
+      "prompt": "I am the hottest planet, wrapped in thick clouds. Who am I?"
+    },
+    {
+      "answer": "Saturn",
+      "prompt": "I wear rings made of billions of pieces of ice and rock. Who am I?"
+    },
+    {
+      "answer": "Mercury",
+      "prompt": "My year lasts only 88 Earth days. Who am I?"
+    },
+    {
+      "answer": "Uranus",
+      "prompt": "I am tipped on my side and roll around the Sun. Who am I?"
+    }
+  ],
+  "seasons": {
+    "intro": "Earth's axis is tilted 23.4°. As Earth orbits the Sun, the Northern Hemisphere sometimes leans toward the Sun and sometimes away. That tilt — not our distance from the Sun — gives us seasons.",
+    "challenges": [
+      {
+        "id": "june",
+        "prompt": "Find the June solstice: the Northern Hemisphere leans most toward the Sun.",
+        "month": 6.0,
+        "tol": 0.8
+      },
+      {
+        "id": "december",
+        "prompt": "Find the December solstice: the Northern Hemisphere leans away.",
+        "month": 12.0,
+        "tol": 0.8
+      },
+      {
+        "id": "equinox",
+        "prompt": "Find an equinox: day and night are nearly equal everywhere.",
+        "month": 3.0,
+        "tol": 0.8,
+        "alt_month": 9.0
+      },
+      {
+        "id": "notilt",
+        "prompt": "Make the seasons disappear: set Earth's axial tilt to zero.",
+        "month": 6.0,
+        "tol": 1.0
+      }
+    ],
+    "facts": [
+      "Near the equator, day length changes only a little. But the Sun's height at noon still changes through the year.",
+      "The seasons are opposite in the two hemispheres. When India has summer, Australia has winter.",
+      "India's monsoon is a seasonal shift in winds, shaped by the heating of land and sea — another way the tilted year matters.",
+      "Equinox means 'equal night'. On those days the Sun rises almost due east and sets almost due west."
+    ],
+    "learn": "Earth's axis is tilted 23.4° to its orbit. The tilt stays pointed in almost the same direction all year, so each hemisphere leans toward the Sun for part of the year and away for the rest. Near the solstices the noon Sun is highest or lowest; at the equinoxes day and night are nearly equal everywhere. Distance changes, but it is not what makes the seasons."
+  },
+  "quiz": [
+    {
+      "q": "Why does the Moon seem to change shape during a month?",
+      "options": [
+        "Earth's shadow falls on it",
+        "We see different amounts of its sunlit half",
+        "Clouds cover its surface",
+        "It makes its own light"
+      ],
+      "answer": 1,
+      "why": "Half the Moon is always lit. As it orbits Earth we see more or less of that lit half. Earth's shadow only matters during a lunar eclipse."
+    },
+    {
+      "q": "About how long does sunlight take to reach Earth?",
+      "options": [
+        "8 seconds",
+        "8 minutes",
+        "8 hours",
+        "8 days"
+      ],
+      "answer": 1,
+      "why": "Light covers the 15 crore km from the Sun to Earth in about 8 minutes 20 seconds. That is why 1 AU is also about 8.3 light-minutes."
+    },
+    {
+      "q": "Which planet is the hottest?",
+      "options": [
+        "Mercury",
+        "Venus",
+        "Mars",
+        "Jupiter"
+      ],
+      "answer": 1,
+      "why": "Venus is farther from the Sun than Mercury, but its thick carbon-dioxide atmosphere traps heat. Its surface is about 465°C — hotter than Mercury."
+    },
+    {
+      "q": "The Saptarishi is another name for which constellation?",
+      "options": [
+        "Ursa Major",
+        "Orion",
+        "Scorpius",
+        "Cassiopeia"
+      ],
+      "answer": 0,
+      "why": "The seven sages of Indian sky lore are the seven bright stars of Ursa Major — the Great Bear, also called the Big Dipper or the Plough."
+    },
+    {
+      "q": "What is the main cause of seasons on Earth?",
+      "options": [
+        "Earth's changing distance from the Sun",
+        "The tilt of Earth's axis",
+        "The Moon's phases",
+        "The Sun's brightness changing"
+      ],
+      "answer": 1,
+      "why": "Earth's axis is tilted 23.4°. As we orbit, each hemisphere leans toward or away from the Sun, changing both day length and the height of the noon Sun."
+    },
+    {
+      "q": "Where is the Moon on a full moon night?",
+      "options": [
+        "Between Earth and the Sun",
+        "Opposite the Sun, as seen from Earth",
+        "Behind the Sun",
+        "At the celestial pole"
+      ],
+      "answer": 1,
+      "why": "At full moon, Earth is between the Sun and the Moon, so the whole sunlit face is visible. The Moon rises at sunset and sets at sunrise."
+    },
+    {
+      "q": "Which planet has the shortest year?",
+      "options": [
+        "Mercury",
+        "Venus",
+        "Earth",
+        "Mars"
+      ],
+      "answer": 0,
+      "why": "Mercury is closest to the Sun and moves fastest, completing one orbit in only 88 Earth days."
+    },
+    {
+      "q": "Why is Dhruva, the Pole Star, useful for finding direction?",
+      "options": [
+        "It is the brightest star",
+        "It stays nearly fixed in the north",
+        "It is the closest star",
+        "It is the Sun's twin"
+      ],
+      "answer": 1,
+      "why": "Dhruva (Polaris) sits almost directly above Earth's north pole, so the whole sky seems to turn around it. It stays nearly fixed in the north all night."
+    },
+    {
+      "q": "One astronomical unit (AU) is the distance between...",
+      "options": [
+        "Earth and the Moon",
+        "Earth and the Sun",
+        "The Sun and Neptune",
+        "Two neighbouring stars"
+      ],
+      "answer": 1,
+      "why": "1 AU is about 15 crore km — the average Earth–Sun distance. Neptune is about 30 AU away, which is why sunlight takes over 4 hours to reach it."
+    },
+    {
+      "q": "When would you look for a waning crescent Moon?",
+      "options": [
+        "Just after sunset",
+        "Just before sunrise",
+        "At midnight",
+        "All night long"
+      ],
+      "answer": 1,
+      "why": "A waning crescent rises in the early morning and sits low in the eastern sky before sunrise. A waxing crescent is the evening version."
+    },
+    {
+      "q": "What is a solar flare?",
+      "options": [
+        "A storm in Earth's atmosphere",
+        "A sudden release of magnetic energy from the Sun",
+        "A solar eclipse",
+        "A comet's tail"
+      ],
+      "answer": 1,
+      "why": "Tangled magnetic fields in the Sun's atmosphere can snap and reconnect, releasing a burst of X-rays and ultraviolet light. A coronal mass ejection may follow."
+    },
+    {
+      "q": "What is a black hole's event horizon?",
+      "options": [
+        "Its solid surface",
+        "The boundary beyond which nothing can escape",
+        "The edge of the accretion disk",
+        "The point where time begins"
+      ],
+      "answer": 1,
+      "why": "The event horizon is the distance at which the escape velocity equals the speed of light. Crossing it means no return — it is not a solid surface."
+    },
+    {
+      "q": "Why do auroras glow near the poles?",
+      "options": [
+        "Sunlight reflects off ice",
+        "Charged particles from the Sun excite gases in Earth's atmosphere",
+        "The Moon shines through the atmosphere",
+        "Earth's core heats the air"
+      ],
+      "answer": 1,
+      "why": "Earth's magnetic field funnels solar particles toward the poles. They collide with oxygen and nitrogen, making them glow green, red and purple."
+    },
+    {
+      "q": "Which statement about black holes is true?",
+      "options": [
+        "They suck in everything from far away",
+        "Their gravity far away is the same as any mass of the same size",
+        "They have a solid surface",
+        "They are all the same size"
+      ],
+      "answer": 1,
+      "why": "Black holes are not cosmic vacuum cleaners. At a distance, gravity depends on mass, not on how compact the object is. You must get close for the event horizon to matter."
+    }
+  ],
+  "story": [
+    "In the hill town of Chandragiri, the year turns on a night of lanterns. Every roof, every doorway, every courtyard glows.",
+    "The old sky-keeper has left seven unlit lanterns on the hill. Each one holds a question about the sky — about the Moon's mask, the threads between stars, the long road of the planets, and the turning year.",
+    "There is no single path. Choose any lantern, in any order. Read the sky at your own pace. The lanterns only ask that you look up.",
+    "When all seven burn, the town will light its lanterns — and the sky will answer."
+  ],
+  "teacher_note": "Nakshatra is a free-choice sky lab for Classes 6–9. Every exhibit is open from the first minute: no story gate, no locked levels. Each exhibit opens with a short written briefing before the activity. The 14-question Sky Riddles can be used as a pre-test and post-test; answers are explained immediately. Curriculum links: Moon phases and the Earth–Moon–Sun system (Class 8 Science, 'Stars and the Solar System'); constellations and nakshatras (same chapter); the solar system and planetary scale (Classes 6–8); seasons, day length and the tilt of the Earth (Class 6 Geography, 'Motions of the Earth'). Content sits a little above the textbook: light-minutes, why Venus is hotter than Mercury, how star patterns change over thousands of years, magnetic reconnection and space weather, and gravitational time dilation. The Solar Storm Lab and Black Hole Lab use real NASA/EHT imagery and explicitly separate evidence from movie myths. All facts are offline and credited. Kannada key terms appear under English labels in ಕನ್ನಡ mode.",
+  "scale": {
+    "learn": "The planets are astonishingly far apart. Light — the fastest thing in the universe — takes 8.3 minutes to reach Earth and over 4 hours to reach Neptune. Sizes are just as strange: about 1,300 Earths would fit inside Jupiter, and the Sun holds 99.8% of the solar system's mass."
+  },
+  "stars": {
+    "learn": "A constellation is a pattern people agreed to see, not a group of stars that are close together. The stars in a pattern can lie hundreds of light-years apart. Star hopping — using one bright pattern to find another — is how sky watchers have navigated for thousands of years. The same stars carry different names in different cultures: Saptarishi and Ursa Major are one sky, two stories."
+  },
+  "flares": {
+    "facts": [
+      "A solar flare is a sudden release of magnetic energy in the Sun's atmosphere. It can release as much energy as billions of hydrogen bombs.",
+      "The flare's light reaches Earth in about 8 minutes 20 seconds. A CME can take 15 hours to 3 days.",
+      "The 1859 Carrington Event caused auroras visible in the Caribbean and sparking in telegraph offices.",
+      "The Sun's activity rises and falls over an 11-year cycle. More sunspots usually means more flares.",
+      "Aditya-L1, India's solar observatory, watches the Sun from the Sun–Earth L1 point, 1.5 million km from Earth.",
+      "Never look directly at the Sun without a certified solar filter. Even dark sunglasses are not safe."
+    ],
+    "challenges": [
+      {
+        "id": "flare",
+        "prompt": "Build the magnetic stress above 70 and release a flare."
+      },
+      {
+        "id": "shield",
+        "prompt": "Protect the satellite: switch its shield on, then release another flare."
+      },
+      {
+        "id": "delay",
+        "prompt": "Why does the aurora arrive much later than the flare's light?",
+        "options": [
+          "The aurora is caused by moonlight",
+          "Light travels at light speed, while the CME particles travel much slower",
+          "The Sun switches off during the night",
+          "Auroras are unrelated to the Sun"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  "blackhole": {
+    "facts": [
+      "Sagittarius A*, the black hole at the centre of the Milky Way, has about 4 million times the Sun's mass.",
+      "M87* is about 6.5 billion solar masses; its shadow was the first black hole ever imaged, in 2019.",
+      "A 10-solar-mass black hole has an event horizon about 30 km across its radius — smaller than a city.",
+      "Gravitational waves from merging black holes were first detected by LIGO in 2015.",
+      "Near a black hole, clocks run slower relative to clocks far away. This is gravitational time dilation.",
+      "Black holes are not cosmic vacuum cleaners: at a distance, their gravity depends on their mass, just like any other object."
+    ],
+    "challenges": [
+      {
+        "id": "horizon",
+        "prompt": "Lower the probe below 1.1 event-horizon radii and watch its clock."
+      },
+      {
+        "id": "size",
+        "prompt": "Set the mass to about 10 Suns. How large is the event horizon's radius?",
+        "options": [
+          "About 3 km",
+          "About 30 km",
+          "About 300 km",
+          "About 3,000 km"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "myth",
+        "prompt": "Which statement about black holes is true?",
+        "options": [
+          "They suck in everything from far away",
+          "Their gravity far away is the same as any mass of the same size",
+          "They have a solid surface",
+          "They are all the same size"
+        ],
+        "answer": 1
+      },
+      {
+        "id": "detect",
+        "prompt": "How did the Event Horizon Telescope make the first black-hole image?",
+        "options": [
+          "With a single visible-light camera",
+          "By combining radio dishes across Earth into one virtual telescope",
+          "By sending a probe inside",
+          "By photographing the accretion disk with a phone"
+        ],
+        "answer": 1
+      }
+    ]
+  },
+  "wonders": [
+    {
+      "title": "Solar flares",
+      "kannada": "ಸೌರ ಜ್ವಾಲೆ",
+      "category": "Our Sun",
+      "text": "Magnetic fields in the Sun's atmosphere can snap and reconnect, releasing a flash of X-rays and ultraviolet light. A coronal mass ejection may follow, sending charged particles toward Earth. They can light up auroras and disturb satellites and power grids.",
+      "link": "flares"
+    },
+    {
+      "title": "Black holes",
+      "kannada": "ಕಪ್ಪು ಕುಳಿ",
+      "category": "Gravity",
+      "text": "A black hole is a concentration of mass so dense that nothing can escape its event horizon. Gas falling in forms a glowing accretion disk; magnetic jets can shoot out. We detect them by watching stars orbit invisible masses, by X-rays, by gravitational waves and by the shadows imaged by the Event Horizon Telescope.",
+      "link": "blackhole"
+    },
+    {
+      "title": "Nebulae",
+      "kannada": "ನೀಹಾರಿಕೆ",
+      "category": "Star birth",
+      "text": "Nebulae are vast clouds of hydrogen, helium and dust. Some are the nurseries where new stars form; others are the shells thrown off by dying stars. The Orion Nebula is about 1,344 light-years away and is visible to the naked eye as a fuzzy patch below Orion's Belt.",
+      "link": ""
+    },
+    {
+      "title": "Supernovae",
+      "kannada": "ಮಹಾಸ್ಫೋಟ",
+      "category": "Star death",
+      "text": "When a massive star's core collapses, it can explode as a supernova — briefly outshining a whole galaxy. These explosions forge and scatter heavy elements such as iron, calcium and oxygen: the atoms in your bones were made in stars. The Crab Nebula is the remnant of a supernova seen in 1054 CE.",
+      "link": ""
+    },
+    {
+      "title": "Neutron stars & pulsars",
+      "kannada": "ನ್ಯೂಟ್ರಾನ್ ನಕ್ಷತ್ರ",
+      "category": "Star death",
+      "text": "A neutron star is the crushed core left after a supernova: about 20 km across, yet more massive than the Sun. Some spin hundreds of times per second and sweep beams of radio waves across space. We see them as regular pulses — pulsars.",
+      "link": ""
+    },
+    {
+      "title": "Galaxies",
+      "kannada": "ನಕ್ಷತ್ರಪುಂಜಗಳು",
+      "category": "Cosmic scale",
+      "text": "Our Milky Way is a spiral galaxy about 1,00,000 light-years across, home to 100–400 billion stars. The nearest large galaxy, Andromeda, is 2.5 million light-years away and is moving toward us; in about 4.5 billion years the two will merge.",
+      "link": ""
+    },
+    {
+      "title": "Gravitational waves",
+      "kannada": "ಗುರುತ್ವ ಅಲೆಗಳು",
+      "category": "Einstein's universe",
+      "text": "When two black holes or neutron stars spiral together and merge, they shake the fabric of space-time. These ripples travel at the speed of light. LIGO detected the first one in 2015 — a merger of two black holes about 1.3 billion light-years away.",
+      "link": ""
+    },
+    {
+      "title": "Exoplanets",
+      "kannada": "ಬಾಹ್ಯ ಗ್ರಹಗಳು",
+      "category": "Other worlds",
+      "text": "More than 5,000 planets are known to orbit stars other than the Sun. Some are gas giants; some are rocky worlds in the 'habitable zone' where liquid water could exist. The TRAPPIST-1 system has seven Earth-sized planets around a cool red star, 40 light-years away.",
+      "link": ""
+    }
+  ],
+  "seminar": {
+    "title": "Nakshatra — The Sky Weavers",
+    "edition": "Seminar edition",
+    "duration": "12 slides · about 10 minutes",
+    "subtitle": "A presenter-first walkthrough of the seven exhibits and the engineering behind them.",
+    "slides": [
+      {
+        "kicker": "SEMINAR DEMO  ·  3RD SEMESTER CSE",
+        "title": "Nakshatra",
+        "subtitle": "The Sky Weavers — a free-choice 3D sky lab for Classes 6–9, built to run in a school browser.",
+        "bullets": [
+          "Seven interactive exhibits, one real star catalogue, and zero installation.",
+          "Designed for a phone in a student's hand and a projector at the back of the hall.",
+          "Godot 4.7, exported to the web, and playable offline after the first load."
+        ],
+        "note": "Good morning. Nakshatra is a free-choice 3D sky lab for middle school; the name means 'star' in Kannada. Everything you will see runs in a browser: no app store, no account, no internet after the page loads. I will show the design idea, the seven exhibits, the engineering underneath, and how a classroom can actually use it.",
+        "image": "res://assets/art/title_panel.webp",
+        "caption": "The cover art: a papercut hill town waiting for its lanterns.",
+        "lab": "res://scenes/Lab.tscn",
+        "lab_label": "Enter the Sky Lab",
+        "seconds": 45,
+        "sky": "stars"
+      },
+      {
+        "kicker": "WHY THIS EXISTS",
+        "title": "The sky is the best classroom.\nIt is also the hardest to book.",
+        "subtitle": "The subject is visual. The classroom is not.",
+        "bullets": [
+          "Astronomy is visual and three-dimensional; most classrooms have a textbook diagram and a bell schedule.",
+          "Telescopes, planetarium trips and dark skies are expensive, distant or weather-dependent.",
+          "The one device almost every student already owns is a phone — and it has a browser.",
+          "So the brief became a constraint: no install, no login, no network, low-end phone."
+        ],
+        "note": "Every astronomy teacher meets the same gap: the subject is visual, but the classroom is not. A diagram of the Moon's phases is static; a planetarium visit is rare; we cannot assume a telescope. But we can assume a browser. That constraint shaped the design: one URL, no installation, no account, and no network once it has loaded.",
+        "image": "res://assets/seminar/why_card.webp",
+        "caption": "The written Sky Note always comes before the interaction.",
+        "lab": "",
+        "lab_label": "",
+        "seconds": 50,
+        "sky": "stars"
+      },
+      {
+        "kicker": "THE DESIGN",
+        "title": "Explain first. Then let them touch the sky.",
+        "subtitle": "Free choice, real data, and a written lesson before every interaction.",
+        "bullets": [
+          "Every exhibit opens with a one-page briefing: the big idea, the context, the key words.",
+          "Seven lanterns are open from the first second — no locks, no forced order, no story gate.",
+          "The sky is real: HYG positions, colours and brightness, plus Stellarium constellation lines.",
+          "Portrait first for phones; the same scene expands to a projector without a second build."
+        ],
+        "note": "We made two deliberate design choices. First, explanation comes before interaction: each exhibit opens with a short written lesson, so the student knows what they are looking at. Second, there is no forced path — all seven lanterns are open from the first second; the story is a wrapper, not a gate. And the sky is not decorative: the 8,879 stars are real catalogue positions.",
+        "image": "res://assets/seminar/hub.webp",
+        "caption": "The Sky Lab: seven lanterns, one observatory, no locked doors.",
+        "lab": "res://scenes/Lab.tscn",
+        "lab_label": "Open the Sky Lab",
+        "seconds": 50,
+        "sky": "stars"
+      },
+      {
+        "kicker": "EXHIBIT 01",
+        "title": "Why does the Moon change shape?",
+        "subtitle": "Drag the Moon. Watch the phase from Earth change in real time.",
+        "bullets": [
+          "The Moon is always half lit; we see different amounts of that lit half.",
+          "A live 'view from Earth' inset connects the orbit to the phase in our sky.",
+          "Four challenges: waxing crescent, first quarter, full moon, waning crescent.",
+          "The lesson names the terminator, the 29.5-day synodic month and the far-side myth."
+        ],
+        "note": "This is the exhibit students reach first. They drag the Moon around Earth and a live inset shows what an observer on Earth would see. The key misconception is that the Moon changes shape. It does not: half of it is always sunlit; the phase is a geometry problem. The four challenges ask them to reproduce a named phase, and every answer explains the geometry they just made.",
+        "image": "res://assets/seminar/moon.webp",
+        "caption": "The Moon's Mask: orbit on the left, the view from Earth on the right.",
+        "lab": "res://scenes/MoonLab.tscn",
+        "lab_label": "Open the Moon's Mask",
+        "seconds": 55,
+        "sky": "stars"
+      },
+      {
+        "kicker": "EXHIBIT 02",
+        "title": "The same stars, many stories.",
+        "subtitle": "Five patterns, real star distances, and the nakshatras behind them.",
+        "bullets": [
+          "Tap three stars to thread Saptarishi, Mriga, Sharmishtha, Vrishchika or Hamsa.",
+          "A constellation is a pattern we agree to see, not a group of stars that are close.",
+          "The same sky carries the 27 nakshatras and the 88 IAU constellations.",
+          "Star colour and brightness reveal temperature and distance."
+        ],
+        "note": "This exhibit is about interpretation. The lines are not in the sky; people drew them. Students hunt five patterns, tapping three stars at a time. Each unlock tells the story and the science: the stars in one pattern can be hundreds of light-years apart, and the pattern itself changes over tens of thousands of years. The nakshatra layer shows the same stars through two astronomical traditions.",
+        "image": "res://assets/seminar/stars.webp",
+        "caption": "Thread the Stars: tap three stars to unlock the pattern and its story.",
+        "lab": "res://scenes/StarLab.tscn",
+        "lab_label": "Open Thread the Stars",
+        "seconds": 55,
+        "sky": "lines"
+      },
+      {
+        "kicker": "EXHIBIT 03",
+        "title": "Space is mostly nothing.",
+        "subtitle": "An orrery that separates true distance from true size.",
+        "bullets": [
+          "All eight planets, with distances and sizes on separate, honest scales.",
+          "Light-minutes make the emptiness felt: 8.3 minutes to Earth, 4.1 hours to Neptune.",
+          "Four riddles: why Venus is hotter than Mercury, how many Earths fit inside Jupiter.",
+          "The orrery is compressed on purpose; the numbers are not."
+        ],
+        "note": "Scale is the hardest idea in the solar system chapter. A textbook diagram compresses distance and size at the same time, which accidentally teaches the wrong thing. Here the two scales are separate: true distance, true size, or the data. Light-minutes do the emotional work: sunlight takes eight minutes to reach us, and more than four hours to reach Neptune. The riddles check whether the idea landed.",
+        "image": "res://assets/seminar/scale.webp",
+        "caption": "The Long Road: the inner planets huddle close; Neptune is far out in the dark.",
+        "lab": "res://scenes/ScaleLab.tscn",
+        "lab_label": "Open The Long Road",
+        "seconds": 55,
+        "sky": "stars"
+      },
+      {
+        "kicker": "EXHIBIT 04",
+        "title": "A tilted planet writes the seasons.",
+        "subtitle": "Tilt Earth, orbit it, and read the daylight at 13°N.",
+        "bullets": [
+          "The seasons come from axial tilt, not from distance to the Sun.",
+          "A 'no tilt' experiment makes the seasons disappear — the cleanest proof in the chapter.",
+          "Read noon-Sun altitude, day length and the solstices from one screen.",
+          "Set to 13°N: the latitude of Bengaluru and much of Karnataka."
+        ],
+        "note": "The seasons are usually taught with a diagram of a tilted Earth, but the diagram does not move. Here students tilt the planet, orbit it, and read the consequences: noon-Sun altitude, day length, the solstices and equinoxes. Then they switch the tilt off and watch the seasons vanish. That single experiment isolates the cause. The latitude is set to 13 degrees north, so the numbers match the students' own sky.",
+        "image": "res://assets/seminar/seasons.webp",
+        "caption": "The Turning Year at 13°N, with the noon Sun and day length live.",
+        "lab": "res://scenes/SeasonLab.tscn",
+        "lab_label": "Open The Turning Year",
+        "seconds": 55,
+        "sky": "stars"
+      },
+      {
+        "kicker": "EXHIBIT 05",
+        "title": "The Sun can reach across 150 million kilometres.",
+        "subtitle": "Build a flare, race a CME to Earth, and protect a satellite.",
+        "bullets": [
+          "Magnetic stress builds until a flare releases light and charged particles.",
+          "Light arrives in 8 min 20 s; the CME follows hours later — the aurora comes after the light.",
+          "Students switch on a satellite shield and explain why forecasting matters.",
+          "The same physics behind auroras, grid blackouts and India's Aditya-L1 mission."
+        ],
+        "note": "This is the enrichment exhibit, and the one that surprises people. Students build magnetic stress on the Sun, release a flare, and watch two things travel to Earth at different speeds. Light arrives in eight minutes twenty; the coronal mass ejection takes much longer. That delay is why space weather can be forecast at all. They then protect a satellite with a shield, which makes the engineering stakes concrete. Aditya-L1, India's solar observatory, watches the same chain from L1.",
+        "image": "res://assets/seminar/solar.webp",
+        "caption": "Solar Storm Lab: the flare, the CME, and the satellite in the path.",
+        "lab": "res://scenes/SolarLab.tscn",
+        "lab_label": "Open Solar Storm Lab",
+        "seconds": 60,
+        "sky": "stars"
+      },
+      {
+        "kicker": "EXHIBIT 06",
+        "title": "Where time itself slows down.",
+        "subtitle": "Lower a probe toward an event horizon and watch its clock.",
+        "bullets": [
+          "Event-horizon radius scales with mass: about 2.95 km per solar mass.",
+          "Gravitational time dilation is computed live: an hour near the hole is longer on Earth.",
+          "Four challenges separate the physics from the movie myths.",
+          "The visual is built around the physics of the EHT image of M87*."
+        ],
+        "note": "Black holes are where the textbook runs out of analogies. This exhibit lets students change the mass, lower a probe, and read two numbers that are easy to say and hard to feel: the horizon radius and the clock rate. At ten solar masses the horizon is about thirty kilometres in radius. Near it, one hour for the probe is not one hour on Earth. The visual follows the physics of the EHT image: a black shadow, a photon ring, and a lensed accretion disk.",
+        "image": "res://assets/seminar/blackhole.webp",
+        "caption": "Black Hole Lab: event horizon, photon ring and a clock that tells the truth.",
+        "lab": "res://scenes/BlackHoleLab.tscn",
+        "lab_label": "Open Black Hole Lab",
+        "seconds": 60,
+        "sky": "stars"
+      },
+      {
+        "kicker": "THE CLASSROOM",
+        "title": "A pre-test and a post-test that teach.",
+        "subtitle": "Fourteen questions, no timer, and an explanation after every answer.",
+        "bullets": [
+          "The same 14 riddles can be used before and after a lesson to show learning gain.",
+          "Every answer explains the idea, so a wrong guess becomes a lesson instead of a score.",
+          "Teacher note, printable certificate, Kannada terms, and a save file that stays on the device.",
+          "No accounts, no analytics, no ads — safe for a school lab."
+        ],
+        "note": "We did not want another quiz that only ranks students. The same fourteen questions work as a pre-test and a post-test; the explanation appears after every answer, right or wrong. That turns assessment into teaching. The teacher note explains a suggested flow, and the certificate gives the class a finish line. Progress stays on the device, and there is no account, no analytics and no network call, which matters for a school lab.",
+        "image": "res://assets/seminar/quiz.webp",
+        "caption": "Sky Riddles: fourteen questions, an explanation after every answer.",
+        "lab": "res://scenes/QuizLab.tscn",
+        "lab_label": "Open Sky Riddles",
+        "seconds": 55,
+        "sky": "nakshatra"
+      },
+      {
+        "kicker": "UNDER THE HOOD",
+        "title": "A real-time game, on a school browser.",
+        "subtitle": "Godot 4.7 · GL Compatibility · no server · no threads required.",
+        "bullets": [
+          "A custom sky shader plus a MultiMesh star field: 8,879 stars in one draw call.",
+          "Data pipeline: HYG v3 and Stellarium skycultures become compact JSON at build time.",
+          "Web export with threads disabled, so it runs on itch.io and low-end phones without special headers.",
+          "Twelve scenes, sixteen custom shaders and one local save file — all in a static folder."
+        ],
+        "note": "Under the hood this is a real-time 3D application, not a slide deck. The sky is a custom shader with an 8,879-instance MultiMesh, so the whole star field is one draw call. Positions and colours are baked from HYG and Stellarium at build time, so the browser does no heavy data work. The web export uses the GL Compatibility renderer with threads disabled: a deliberate trade for compatibility, because it runs on itch.io and cheap phones without special server headers.",
+        "image": "res://assets/seminar/architecture.webp",
+        "caption": "The build pipeline: catalogue to browser, with no server in the loop.",
+        "lab": "res://scenes/Atlas.tscn",
+        "lab_label": "Open the Sky Atlas",
+        "seconds": 60,
+        "sky": "lines"
+      },
+      {
+        "kicker": "THE POINT",
+        "title": "The sky is open.\nCome and look.",
+        "subtitle": "Free, offline, bilingual, and small enough for the phone a student already owns.",
+        "bullets": [
+          "One URL for a projector, a laptop or a phone; the layout adapts, the content does not shrink.",
+          "Kannada terms and module names sit beside the English, not after it.",
+          "The whole experience is one static folder: copy it to a school server and it still works.",
+          "Next: more languages, an offline teacher dashboard, and a “tonight’s sky” timeline."
+        ],
+        "note": "The measure of this project is not how it looks on a gaming laptop. It is whether it works on the phone a student already owns, the projector a classroom already has, and a school network with no internet. That is why the export is a static folder, why the layout is portrait-first, and why Kannada terms sit beside the English. The next step is a teacher dashboard that can export class results without a server, and a “tonight’s sky” mode that tells a student what to look for after the seminar.",
+        "image": "res://assets/seminar/certificate_detail.webp",
+        "caption": "The finale: a certificate, rising lanterns, and a class that read the sky.",
+        "lab": "res://scenes/Lab.tscn",
+        "lab_label": "Hand over the Sky Lab",
+        "seconds": 55,
+        "sky": "stars"
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+# local tooling
+.venv/
+
+# Godot import cache and exported builds
+nakshatra/.godot/
+nakshatra/build/
+
+# raw capture staging (the deck uses the cropped assets)
+art_raw/
+
+# raw catalogue (rebuild with tools/build_sky_data.py)
+data_src/hyg.csv
+
+# packaged download (rebuild with tools/build_web.sh)
+itch/*.zip
+
+# OS noise
+.DS_Store
+*.tmp

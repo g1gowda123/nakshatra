@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/BlackHoleLab.gd" id="1_bh"]
+
+[node name="BlackHoleLab" type="Node3D"]
+script = ExtResource("1_bh")
