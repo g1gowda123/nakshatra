@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.7.1 — Datamosh · 2026-11-28
+
+### Added
+
+- **A real datamosh wipe between scenes.** Rows shear sideways, blocks
+  displace and RGB separates for 0.34 s before the status card takes over.
+  The shader samples only the outgoing frame, so the wipe cannot feed on the
+  menu text.
+
+### Changed
+
+- **Router's fade is now the signal black**, and a failed scene clears the
+  wipe instead of leaving a frozen glitch over the error card.
+
 ## v1.7.0 — Signal · 2026-11-28
 
 ### Added

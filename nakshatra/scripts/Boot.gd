@@ -43,6 +43,8 @@ func _check_debug_route() -> void:
 		for a in OS.get_cmdline_user_args():
 			if a.begins_with("--screen="):
 				scene_key = a.get_slice("=", 1)
+			elif a == "--mosh-demo":
+				get_tree().create_timer(0.8).timeout.connect(func(): Router.go("res://scenes/Lab.tscn"))
 			elif a == "--demo":
 				# QA capture helper: light all seven lanterns so the finale
 				# certificate can be captured without playing the lessons.

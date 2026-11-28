@@ -6,6 +6,8 @@ extends CanvasLayer
 ## fade is therefore also a status card: "Opening the Sky Lab", not a black void.
 
 var _fade: ColorRect
+var _mosh: ColorRect
+var _mosh_mat: ShaderMaterial
 var _title: Label
 var _sub: Label
 var _busy := false
@@ -15,8 +17,18 @@ signal scene_changed
 
 func _ready() -> void:
 	layer = 128
+	_mosh = ColorRect.new()
+	_mosh.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_mosh.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_mosh_mat = ShaderMaterial.new()
+	_mosh_mat.shader = preload("res://shaders/datamosh_screen.gdshader")
+	_mosh_mat.set_shader_parameter("amount", 0.0)
+	_mosh.material = _mosh_mat
+	_mosh.visible = false
+	add_child(_mosh)
+
 	_fade = ColorRect.new()
-	_fade.color = Color(0.016, 0.024, 0.051, 1.0)
+	_fade.color = Color("050505")
 	_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_fade.mouse_filter = Control.MOUSE_FILTER_STOP
 	_fade.modulate.a = 0.0
@@ -89,10 +101,13 @@ func go(path: String, hold: float = 0.0) -> void:
 	if _busy:
 		return
 	_busy = true
+	_mosh.visible = true
+	_mosh_mat.set_shader_parameter("amount", 0.0)
 	_fade.visible = true
 	_show_status(path)
-	var tw := create_tween()
+	var tw := create_tween().set_parallel(true)
 	tw.tween_property(_fade, "modulate:a", 1.0, 0.28).set_trans(Tween.TRANS_SINE)
+	tw.tween_method(_set_mosh, 0.0, 0.78, 0.34)
 	await tw.finished
 	if hold > 0.0:
 		await get_tree().create_timer(hold).timeout
@@ -101,6 +116,8 @@ func go(path: String, hold: float = 0.0) -> void:
 		push_error("Router: could not open %s (error %d)" % [path, err])
 		_title.text = "COULD NOT OPEN THIS ROOM"
 		_sub.text = "Press Escape to return. The deck and the labs are still in the pack."
+		_mosh.visible = false
+		_mosh_mat.set_shader_parameter("amount", 0.0)
 		_busy = false
 		return
 	await get_tree().process_frame
@@ -116,11 +133,19 @@ func go(path: String, hold: float = 0.0) -> void:
 		await get_tree().process_frame
 	await get_tree().process_frame
 	scene_changed.emit()
-	var tw2 := create_tween()
+	var tw2 := create_tween().set_parallel(true)
 	tw2.tween_property(_fade, "modulate:a", 0.0, 0.28).set_trans(Tween.TRANS_SINE)
+	tw2.tween_method(_set_mosh, 0.65, 0.0, 0.34)
 	await tw2.finished
 	_fade.visible = false
+	_mosh.visible = false
+	_mosh_mat.set_shader_parameter("amount", 0.0)
 	_busy = false
+
+
+func _set_mosh(v: float) -> void:
+	if _mosh_mat:
+		_mosh_mat.set_shader_parameter("amount", v)
 
 
 func quick_go(path: String) -> void:

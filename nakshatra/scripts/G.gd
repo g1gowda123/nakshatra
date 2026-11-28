@@ -25,7 +25,7 @@ const PAPER_ACCENT := Color("3d4a00")
 
 const SAVE_PATH := "user://nakshatra_save.json"
 
-const VERSION := "1.7.0"
+const VERSION := "1.7.1"
 const EDITION := "Studio edition"
 
 var visited: Dictionary = {}
