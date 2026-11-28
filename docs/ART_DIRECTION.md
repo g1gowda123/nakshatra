@@ -11,72 +11,54 @@ low-poly demo, and so that the viva panel can see *why* each choice was made.
 
 ## 1. The north star
 
-**An observatory feed printed on a receipt.**
+**A night almanac, not a dashboard.**
 
-The screen is an instrument, not a poster. A near-black camera feed is pushed
-through a Bayer dither; the UI is a paper ticket stuck to the monitor: mono
-labels, a serial number, a confidence-free tracking bracket, one acid-green
-signal. The sky is real; the interface admits it is a machine reading it.
+The screen is a hand-plotted star wheel. The world is a dark observatory hill;
+the interface is the brass ring of an almanac laid over it — quiet gold arcs,
+seven lantern nodes, and one sentence of instruction at a time. It should feel
+like a printed instrument you are allowed to touch, not a card stack or a
+telemetry readout.
 
 Three rules follow from that:
 
-1. **One signal colour.** Acid green `#c6ff00` means *act, selected, ready*.
-   Red `#ff3b30` means *miss, warning, glitch*. Nothing else is allowed to
+1. **One material, one accent.** Brass gold is the instrument; cream is the
+   ink; vermilion is reserved for a wrong answer. Nothing else is allowed to
    compete for attention.
-2. **Dither is the material.** The 3D world is quantised, not smoothed. The
-   title uses two levels for a hard 1-bit look; lessons use four so the Moon's
-   terminator survives. UI text never sits under the dither.
-3. **The frame is evidence.** Every bracket names the thing it frames. No fake
-   confidence percentages, no floating telemetry that does not correspond to
-   a real element. If a label cannot point at something, it is deleted.
+2. **The wheel is the interface.** Seven exhibits are seven points on one
+   circle. Progress is the arc that fills. If a control cannot be placed on
+   the wheel, it belongs in the menu, not on the screen.
+3. **One sentence at a time.** A label says what the thing is. A note says
+   what to do. Nothing explains the interface; the interface explains itself.
 
----
 ## 2. Visual grammar
 
 ### Palette
 
 | Token | Value | Use |
 |---|---|---|
-| `G.BG` | `#050505` | The receiver field. Near-black, never pure. |
-| `G.BG_SOFT` | `#101010` | Raised dark surfaces and hover beds. |
-| `G.CREAM` | `#f2f2ee` | Primary type, dithered highlights, the paper ink. |
-| `G.GOLD` | `#c6ff00` | The single signal accent: CTA, selected row, tracking bracket. |
-| `G.PAPER` | `#f2f2ee` | Receipts, index sheets, the take-home certificate. |
-| `G.INK` | `#080808` | Ink on paper and text on acid fills. |
-| `G.INK_SOFT` | `#5a5a56` | Receipt metadata, secondary rules. |
-| `G.VERMILION` | `#ff3b30` | Error, wrong answer, a redaction. Never decorative. |
-| `G.MUTED` | `#8c8c88` | Supporting copy on the dark field. |
+| `G.BG` | `#0d1020` | The night ground. Deep indigo, never pure black. |
+| `G.CREAM` | `#f4e8d4` | Primary type, the paper ink. |
+| `G.GOLD` | `#d5a55a` | Brass: the wheel, selected nodes, the primary action. |
+| `G.PAPER` | `#f5ead6` | Menus, notes, the certificate. |
+| `G.INK` | `#171310` | Ink on paper, button text on gold. |
+| `G.VERMILION` | `#c8503a` | A wrong answer, a warning. Never decoration. |
+| `G.MUTED` | `#a79b87` | Secondary copy on the dark field. |
 
 ### Type
 
-- **Archivo Black** — the wordmark and exhibit titles. One weight, tight.
-- **JetBrains Mono** — every button, label, coordinate and receipt line.
-- **Noto Sans / Noto Sans Kannada** — reading copy and the Kannada layer.
-
-The mono/display split is the hierarchy: mono is the machine talking; display
-is the thing being observed.
+- **Cormorant Garamond** — the wordmark, titles, and the centre note.
+- **Noto Sans / Noto Sans Kannada** — reading copy, node labels, and the
+  Kannada layer.
+- No monospace. No tracking-heavy all-caps. The interface is a book page, not
+  a terminal.
 
 ### Surfaces
 
-- **Paper** is opaque, 1 px ink border, no rounded corners, no shadow.
-- **Dark panels** are 94% ink, 1 px cream 16% border, square.
-- **The feed** is the 3D scene under a dithered screen shader.
-- **Scanlines** are a 10% veil above the feed, never above body copy in a way
-  that lowers contrast below readable.
-
-Rules:
-
-- Gold is a **material**, not a text colour for paragraphs. At body size it
-  loses contrast; use cream or muted blue-grey.
-- Teal is the **Indian sky**. It should only appear on nakshatra geometry,
-  hint rings, or a “found” state.
-- Vermilion is rare. If three things on screen are vermilion, none of them is
-  an accent any more.
-- **Type:** Anton for every heading and control; Noto Sans for body; Noto Sans
-  Kannada for the local script. Corners are square (0–1 px), borders are 2 px,
-  shadows are hard offsets (4–8 px), never soft glows.
-- **Reaction:** every button has hover lift, press squash, release spring, a
-  quiet tick and a spark. A result is a physical stamp, not a grey toast.
+- **The wheel** is drawn, not boxed: thin gold arcs, small plotted star dots,
+  and a soft dark disc behind the centre note.
+- **Paper** is warm cream, rounded, with a brass hairline and a soft shadow.
+- **Buttons** are brass pills with ink text, never square brutalist blocks.
+- **The 3D hill** stays undithered and warm; the UI is the instrument on top.
 
 ### Type
 
@@ -266,9 +248,7 @@ Shader rules:
 - **Minimum body size**: 14 px at 1280×720; 13 px on compact.
 - **Minimum contrast**: body copy is cream or >70 % muted on `#060910`. Gold is
   reserved for labels at 9 px or larger with an outline.
-- **Phone first**: every screen is checked at 390×844 portrait. The 3D hub drops
-  to six visible cards with a “more” affordance; the sky hunt panel stacks; the
-  atlas panel becomes a sheet.
+- **Phone first**: every screen is checked at 390×844 portrait. The hub wheel scales to phone width; node labels hide, the note narrows and wraps to three lines. The sky hunt panel stacks; the atlas panel becomes a sheet.
 - **Tap targets**: 44 px minimum; lantern `Area3D` radius is generous.
 - **Reduced motion**: the game does not require motion to understand any lesson.
   If a device is slow, the shaders degrade to flat colours before the layout

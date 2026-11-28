@@ -164,7 +164,6 @@ func _process(delta: float) -> void:
 
 
 func _build_ui() -> void:
-	UI.attach_dither(self, 2.0, 2.0)
 	if ui_root:
 		ui_root.queue_free()
 	ui_root = Control.new()
@@ -180,74 +179,45 @@ func _build_ui() -> void:
 	vignette.material = ShaderMaterial.new()
 	vignette.material.shader = load("res://shaders/vignette.gdshader")
 	ui_root.add_child(vignette)
-	ui_root.add_child(UI.scrim(true, 156, 0.72))
+	ui_root.add_child(UI.scrim(true, 148, 0.48))
 
 	content_root = Control.new()
 	content_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	content_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui_root.add_child(content_root)
 
-	var track: Control = preload("res://scripts/TrackingLayer.gd").new()
-	track.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	track.targets = [
-		{"rect": Rect2(0.035, 0.30, 0.55, 0.17), "label": "01 / WORDMARK"},
-	]
-	content_root.add_child(track)
-	content_root.add_child(UI.print_frame(16))
+	var ring_holder := CenterContainer.new()
+	ring_holder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	ring_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	content_root.add_child(ring_holder)
+	var ring: Control = preload("res://scripts/AlmanacRing.gd").new()
+	ring.custom_minimum_size = Vector2(400, 400) if not UI.is_compact() else Vector2(300, 300)
+	ring_holder.add_child(ring)
 
-	var outer := UI.margin(UI.pad() + 6, 24, UI.pad() + 6, 16)
-	outer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	outer.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	content_root.add_child(outer)
+	var bar := _top_bar()
+	bar.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	bar.offset_left = 18
+	bar.offset_top = 14
+	content_root.add_child(bar)
 
-	var col := UI.vbox(0)
-	outer.add_child(col)
+	var text_holder := CenterContainer.new()
+	text_holder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	text_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	content_root.add_child(text_holder)
+	var col := UI.vbox(11)
+	text_holder.add_child(col)
+	_title_stack(col, 72 if not UI.is_compact() else 52)
 
-	col.add_child(_top_bar())
-
-	var body := Control.new()
-	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_child(body)
-
-	_portrait = UI.is_portrait()
-	if _portrait:
-		_build_portrait_body(body)
-	else:
-		_build_landscape_body(body)
-
-	col.add_child(_footer())
-
-	ui_root.add_child(UI.grain(0.03))
-	ui_root.add_child(UI.scanlines())
-	UI.fade_in(content_root, 0.05, 0.9)
-
+	ui_root.add_child(UI.grain(0.025))
+	UI.fade_in(content_root, 0.05, 0.85)
 
 
 func _top_bar() -> Control:
-	var wrap := UI.vbox(11)
-	wrap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
 	var row := UI.hbox(12)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(UI.brand_mark(24))
 
-	var brand := UI.tracked("NAKSHATRA", 12, Color(G.GOLD, 0.95), 4)
-	brand.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(brand)
-
-	if not UI.is_compact():
-		var sep := ColorRect.new()
-		sep.color = Color(G.GOLD, 0.3)
-		sep.custom_minimum_size = Vector2(1, 14)
-		sep.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		sep.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		row.add_child(sep)
-
-		var kicker := UI.tracked("A SKY ALMANAC", 9, Color(G.MUTED, 0.85), 3)
-		kicker.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		row.add_child(kicker)
 	row.add_child(UI.spacer())
-
 	var lang := UI.link_button("ಕನ್ನಡ" if G.lang == "en" else "English", 13)
 	if G.lang == "kn":
 		lang.add_theme_font_override("font", UI.body_med_font())
@@ -256,11 +226,11 @@ func _top_bar() -> Control:
 		G.set_lang("kn" if G.lang == "en" else "en"))
 	row.add_child(lang)
 
-	var dot := UI.label("·", 13, Color(G.MUTED, 0.5))
+	var dot := UI.label("·", 13, Color(G.MUTED, 0.55))
 	dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(dot)
 
-	var snd := UI.link_button("SOUND ON" if G.sound_on else "SOUND OFF", 10)
+	var snd := UI.link_button("Sound on" if G.sound_on else "Sound off", 11)
 	snd.pressed.connect(func():
 		G.sound_on = not G.sound_on
 		G.save_game()
@@ -268,151 +238,51 @@ func _top_bar() -> Control:
 		Sfx.play("click")
 		_rebuild())
 	row.add_child(snd)
-
-	wrap.add_child(row)
-	wrap.add_child(UI.rule(Color(G.GOLD, 0.2), 1))
-	return wrap
+	return row
 
 
-func _build_landscape_body(body: Control) -> void:
-	var h := UI.hbox(28)
-	h.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	h.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	body.add_child(h)
-
-	var compact := UI.is_compact()
-	var left := UI.vbox(0)
-	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	left.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	left.alignment = BoxContainer.ALIGNMENT_CENTER
-	h.add_child(left)
-	_add_title_block(left, 42 if compact else 100)
-
-	if not compact:
-		var right := UI.vbox(0)
-		right.size_flags_horizontal = Control.SIZE_SHRINK_END
-		right.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		right.custom_minimum_size = Vector2(304, 0)
-		h.add_child(right)
-		_add_receipt(right)
-
-
-func _build_portrait_body(body: Control) -> void:
-	var v := UI.vbox(0)
-	v.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	body.add_child(v)
-	var left := UI.vbox(0)
-	left.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	left.alignment = BoxContainer.ALIGNMENT_CENTER
-	v.add_child(left)
-	_add_title_block(left, 40)
-
-
-func _add_title_block(parent: VBoxContainer, title_size: int) -> void:
-	var col := UI.vbox(8)
-	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	parent.add_child(col)
-
-	var status := UI.hbox(8)
-	status.add_child(UI.micro("OBSERVER  /  CHANDRAGIRI", G.GOLD, 9))
-	status.add_child(UI.spacer())
-	status.add_child(UI.micro("13.0 N  /  78.0 E", Color(G.CREAM, 0.7), 9))
-	col.add_child(status)
-
-	var title := UI.display("NAKSHATRA", title_size, G.CREAM)
+func _title_stack(parent: VBoxContainer, title_size: int) -> void:
+	var title := UI.label("Nakshatra", title_size, G.CREAM, "display")
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.autowrap_mode = TextServer.AUTOWRAP_OFF
-	title.custom_minimum_size.y = title_size * 0.86
-	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	col.add_child(title)
+	parent.add_child(title)
 
-	var rule := UI.rule(G.GOLD, 3)
-	rule.custom_minimum_size = Vector2(0, 3)
-	col.add_child(rule)
+	var kannada := UI.label("ನಕ್ಷತ್ರ  ·  ಆಕಾಶ ನೇಯುವವರು", 15, Color(G.CREAM, 0.72), "kannada")
+	kannada.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	parent.add_child(kannada)
 
-	var kicker := UI.hbox(8)
-	kicker.add_child(UI.micro("A FREE-CHOICE SKY LAB", G.GOLD, 9))
-	if not UI.is_compact():
-		kicker.add_child(UI.spacer())
-		kicker.add_child(UI.micro("CLASSES 6–9", Color(G.CREAM, 0.78), 10))
-	col.add_child(kicker)
+	var line := UI.label("A night almanac for Classes 6–9.", 16 if not UI.is_compact() else 14, Color(G.CREAM, 0.72), "body_med")
+	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	line.autowrap_mode = TextServer.AUTOWRAP_OFF
+	line.clip_text = true
+	parent.add_child(line)
 
-	var kannada := UI.label("ನಕ್ಷತ್ರ  /  ಆಕಾಶ ನೇಯುವವರು", 14, Color(G.CREAM, 0.65), "kannada")
-	col.add_child(kannada)
-
-	var tag := UI.label("SEVEN LANTERNS. ONE REAL SKY.", int(clampf(title_size * 0.21, 17, 22)), G.CREAM, "body_med")
-	tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	col.add_child(tag)
-	var tag2 := UI.label("Pick any path. The sky is open.", 14, G.MUTED)
-	col.add_child(tag2)
-
-	var buttons := UI.vbox(9)
-	col.add_child(buttons)
-	var begin := UI.button("Begin the night   ›", true, 20)
-	begin.custom_minimum_size = Vector2(290, 52)
-	begin.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	var begin := UI.button("Begin the night", true, 20)
+	begin.custom_minimum_size = Vector2(260, 52)
+	begin.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	begin.pressed.connect(func():
 		Sfx.play("lantern")
-		Juice.stamp("SIGNAL LOCKED", G.GOLD)
 		Router.go("res://scenes/Lab.tscn"))
-	buttons.add_child(begin)
+	parent.add_child(begin)
 
-	var links := UI.hbox(6)
-	buttons.add_child(links)
+	var links := UI.hbox(10)
+	links.alignment = BoxContainer.ALIGNMENT_CENTER
+	parent.add_child(links)
 	for item in [["Seminar mode", "res://scenes/Seminar.tscn"], ["Sky Atlas", "res://scenes/Atlas.tscn"]]:
-		var link := UI.link_button(str(item[0]) + "   ›", 11, G.CREAM)
+		var link := UI.link_button(str(item[0]), 12, Color(G.CREAM, 0.72))
 		var path := str(item[1])
 		link.pressed.connect(func():
 			Sfx.play("click")
 			Router.go(path))
 		links.add_child(link)
-		var dot := UI.label("/", 11, Color(G.MUTED, 0.6))
-		dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		links.add_child(dot)
-	var story := UI.link_button("The Story   ›", 11, G.CREAM)
+		var sep := UI.label("·", 12, Color(G.MUTED, 0.55))
+		sep.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		links.add_child(sep)
+	var story := UI.link_button("The Story", 12, Color(G.CREAM, 0.72))
 	story.pressed.connect(func():
 		Sfx.play("click")
 		_show_story())
 	links.add_child(story)
-
-	var facts := UI.tracked("WORKS OFFLINE  /  NO ACCOUNT  /  FREE", 10, Color(G.CREAM, 0.7), 1)
-	facts.autowrap_mode = TextServer.AUTOWRAP_OFF
-	col.add_child(facts)
-
-
-func _add_receipt(parent: VBoxContainer) -> void:
-	var sheet := UI.paper(14)
-	sheet.custom_minimum_size = Vector2(304, 0)
-	parent.add_child(sheet)
-	var v := UI.vbox(5)
-	sheet.add_child(v)
-	var thumb := TextureRect.new()
-	thumb.custom_minimum_size = Vector2(274, 206)
-	thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	thumb.material = UI.dither_image_material(2.0)
-	if ResourceLoader.exists("res://assets/art/plates/plate_title.webp"):
-		thumb.texture = load("res://assets/art/plates/plate_title.webp")
-	var ptrack: Control = preload("res://scripts/TrackingLayer.gd").new()
-	ptrack.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	ptrack.targets = [{"rect": Rect2(0.03, 0.06, 0.94, 0.86), "label": "02 / PREVIEW"}]
-	thumb.add_child(ptrack)
-	v.add_child(thumb)
-	v.add_child(UI.rule(G.INK, 1))
-	v.add_child(UI.micro("NAKSHATRA  /  SESSION 001", G.INK_SOFT, 8))
-	var name := UI.label("SKY LAB", 24, G.INK, "display")
-	v.add_child(name)
-	v.add_child(UI.rule(Color(G.INK, 0.25), 1))
-	for line in ["07 EXHIBITS", "8,879 STARS", "13.0 N / 78.0 E"]:
-		var row := UI.hbox(6)
-		row.add_child(UI.micro(str(line), G.INK_SOFT, 8))
-		v.add_child(row)
-	v.add_child(UI.rule(Color(G.INK, 0.25), 1))
-	var ready := UI.hbox(6)
-	ready.add_child(UI.micro("STATUS", G.INK_SOFT, 8))
-	ready.add_child(UI.spacer())
-	ready.add_child(UI.micro("READY", G.PAPER_ACCENT, 9))
-	v.add_child(ready)
 
 
 func _add_postcard(parent: Control, size: Vector2, rotate: bool) -> void:

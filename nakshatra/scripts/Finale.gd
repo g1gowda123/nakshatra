@@ -11,7 +11,6 @@ var phases: Array[float] = []
 
 func _ready() -> void:
 	_build_world()
-	UI.attach_dither(self, 4.0, 2.0)
 	_build_ui()
 	set_process(true)
 

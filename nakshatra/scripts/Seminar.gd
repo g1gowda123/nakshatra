@@ -97,7 +97,6 @@ func _ready() -> void:
 	_portrait = UI.is_portrait()
 	_compact = UI.is_compact()
 	_build_world()
-	UI.attach_dither(self, 4.0, 2.0)
 	_build_ui()
 	_apply_slide()
 	var start: int = clampi(G.seminar_index, 0, maxi(slides.size() - 1, 0))

@@ -1,5 +1,34 @@
 # Changelog
 
+## v1.8.0 — Night almanac · 2026-11-28
+
+### Added
+
+- **A new design language, not a recolour.** The title is now a printed night
+  almanac: a warm brass star ring behind the wordmark, one Kannada line, one
+  audience line, and a single `Begin the night` action. No telemetry, no
+  receipt, no tracking brackets, no scanlines.
+- **The hub is a star wheel.** Seven exhibits are seven brass nodes on one
+  circle; each node has a one-word label, and the centre note explains the
+  selected lesson. Progress is the arc that fills; there is no card list.
+- **A `StarWheel` drawing layer** with filled/hollow arcs, 28 plotted star
+  dots and a soft dark disc behind the centre note, so the lesson text stays
+  readable over the 3D observatory.
+- **A phone-safe wheel**: labels hide on compact, the note narrows and wraps,
+  and the nodes stay inside the viewport.
+
+### Changed
+
+- **Typography and palette moved to the almanac**: Cormorant Garamond display,
+  Noto Sans body, deep indigo ground, brass gold accent, warm parchment paper,
+  and a rare vermilion warning.
+- **Buttons and panels are now instrument-like**: rounded brass pills and
+  parchment sheets with soft shadows, not square brutalist blocks.
+- **The router is a quiet page turn**, not a glitch wipe. The status card
+  names the destination in the same serif voice as the rest of the game.
+- **The labs keep their real models** — the Moon, the Atlas, the quiz, the
+  certificate — but now speak the same almanac language.
+
 ## v1.7.1 — Datamosh · 2026-11-28
 
 ### Added

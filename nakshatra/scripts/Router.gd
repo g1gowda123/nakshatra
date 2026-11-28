@@ -6,8 +6,6 @@ extends CanvasLayer
 ## fade is therefore also a status card: "Opening the Sky Lab", not a black void.
 
 var _fade: ColorRect
-var _mosh: ColorRect
-var _mosh_mat: ShaderMaterial
 var _title: Label
 var _sub: Label
 var _busy := false
@@ -17,18 +15,8 @@ signal scene_changed
 
 func _ready() -> void:
 	layer = 128
-	_mosh = ColorRect.new()
-	_mosh.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	_mosh.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_mosh_mat = ShaderMaterial.new()
-	_mosh_mat.shader = preload("res://shaders/datamosh_screen.gdshader")
-	_mosh_mat.set_shader_parameter("amount", 0.0)
-	_mosh.material = _mosh_mat
-	_mosh.visible = false
-	add_child(_mosh)
-
 	_fade = ColorRect.new()
-	_fade.color = Color("050505")
+	_fade.color = G.BG
 	_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_fade.mouse_filter = Control.MOUSE_FILTER_STOP
 	_fade.modulate.a = 0.0
@@ -57,32 +45,33 @@ func _ready() -> void:
 	_title = Label.new()
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.add_theme_font_size_override("font_size", 18)
-	_title.add_theme_color_override("font_color", Color(0.95, 0.91, 0.84))
+	_title.add_theme_font_override("font", UI.display_font())
+	_title.add_theme_color_override("font_color", G.CREAM)
 	box.add_child(_title)
 
 	_sub = Label.new()
 	_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_sub.add_theme_font_size_override("font_size", 11)
-	_sub.add_theme_color_override("font_color", Color(0.60, 0.65, 0.75))
+	_sub.add_theme_color_override("font_color", Color(G.CREAM, 0.65))
 	box.add_child(_sub)
 
 
 func _title_for(path: String) -> String:
 	var file := path.get_file().get_basename()
 	var names := {
-		"Lab": "OPENING THE SKY LAB",
-		"MoonLab": "OPENING THE MOON'S MASK",
-		"StarLab": "OPENING THREAD THE STARS",
-		"ScaleLab": "OPENING THE LONG ROAD",
-		"SeasonLab": "OPENING THE TURNING YEAR",
-		"SolarLab": "OPENING THE SOLAR STORM LAB",
-		"BlackHoleLab": "OPENING THE BLACK HOLE LAB",
-		"QuizLab": "OPENING SKY RIDDLES",
-		"Atlas": "OPENING THE SKY ATLAS",
-		"Finale": "OPENING THE LANTERN FESTIVAL",
-		"Seminar": "OPENING THE SEMINAR DECK",
+		"Lab": "Opening the Sky Lab",
+		"MoonLab": "Opening the Moon's Mask",
+		"StarLab": "Opening Thread the Stars",
+		"ScaleLab": "Opening the Long Road",
+		"SeasonLab": "Opening the Turning Year",
+		"SolarLab": "Opening the Solar Storm Lab",
+		"BlackHoleLab": "Opening the Black Hole Lab",
+		"QuizLab": "Opening Sky Riddles",
+		"Atlas": "Opening the Sky Atlas",
+		"Finale": "Opening the Lantern Festival",
+		"Seminar": "Opening the Seminar Deck",
 	}
-	return str(names.get(file, "OPENING " + file.to_upper()))
+	return str(names.get(file, "Opening " + file.replace("_", " ")))
 
 
 func _show_status(path: String) -> void:
@@ -101,23 +90,18 @@ func go(path: String, hold: float = 0.0) -> void:
 	if _busy:
 		return
 	_busy = true
-	_mosh.visible = true
-	_mosh_mat.set_shader_parameter("amount", 0.0)
 	_fade.visible = true
 	_show_status(path)
-	var tw := create_tween().set_parallel(true)
+	var tw := create_tween()
 	tw.tween_property(_fade, "modulate:a", 1.0, 0.28).set_trans(Tween.TRANS_SINE)
-	tw.tween_method(_set_mosh, 0.0, 0.78, 0.34)
 	await tw.finished
 	if hold > 0.0:
 		await get_tree().create_timer(hold).timeout
 	var err := get_tree().change_scene_to_file(path)
 	if err != OK:
 		push_error("Router: could not open %s (error %d)" % [path, err])
-		_title.text = "COULD NOT OPEN THIS ROOM"
+		_title.text = "Could not open this room"
 		_sub.text = "Press Escape to return. The deck and the labs are still in the pack."
-		_mosh.visible = false
-		_mosh_mat.set_shader_parameter("amount", 0.0)
 		_busy = false
 		return
 	await get_tree().process_frame
@@ -133,19 +117,11 @@ func go(path: String, hold: float = 0.0) -> void:
 		await get_tree().process_frame
 	await get_tree().process_frame
 	scene_changed.emit()
-	var tw2 := create_tween().set_parallel(true)
+	var tw2 := create_tween()
 	tw2.tween_property(_fade, "modulate:a", 0.0, 0.28).set_trans(Tween.TRANS_SINE)
-	tw2.tween_method(_set_mosh, 0.65, 0.0, 0.34)
 	await tw2.finished
 	_fade.visible = false
-	_mosh.visible = false
-	_mosh_mat.set_shader_parameter("amount", 0.0)
 	_busy = false
-
-
-func _set_mosh(v: float) -> void:
-	if _mosh_mat:
-		_mosh_mat.set_shader_parameter("amount", v)
 
 
 func quick_go(path: String) -> void:
