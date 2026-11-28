@@ -52,6 +52,7 @@ All audio in `nakshatra/audio/` was synthesised from scratch by `tools/make_audi
 - NCERT Class 6 Geography, *Motions of the Earth*; NCERT Class 8 Science, *Stars and the Solar System* — curriculum mapping and vocabulary.
 - Stellarium — constellation line geometry and Indian nakshatra names.
 - NASA SDO / AIA — solar flare image and space-weather reference.
+- NASA Science, “Eclipses and the Moon” (<https://science.nasa.gov/moon/eclipses/>) and “Why Do Eclipses Happen?” (<https://science.nasa.gov/eclipses/geometry/>) — the 5° orbital tilt, nodes, umbra/penumbra and the copper lunar eclipse. The Eclipse Lab is an explicitly simplified, not-to-scale model; its 1.2° “landing” threshold is a teaching device, not a physical constant.
 - Event Horizon Telescope Collaboration — M87* image and black-hole background.
 - LIGO/Virgo — gravitational-wave detection (GW150914).
 - ISRO Aditya-L1 — India's solar observatory at L1.

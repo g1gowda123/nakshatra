@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.6.0 — Eclipses · 2026-11-27
+
+### Added
+
+- **A bonus Eclipse Lab**, built on NASA's 5°-tilt geometry. Start with the
+  Moon above the ecliptic and the shadow missing Earth; slide the orbit tilt to
+  zero and the umbra lands. Switch to the lunar view to see Earth's shadow take
+  the Moon and turn it copper.
+- **A real entry point, not a hidden URL**: desktop Moon lab navigation and a
+  phone-sized `WHY ECLIPSES?` link, plus the Field Guide's Eclipses card.
+- **`TestEclipseFlow`** locks the miss/hit threshold, the mode reset and the
+  content strings; the suite is now seven tests.
+- **Research note**: the model is explicitly simplified and not to scale. The
+  5° tilt, nodes, umbra/penumbra and red-Moon explanation follow NASA Science's
+  *Eclipses and the Moon* and *Why Do Eclipses Happen?* (cited in `CREDITS.md`).
+
+### Changed
+
+- **The Moon lab keeps its phone header clean**: `ECLIPSES` moves out of the
+  compact top bar and into the panel as a quiet link.
+- **The seminar's scene count** is now thirteen.
+
 ## v1.5.1 — Less noise · 2026-11-27
 
 ### Changed

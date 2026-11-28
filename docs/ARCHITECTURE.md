@@ -377,7 +377,7 @@ translation. A full translation would mean:
 nakshatra/
 ├── project.godot
 ├── export_presets.cfg
-├── scenes/          # 12 scenes, one per screen
+├── scenes/          # 13 scenes, one per screen
 ├── scripts/
 │   ├── G.gd         # global state + content
 │   ├── Sky.gd       # StarDB autoload

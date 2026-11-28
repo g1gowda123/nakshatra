@@ -770,7 +770,7 @@
       "kannada": "ಗ್ರಹಣ",
       "category": "Our Moon",
       "text": "The Moon crosses the Sun–Earth line every month, but its orbit is tilted by about 5°. Most new and full moons pass above or below the shadow. An eclipse needs the Moon near a node, where the tilt carries it into line. A solar eclipse is the Moon's shadow falling on Earth; a lunar eclipse is Earth's shadow falling on the Moon.",
-      "link": "moon"
+      "link": "eclipse"
     },
     {
       "title": "Tides",
@@ -1017,7 +1017,7 @@
           "A custom sky shader plus a MultiMesh star field: 8,879 stars in one draw call.",
           "Data pipeline: HYG v3 and Stellarium skycultures become compact JSON at build time.",
           "Web export with threads disabled, so it runs on itch.io and low-end phones without special headers.",
-          "Twelve scenes, sixteen custom shaders and one local save file — all in a static folder."
+          "Thirteen scenes, sixteen custom shaders and one local save file — all in a static folder."
         ],
         "note": "Under the hood this is a real-time 3D application, not a slide deck. The sky is a custom shader with an 8,879-instance MultiMesh, so the whole star field is one draw call. Positions and colours are baked from HYG and Stellarium at build time, so the browser does no heavy data work. The web export uses the GL Compatibility renderer with threads disabled: a deliberate trade for compatibility, because it runs on itch.io and cheap phones without special server headers.",
         "image": "res://assets/seminar/architecture.webp",
@@ -1055,5 +1055,12 @@
         ]
       }
     ]
+  },
+  "eclipse": {
+    "title": "Why eclipses are rare",
+    "big_idea": "The Moon's orbit is tilted by about 5°. Most new and full moons pass above or below the Sun–Earth line, so no shadow lands.",
+    "solar": "The Moon's umbra reaches Earth. Day turns to dusk along a narrow track: a solar eclipse.",
+    "lunar": "The Moon passes through Earth's shadow. It dims and turns copper: a lunar eclipse.",
+    "miss": "The shadow passes above or below. That is why most months have no eclipse."
   }
 }

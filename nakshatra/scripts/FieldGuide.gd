@@ -131,6 +131,8 @@ static func show(host: Node) -> Control:
 				path = "res://scenes/SolarLab.tscn"
 			elif link == "blackhole":
 				path = "res://scenes/BlackHoleLab.tscn"
+			elif link == "eclipse":
+				path = "res://scenes/EclipseLab.tscn"
 			b.pressed.connect(func():
 				overlay.queue_free()
 				Router.go(path))

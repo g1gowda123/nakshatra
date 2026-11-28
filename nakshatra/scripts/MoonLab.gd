@@ -340,6 +340,7 @@ func _build_ui() -> void:
 func _top_bar() -> Control:
 	var acts: Array = [{"text": "LESSON", "fn": func(): _show_learn()}]
 	if not UI.is_compact():
+		acts.append({"text": "ECLIPSES", "fn": func(): Router.go("res://scenes/EclipseLab.tscn")})
 		acts.append({"text": "SKY ATLAS", "fn": func(): Router.go("res://scenes/Atlas.tscn")})
 	return UI.app_bar("The Moon's Mask", "MOON PHASES  ·  A LIVE MODEL", "res://scenes/Lab.tscn", acts, Vector2i(-1, -1), "THE SKY LAB")
 
@@ -461,6 +462,10 @@ func _fill_panel() -> void:
 	check_btn.custom_minimum_size = Vector2(0, 48)
 	check_btn.pressed.connect(_check)
 	outer.add_child(check_btn)
+	if UI.is_compact():
+		var ecl := UI.link_button("WHY ECLIPSES?  ›", 10, G.GOLD)
+		ecl.pressed.connect(func(): Router.go("res://scenes/EclipseLab.tscn"))
+		outer.add_child(ecl)
 
 	feedback_label = UI.label("", 12, G.GOLD)
 	feedback_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

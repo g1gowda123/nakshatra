@@ -11,7 +11,7 @@ account, no network calls at play time.
 **Play the current build:** https://g1gowda123.github.io/nakshatra/  
 **Source:** https://github.com/g1gowda123/nakshatra
 
-**v1.5.1 — Less noise.** A verified Moon-phase model, a quiz that shuffles
+**v1.6.0 — Eclipses.** A verified Moon-phase model, a quiz that shuffles
 its answers, a take-home certificate, keyboard access, reduced motion, and a
 deck that survives its own live-demo loop.
 The same build includes a twelve-slide presenter deck with speaker notes, a
@@ -118,6 +118,9 @@ and a one-click **CSV** of the attempt for a teacher. Designed to be used as a
   28 nakshatras, star labels, a time slider that uses the actual local
   sidereal time, and a **Tonight** card that names four stars above the
   horizon right now.
+- **Eclipse Lab (bonus)** — a shadow-geometry model reachable from the Moon lab
+  and the Field Guide: tilt the Moon's orbit, watch the umbra miss or land, and
+  switch between a solar and a copper lunar eclipse.
 - **The Story** — an optional four-panel lantern-festival story. It never gates
   a lesson.
 - **The Finale** — when all seven lanterns are lit, a certificate and a sky full

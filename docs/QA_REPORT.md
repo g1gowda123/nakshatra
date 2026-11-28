@@ -1,6 +1,6 @@
 # QA report — 27 November 2026
 
-Build: `v1.5.1 — less noise`
+Build: `v1.6.0 — eclipses`
 Engine: Godot 4.7.2 · GL Compatibility · Web export
 
 ## Studio pass gate
@@ -14,6 +14,7 @@ bash tools/run_tests.sh
 
 Result: **ALL TESTS PASS** — content, seminar (13 pre-flight rows), solar flow
 the new **moon flow** contract (five phases, travel direction, feedback,
+and the eclipse bonus model,
 hidden readout) and the **quiz flow** contract (30 reshuffles, index remap,
 scoring, revise topics). Visual checks were re-run at 1280×720 and 390×844 for the
 Moon lab, hub, quiz, Solar lesson, Seasons lab, star hunt, finale and seminar

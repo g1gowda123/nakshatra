@@ -60,6 +60,7 @@ func _check_debug_route() -> void:
 		"stars": "res://scenes/StarLab.tscn", "scale": "res://scenes/ScaleLab.tscn",
 		"seasons": "res://scenes/SeasonLab.tscn", "flares": "res://scenes/SolarLab.tscn",
 		"blackhole": "res://scenes/BlackHoleLab.tscn", "quiz": "res://scenes/QuizLab.tscn",
+		"eclipse": "res://scenes/EclipseLab.tscn",
 		"atlas": "res://scenes/Atlas.tscn", "finale": "res://scenes/Finale.tscn",
 		"seminar": "res://scenes/Seminar.tscn", "present": "res://scenes/Seminar.tscn",
 	}
