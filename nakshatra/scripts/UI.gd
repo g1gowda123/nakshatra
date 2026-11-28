@@ -5,8 +5,9 @@ extends RefCounted
 ## All type is Cormorant Garamond (display) + Noto Sans (text); the UI is
 ## built from rules and plates, not glowing pills.
 
-const FONT_DISPLAY_PATH := "res://assets/fonts/Anton-Regular.ttf"
+const FONT_DISPLAY_PATH := "res://assets/fonts/ArchivoBlack-Regular.ttf"
 const FONT_EDITORIAL_PATH := "res://assets/fonts/CormorantGaramond-Variable.ttf"
+const FONT_MONO_PATH := "res://assets/fonts/JetBrainsMono-Regular.ttf"
 const FONT_SERIF_PATH := "res://assets/fonts/NotoSerif-Bold.ttf"
 const FONT_BODY_PATH := "res://assets/fonts/NotoSans-Regular.ttf"
 const FONT_BODY_MED_PATH := "res://assets/fonts/NotoSans-Medium.ttf"
@@ -16,6 +17,7 @@ const GRAIN_PATH := "res://assets/fx/grain.png"
 static var _theme: Theme
 static var _display: Font
 static var _editorial: Font
+static var _mono: Font
 static var _serif: Font
 static var _body: Font
 static var _body_med: Font
@@ -48,6 +50,12 @@ static func display_font() -> Font:
 	if _display == null:
 		_display = _load_font(FONT_DISPLAY_PATH)
 	return _display
+
+
+static func mono_font() -> Font:
+	if _mono == null:
+		_mono = _load_font(FONT_MONO_PATH)
+	return _mono
 
 
 static func editorial_font() -> Font:
@@ -86,6 +94,8 @@ static func tracked_font(size_kind: String, tracking: int) -> Font:
 			return _variant(serif_font(), 600, tracking)
 		"display":
 			return _variant(display_font(), 500, tracking)
+		"mono":
+			return _variant(mono_font(), 500, tracking)
 		_:
 			return _variant(body_med_font(), 500, tracking)
 
@@ -220,6 +230,8 @@ static func label(text: String, size: int = 18, color: Color = G.CREAM, font_kin
 			l.add_theme_font_override("font", body_med_font())
 		"kannada":
 			l.add_theme_font_override("font", kannada_font())
+		"mono":
+			l.add_theme_font_override("font", mono_font())
 			l.add_theme_constant_override("line_spacing", 4)
 			l.custom_minimum_size.y = int(float(size) * 1.6)
 		_:
@@ -231,16 +243,16 @@ static func label(text: String, size: int = 18, color: Color = G.CREAM, font_kin
 
 
 static func micro(text: String, color: Color = G.GOLD, size: int = 11) -> Label:
-	var l := label(text.to_upper(), size, color, "body_med")
+	var l := label(text.to_upper(), size, color, "mono")
 	l.autowrap_mode = TextServer.AUTOWRAP_OFF
-	l.add_theme_font_override("font", tracked_font("body", 2))
+	l.add_theme_font_override("font", tracked_font("mono", 1))
 	return l
 
 
 static func tracked(text: String, size: int, color: Color, tracking: int) -> Label:
-	var l := label(text, size, color, "body")
+	var l := label(text, size, color, "mono")
 	l.autowrap_mode = TextServer.AUTOWRAP_OFF
-	l.add_theme_font_override("font", tracked_font("body", tracking))
+	l.add_theme_font_override("font", tracked_font("mono", tracking))
 	return l
 
 
@@ -270,6 +282,50 @@ static func display(text: String, size: int = 64, color: Color = G.CREAM) -> Lab
 	var l := label(text, size, color, "display")
 	l.add_theme_constant_override("line_spacing", -2)
 	return l
+
+
+static func attach_dither(host: Node, levels: float = 2.0, pixel: float = 2.0) -> void:
+	var d: ColorRect = host.get_node_or_null("WorldDither")
+	if d == null:
+		d = ColorRect.new()
+		d.name = "WorldDither"
+		d.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		d.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		host.add_child(d)
+	var m := ShaderMaterial.new()
+	m.shader = preload("res://shaders/dither_screen.gdshader")
+	m.set_shader_parameter("light", G.CREAM)
+	m.set_shader_parameter("dark", Color("050505"))
+	m.set_shader_parameter("levels", levels)
+	m.set_shader_parameter("pixel_size", pixel)
+	d.material = m
+	host.move_child(d, 0)
+
+
+static func scanlines() -> ColorRect:
+	var r := ColorRect.new()
+	r.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var m := ShaderMaterial.new()
+	m.shader = preload("res://shaders/scanline.gdshader")
+	r.material = m
+	return r
+
+
+static func glitch_material(amount: float = 0.3) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = preload("res://shaders/glitch_text.gdshader")
+	m.set_shader_parameter("amount", amount)
+	return m
+
+
+static func dither_image_material(levels: float = 2.0) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = preload("res://shaders/dither_image.gdshader")
+	m.set_shader_parameter("levels", levels)
+	m.set_shader_parameter("light", G.CREAM)
+	m.set_shader_parameter("dark", Color("050505"))
+	return m
 
 
 static func rule(color: Color = Color(G.GOLD, 0.24), height: int = 1) -> ColorRect:

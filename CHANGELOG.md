@@ -1,5 +1,41 @@
 # Changelog
 
+## v1.7.0 — Signal · 2026-11-28
+
+### Added
+
+- **A new visual language, not a recolour.** The title and hub are now a
+  signal-receiver interface: a receipt/dossier index on paper, corner-bracket
+  tracking around the wordmark and preview, a live pointer readout, and one
+  acid-green accent over a near-black field. The old poster stack is gone.
+- **A real shader stack**: a full-screen 4×4 Bayer dither on the 3D world
+  (2 on the title, 4 on the hub and lessons so the Moon keeps its terminator),
+  a CRT scanline veil, a block-tearing/RGB-split wordmark shader, and a 1-bit
+  dither treatment for plates and preview images.
+- **The hub is an index, not a card rail.** Seven `TRK-` rows on an off-white
+  receipt sheet, a selected-exhibit preview with a dithered thumbnail, and a
+  festival CTA that appears when the night is complete.
+- **A mobile-first receipt layout**: the list scrolls under the live sky,
+  titles stay legible, and the preview is omitted rather than squeezed.
+
+### Changed
+
+- **The title is a camera feed**: a live sky window, a two-object tracking
+  overlay, one strong `BEGIN THE NIGHT` action, and a short session receipt.
+- **Labs use the same kit** — mono telemetry labels, square 1 px controls,
+  the acid accent, scanlines and 4-level dithering — while the Sky Atlas keeps
+  its stars crisp.
+- **No fake confidence numbers.** Tracking labels name what they frame; the
+  preview says `SELECTED`, not `CONF 0.98`.
+
+### Fixed
+
+- **Phone hub titles collapsed to dashes** when the scrolled list did not
+  expand horizontally. The list now expands and disables horizontal scroll.
+- **Phone title clipped** the final `A`; the portrait wordmark is 40 px and
+  compact tracking labels are hidden.
+- **Solar Lab parse error** from a misplaced scanline insert in the resize
+  hook.
 ## v1.6.0 — Eclipses · 2026-11-27
 
 ### Added

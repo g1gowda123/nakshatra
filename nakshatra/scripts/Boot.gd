@@ -162,6 +162,7 @@ func _process(delta: float) -> void:
 
 
 func _build_ui() -> void:
+	UI.attach_dither(self, 2.0, 2.0)
 	if ui_root:
 		ui_root.queue_free()
 	ui_root = Control.new()
@@ -184,6 +185,12 @@ func _build_ui() -> void:
 	content_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui_root.add_child(content_root)
 
+	var track: Control = preload("res://scripts/TrackingLayer.gd").new()
+	track.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	track.targets = [
+		{"rect": Rect2(0.035, 0.30, 0.55, 0.17), "label": "01 / WORDMARK"},
+	]
+	content_root.add_child(track)
 	content_root.add_child(UI.print_frame(16))
 
 	var outer := UI.margin(UI.pad() + 6, 24, UI.pad() + 6, 16)
@@ -209,7 +216,8 @@ func _build_ui() -> void:
 
 	col.add_child(_footer())
 
-	ui_root.add_child(UI.grain(0.05))
+	ui_root.add_child(UI.grain(0.03))
+	ui_root.add_child(UI.scanlines())
 	UI.fade_in(content_root, 0.05, 0.9)
 
 
@@ -265,25 +273,26 @@ func _top_bar() -> Control:
 
 
 func _build_landscape_body(body: Control) -> void:
-	var h := UI.hbox(40)
+	var h := UI.hbox(28)
 	h.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	h.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(h)
 
 	var compact := UI.is_compact()
-	var left := UI.vbox(0 if compact else 2)
+	var left := UI.vbox(0)
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	left.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	left.alignment = BoxContainer.ALIGNMENT_CENTER
 	h.add_child(left)
-	_add_title_block(left, 48 if compact else 88)
+	_add_title_block(left, 42 if compact else 100)
 
-	var right := UI.vbox(8)
-	right.size_flags_horizontal = Control.SIZE_SHRINK_END
-	right.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	right.custom_minimum_size = Vector2(320 if compact else 430, 0)
-	h.add_child(right)
-	_add_postcard(right, Vector2(320, 236) if compact else Vector2(430, 330), true)
+	if not compact:
+		var right := UI.vbox(0)
+		right.size_flags_horizontal = Control.SIZE_SHRINK_END
+		right.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		right.custom_minimum_size = Vector2(304, 0)
+		h.add_child(right)
+		_add_receipt(right)
 
 
 func _build_portrait_body(body: Control) -> void:
@@ -291,107 +300,117 @@ func _build_portrait_body(body: Control) -> void:
 	v.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	body.add_child(v)
-
-	var art_wrap := Control.new()
-	art_wrap.custom_minimum_size = Vector2(0, clampf(UI.viewport_size().y * 0.22, 150.0, 250.0))
-	art_wrap.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	art_wrap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	v.add_child(art_wrap)
-	_add_postcard(art_wrap, Vector2(0, art_wrap.custom_minimum_size.y), false)
-
-	var gap := Control.new()
-	gap.custom_minimum_size = Vector2(0, 16)
-	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	v.add_child(gap)
-
 	var left := UI.vbox(0)
 	left.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	left.alignment = BoxContainer.ALIGNMENT_CENTER
 	v.add_child(left)
-	_add_title_block(left, 60)
+	_add_title_block(left, 40)
 
 
 func _add_title_block(parent: VBoxContainer, title_size: int) -> void:
-	var compact_land := UI.is_compact() and not UI.is_portrait()
-	var title_px := title_size
-	if not compact_land and not UI.is_portrait():
-		title_px = maxi(title_size, 96)
-	var col := UI.vbox(6)
+	var col := UI.vbox(8)
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	parent.add_child(col)
 
-	var badges := UI.hbox(7)
-	badges.add_child(UI.sticker("CLASSES 6–9", G.VERMILION, G.CREAM, 0.0))
-	badges.add_child(UI.sticker("13° N", G.TEAL, G.INK, 0.0))
-	col.add_child(badges)
+	var status := UI.hbox(8)
+	status.add_child(UI.micro("OBSERVER  /  CHANDRAGIRI", G.GOLD, 9))
+	status.add_child(UI.spacer())
+	status.add_child(UI.micro("13.0 N  /  78.0 E", Color(G.CREAM, 0.7), 9))
+	col.add_child(status)
 
-	var title := UI.display("NAKSHATRA", title_px, G.CREAM)
+	var title := UI.display("NAKSHATRA", title_size, G.CREAM)
 	title.autowrap_mode = TextServer.AUTOWRAP_OFF
-	title.custom_minimum_size.y = title_px * 0.86
+	title.custom_minimum_size.y = title_size * 0.86
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	col.add_child(title)
 
-	var sub_row := UI.hbox(8)
-	sub_row.add_child(UI.slash(G.VERMILION, 7))
-	var sub := UI.sticker("THE SKY WEAVERS", G.VERMILION, G.CREAM, 0.0)
-	sub_row.add_child(sub)
-	col.add_child(sub_row)
+	var rule := UI.rule(G.GOLD, 3)
+	rule.custom_minimum_size = Vector2(0, 3)
+	col.add_child(rule)
 
-	var kannada := UI.label("ನಕ್ಷತ್ರ  ·  ಆಕಾಶ ನೇಯುವವರು", int(clampf(title_px * 0.17, 13, 17)), Color(G.CREAM, 0.8), "kannada")
+	var kicker := UI.hbox(8)
+	kicker.add_child(UI.micro("A FREE-CHOICE SKY LAB", G.GOLD, 9))
+	if not UI.is_compact():
+		kicker.add_child(UI.spacer())
+		kicker.add_child(UI.micro("CLASSES 6–9", Color(G.CREAM, 0.78), 10))
+	col.add_child(kicker)
+
+	var kannada := UI.label("ನಕ್ಷತ್ರ  /  ಆಕಾಶ ನೇಯುವವರು", 14, Color(G.CREAM, 0.65), "kannada")
 	col.add_child(kannada)
 
-	var thick := UI.rule(G.GOLD, 3)
-	thick.custom_minimum_size = Vector2(84, 3)
-	col.add_child(thick)
-
-	var tag := UI.label("SEVEN LANTERNS. ONE REAL SKY.", int(clampf(title_px * 0.2, 15, 21)), G.CREAM, "display")
+	var tag := UI.label("SEVEN LANTERNS. ONE REAL SKY.", int(clampf(title_size * 0.21, 17, 22)), G.CREAM, "body_med")
 	tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(tag)
-
-	var tag2 := UI.label("A free-choice sky lab for middle school.", 15, Color(G.MUTED, 0.98))
-	if not compact_land:
-		col.add_child(tag2)
+	var tag2 := UI.label("Pick any path. The sky is open.", 14, G.MUTED)
+	col.add_child(tag2)
 
 	var buttons := UI.vbox(9)
 	col.add_child(buttons)
-
-	var begin := UI.button("Begin the night   ›", true, 22)
-	begin.custom_minimum_size = Vector2(310 if not compact_land else 240, 56)
+	var begin := UI.button("Begin the night   ›", true, 20)
+	begin.custom_minimum_size = Vector2(290, 52)
 	begin.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	begin.pressed.connect(func():
 		Sfx.play("lantern")
-		Juice.stamp("THE HILL IS OPEN", G.GOLD)
+		Juice.stamp("SIGNAL LOCKED", G.GOLD)
 		Router.go("res://scenes/Lab.tscn"))
 	buttons.add_child(begin)
 
 	var links := UI.hbox(6)
 	buttons.add_child(links)
-	var seminar := UI.link_button("Seminar mode   ›", 11, G.GOLD)
-	seminar.pressed.connect(func():
-		Sfx.play("chime")
-		G.seminar_index = 0
-		Router.go("res://scenes/Seminar.tscn"))
-	links.add_child(seminar)
-	var dot0 := UI.label("·", 12, Color(G.MUTED, 0.5))
-	dot0.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	links.add_child(dot0)
-	var atlas := UI.link_button("Sky Atlas   ›", 11)
-	atlas.pressed.connect(func():
-		Sfx.play("click")
-		Router.go("res://scenes/Atlas.tscn"))
-	links.add_child(atlas)
-	var dot := UI.label("·", 12, Color(G.MUTED, 0.5))
-	dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	links.add_child(dot)
-	var story := UI.link_button("The Story   ›", 11)
+	for item in [["Seminar mode", "res://scenes/Seminar.tscn"], ["Sky Atlas", "res://scenes/Atlas.tscn"]]:
+		var link := UI.link_button(str(item[0]) + "   ›", 11, G.CREAM)
+		var path := str(item[1])
+		link.pressed.connect(func():
+			Sfx.play("click")
+			Router.go(path))
+		links.add_child(link)
+		var dot := UI.label("/", 11, Color(G.MUTED, 0.6))
+		dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		links.add_child(dot)
+	var story := UI.link_button("The Story   ›", 11, G.CREAM)
 	story.pressed.connect(func():
 		Sfx.play("click")
 		_show_story())
 	links.add_child(story)
 
-	var facts := UI.tracked("7 EXHIBITS  ·  8,879 STARS  ·  WORKS OFFLINE", 9, Color(G.GOLD, 0.9), 2)
+	var facts := UI.tracked("WORKS OFFLINE  /  NO ACCOUNT  /  FREE", 10, Color(G.CREAM, 0.7), 1)
 	facts.autowrap_mode = TextServer.AUTOWRAP_OFF
 	col.add_child(facts)
+
+
+func _add_receipt(parent: VBoxContainer) -> void:
+	var sheet := UI.paper(14)
+	sheet.custom_minimum_size = Vector2(304, 0)
+	parent.add_child(sheet)
+	var v := UI.vbox(5)
+	sheet.add_child(v)
+	var thumb := TextureRect.new()
+	thumb.custom_minimum_size = Vector2(274, 206)
+	thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	thumb.material = UI.dither_image_material(2.0)
+	if ResourceLoader.exists("res://assets/art/plates/plate_title.webp"):
+		thumb.texture = load("res://assets/art/plates/plate_title.webp")
+	var ptrack: Control = preload("res://scripts/TrackingLayer.gd").new()
+	ptrack.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	ptrack.targets = [{"rect": Rect2(0.03, 0.06, 0.94, 0.86), "label": "02 / PREVIEW"}]
+	thumb.add_child(ptrack)
+	v.add_child(thumb)
+	v.add_child(UI.rule(G.INK, 1))
+	v.add_child(UI.micro("NAKSHATRA  /  SESSION 001", G.INK_SOFT, 8))
+	var name := UI.label("SKY LAB", 24, G.INK, "display")
+	v.add_child(name)
+	v.add_child(UI.rule(Color(G.INK, 0.25), 1))
+	for line in ["07 EXHIBITS", "8,879 STARS", "13.0 N / 78.0 E"]:
+		var row := UI.hbox(6)
+		row.add_child(UI.micro(str(line), G.INK_SOFT, 8))
+		v.add_child(row)
+	v.add_child(UI.rule(Color(G.INK, 0.25), 1))
+	var ready := UI.hbox(6)
+	ready.add_child(UI.micro("STATUS", G.INK_SOFT, 8))
+	ready.add_child(UI.spacer())
+	ready.add_child(UI.micro("READY", G.PAPER_ACCENT, 9))
+	v.add_child(ready)
 
 
 func _add_postcard(parent: Control, size: Vector2, rotate: bool) -> void:

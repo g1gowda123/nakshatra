@@ -23,6 +23,11 @@ var hill: SkyHill
 var ui_root: Control
 var card_list: VBoxContainer
 var lanterns: Dictionary = {}
+var sig_num: Label
+var sig_title: Label
+var sig_meta: Label
+var sig_body: Label
+var sig_thumb: TextureRect
 var _hovered_id := ""
 var _pointer := Vector2(-1, -1)
 var _portrait := false
@@ -416,6 +421,7 @@ func _build_sky_lanterns() -> void:
 
 
 func _build_ui() -> void:
+	UI.attach_dither(self, 4.0, 2.0)
 	if ui_root:
 		ui_root.queue_free()
 	_story_overlay = null
@@ -461,18 +467,11 @@ func _build_ui() -> void:
 		hint.size = Vector2(UI.viewport_size().x - UI.pad() * 2, 16)
 		mid.add_child(hint)
 
-	if G.all_done():
-		var finale := UI.button("The lantern festival   ›", true, 17)
-		finale.custom_minimum_size = Vector2(240, 44)
-		finale.set_anchors_preset(Control.PRESET_CENTER)
-		finale.position = Vector2(-120, -22)
-		finale.pressed.connect(func():
-			Sfx.play("lantern")
-			Router.go("res://scenes/Finale.tscn"))
-		mid.add_child(finale)
 
-	col.add_child(_cards())
-	ui_root.add_child(UI.grain(0.045))
+
+	_signal_index(mid)
+	ui_root.add_child(UI.grain(0.02))
+	ui_root.add_child(UI.scanlines())
 	UI.fade_in(ui_root, 0.05, 0.6)
 
 
@@ -571,6 +570,200 @@ func _show_menu() -> void:
 	var close := UI.ink_button("Close", true, 15)
 	close.pressed.connect(func(): overlay.queue_free())
 	v.add_child(close)
+
+
+func _signal_index(mid: Control) -> void:
+	var sheet := UI.paper(18)
+	if UI.is_compact():
+		sheet.set_anchors_preset(Control.PRESET_FULL_RECT)
+		sheet.offset_left = UI.pad()
+		sheet.offset_right = -UI.pad()
+		sheet.offset_top = UI.viewport_size().y * 0.36
+		sheet.offset_bottom = -4
+	else:
+		sheet.set_anchors_preset(Control.PRESET_FULL_RECT)
+		sheet.offset_left = 4
+		sheet.offset_right = -UI.viewport_size().x * 0.55
+		sheet.offset_top = 4
+		sheet.offset_bottom = -4
+	mid.add_child(sheet)
+
+	var v := UI.vbox(8)
+	sheet.add_child(v)
+	var head := UI.hbox(8)
+	head.add_child(UI.micro("RECEIVER  /  INDEX", G.INK_SOFT, 8))
+	head.add_child(UI.spacer())
+	head.add_child(UI.micro("%d/7 LIT" % G.done_count(), G.GOLD_SOFT, 8))
+	v.add_child(head)
+	var title := UI.heading("Sky Lab", 34 if not UI.is_compact() else 28, G.INK)
+	title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	v.add_child(title)
+	v.add_child(UI.rule(G.INK, 2))
+
+	var list := UI.vbox(0)
+	list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if UI.is_compact():
+		var sc := UI.scroll()
+		sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		v.add_child(sc)
+		sc.add_child(list)
+	else:
+		v.add_child(list)
+	for id in ORDER:
+		list.add_child(_signal_row(id))
+	if G.all_done():
+		var fest := UI.button("The lantern festival   ›", true, 14)
+		fest.custom_minimum_size = Vector2(0, 42)
+		fest.pressed.connect(func():
+			Sfx.play("lantern")
+			Router.go("res://scenes/Finale.tscn"))
+		v.add_child(fest)
+
+	if not UI.is_compact():
+		_signal_preview(mid)
+	_signal_preview_update(_first_incomplete() if _first_incomplete() != "" else str(ORDER[0]))
+
+
+func _signal_row(id: String) -> Control:
+	var info := G.module_info(id)
+	var done := G.is_done(id)
+	var current := _first_incomplete() == id
+	var idx := ORDER.find(id) + 1
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(0, 54 if not UI.is_compact() else 62)
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	b.focus_mode = Control.FOCUS_ALL
+	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color(0, 0, 0, 0)
+	normal.border_color = Color(G.INK, 0.2)
+	normal.border_width_bottom = 1
+	normal.set_corner_radius_all(0)
+	normal.content_margin_left = 4
+	normal.content_margin_right = 4
+	normal.content_margin_top = 3
+	normal.content_margin_bottom = 3
+	var hover := normal.duplicate() as StyleBoxFlat
+	hover.bg_color = G.GOLD
+	hover.border_color = G.GOLD
+	b.add_theme_stylebox_override("normal", normal)
+	b.add_theme_stylebox_override("hover", hover)
+	b.add_theme_stylebox_override("pressed", hover)
+	b.add_theme_stylebox_override("focus", UI.focus_ring())
+	b.pressed.connect(func():
+		Sfx.play("click")
+		Juice.stamp("LOCKED: " + str(info.get("title", id)).to_upper(), G.GOLD, G.INK)
+		_open_module(id))
+	b.mouse_entered.connect(func(): _signal_preview_update(id))
+
+	var row := UI.hbox(8)
+	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	b.add_child(row)
+	var trk := UI.micro("TRK-%02d" % idx, G.INK_SOFT, 8)
+	trk.custom_minimum_size = Vector2(40 if UI.is_compact() else 48, 0)
+	trk.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(trk)
+	var midbox := UI.vbox(1)
+	midbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	midbox.custom_minimum_size = Vector2(0, 0)
+	midbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_child(midbox)
+	var title := UI.label(str(info.get("title", id)), 16, G.INK, "body_med")
+	title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	title.clip_text = true
+	title.custom_minimum_size = Vector2(0, 0)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	midbox.add_child(title)
+	var cat := UI.micro(str(info.get("tag", "")), Color(G.INK_SOFT, 0.85), 8)
+	cat.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	cat.clip_text = true
+	cat.custom_minimum_size = Vector2(0, 0)
+	midbox.add_child(cat)
+	var state := UI.micro("LIT" if done else ("START" if current else "OPEN"), G.GOLD_SOFT if not done else G.INK_SOFT, 8)
+	state.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	state.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(state)
+	var mins := UI.micro(str(info.get("minutes", "")), Color(G.INK_SOFT, 0.8), 8)
+	mins.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	mins.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	mins.visible = not UI.is_compact()
+	row.add_child(mins)
+	if UI.is_compact():
+		state.text = ("LIT" if done else ("START" if current else "OPEN")) + "  " + str(info.get("minutes", ""))
+
+	b.mouse_entered.connect(func():
+		for l in [trk, title, cat, state, mins]:
+			l.add_theme_color_override("font_color", G.INK))
+	b.mouse_exited.connect(func():
+		trk.add_theme_color_override("font_color", G.INK_SOFT)
+		title.add_theme_color_override("font_color", G.INK)
+		cat.add_theme_color_override("font_color", Color(G.INK_SOFT, 0.85))
+		state.add_theme_color_override("font_color", G.GOLD_SOFT if not done else G.INK_SOFT)
+		mins.add_theme_color_override("font_color", Color(G.INK_SOFT, 0.8)))
+	return b
+
+
+func _signal_preview(mid: Control) -> void:
+	var p := Panel.new()
+	p.set_anchors_preset(Control.PRESET_FULL_RECT)
+	p.offset_left = UI.viewport_size().x * 0.49
+	p.offset_right = -UI.pad()
+	p.offset_top = UI.viewport_size().y * 0.58
+	p.offset_bottom = -UI.pad()
+	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(G.INK, 0.78)
+	sb.border_color = Color(G.GOLD, 0.55)
+	sb.set_border_width_all(1)
+	sb.set_corner_radius_all(0)
+	p.add_theme_stylebox_override("panel", sb)
+	mid.add_child(p)
+	var m := UI.margin(14, 12, 14, 12)
+	m.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.add_child(m)
+	var h := UI.hbox(12)
+	m.add_child(h)
+	sig_thumb = TextureRect.new()
+	sig_thumb.custom_minimum_size = Vector2(104, 104)
+	sig_thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	sig_thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	sig_thumb.material = UI.dither_image_material(3.0)
+	sig_thumb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	h.add_child(sig_thumb)
+	var v := UI.vbox(4)
+	v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	h.add_child(v)
+	sig_num = UI.micro("TRK-01  /  SELECTED", G.GOLD, 8)
+	v.add_child(sig_num)
+	sig_title = UI.label("", 22, G.CREAM, "display")
+	sig_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	v.add_child(sig_title)
+	sig_meta = UI.micro("", Color(G.CREAM, 0.6), 8)
+	v.add_child(sig_meta)
+	sig_body = UI.label("", 12, Color(G.CREAM, 0.8))
+	sig_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	sig_body.max_lines_visible = 2
+	v.add_child(sig_body)
+
+
+func _signal_preview_update(id: String) -> void:
+	if sig_title == null or id == "":
+		return
+	var info := G.module_info(id)
+	var idx := ORDER.find(id) + 1
+	sig_num.text = "TRK-%02d  /  SELECTED" % idx
+	sig_title.text = str(info.get("title", id))
+	sig_meta.text = str(info.get("tag", "")).to_upper() + "  /  " + str(info.get("minutes", ""))
+	sig_body.text = str(info.get("blurb", ""))
+	sig_thumb.texture = null
+	var art := str(info.get("art", ""))
+	if ResourceLoader.exists(art):
+		sig_thumb.texture = load(art)
 
 
 func _cards() -> Control:

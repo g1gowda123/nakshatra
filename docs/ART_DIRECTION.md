@@ -11,40 +11,58 @@ low-poly demo, and so that the viva panel can see *why* each choice was made.
 
 ## 1. The north star
 
-**An observatory almanac, torn out and taped to a wall.**
+**An observatory feed printed on a receipt.**
 
-The reference is a small printed star atlas, a paper lantern, a brass meridian
-ring, and a hill at 9 p.m. — then a teenager's poster wall: oversized condensed
-type, acid-yellow stickers, red bars, hard offset shadows, and a ticker that
-never quite sits still. Cream paper stays for reading; the menu is allowed to
-be loud.
+The screen is an instrument, not a poster. A near-black camera feed is pushed
+through a Bayer dither; the UI is a paper ticket stuck to the monitor: mono
+labels, a serial number, a confidence-free tracking bracket, one acid-green
+signal. The sky is real; the interface admits it is a machine reading it.
 
 Three rules follow from that:
 
-1. **Texture before polygon count.** A shader with paper grain and warm light
-   pools reads richer than a high-poly asset with a flat material.
-2. **One warm light, one cool dark, one electric hit.** The night is ink; the
-   attention is acid yellow; vermilion and cyan are punctuation, not fields.
-3. **Motion is percussion.** Hover lifts, press squashes, release springs, a
-   result gets one stamp. Then the screen holds still. No ambient confetti;
-   no animation that fights the text.
+1. **One signal colour.** Acid green `#c6ff00` means *act, selected, ready*.
+   Red `#ff3b30` means *miss, warning, glitch*. Nothing else is allowed to
+   compete for attention.
+2. **Dither is the material.** The 3D world is quantised, not smoothed. The
+   title uses two levels for a hard 1-bit look; lessons use four so the Moon's
+   terminator survives. UI text never sits under the dither.
+3. **The frame is evidence.** Every bracket names the thing it frames. No fake
+   confidence percentages, no floating telemetry that does not correspond to
+   a real element. If a label cannot point at something, it is deleted.
 
 ---
-
 ## 2. Visual grammar
 
 ### Palette
 
-| Token | Hex | Use |
+| Token | Value | Use |
 |---|---|---|
-| `G.BG` | `#080710` | The night itself. Never pure black; pure black kills depth. |
-| `G.INK` | `#191322` | Printed ink on paper, hard borders, button text. |
-| `G.CREAM` | `#fff6e4` | Paper, primary type, the certificate. |
-| `G.GOLD` | `#ffd23f` | Acid attention: CTA, constellation lines, the one accent that means “look”. |
-| `G.GOLD_SOFT` | `#e6b92e` | Secondary gold; rules that should not shout. |
-| `G.VERMILION` | `#ff4b3a` | The seal, the stamp, a single warm interruption. |
-| `G.TEAL` | `#5ff2e3` | Nakshatra lines, hints, the “alive” state. |
-| `G.MUTED` | `#bcb4ce` | Supporting copy. Never below 70% opacity on the night field. |
+| `G.BG` | `#050505` | The receiver field. Near-black, never pure. |
+| `G.BG_SOFT` | `#101010` | Raised dark surfaces and hover beds. |
+| `G.CREAM` | `#f2f2ee` | Primary type, dithered highlights, the paper ink. |
+| `G.GOLD` | `#c6ff00` | The single signal accent: CTA, selected row, tracking bracket. |
+| `G.PAPER` | `#f2f2ee` | Receipts, index sheets, the take-home certificate. |
+| `G.INK` | `#080808` | Ink on paper and text on acid fills. |
+| `G.INK_SOFT` | `#5a5a56` | Receipt metadata, secondary rules. |
+| `G.VERMILION` | `#ff3b30` | Error, wrong answer, a redaction. Never decorative. |
+| `G.MUTED` | `#8c8c88` | Supporting copy on the dark field. |
+
+### Type
+
+- **Archivo Black** — the wordmark and exhibit titles. One weight, tight.
+- **JetBrains Mono** — every button, label, coordinate and receipt line.
+- **Noto Sans / Noto Sans Kannada** — reading copy and the Kannada layer.
+
+The mono/display split is the hierarchy: mono is the machine talking; display
+is the thing being observed.
+
+### Surfaces
+
+- **Paper** is opaque, 1 px ink border, no rounded corners, no shadow.
+- **Dark panels** are 94% ink, 1 px cream 16% border, square.
+- **The feed** is the 3D scene under a dithered screen shader.
+- **Scanlines** are a 10% veil above the feed, never above body copy in a way
+  that lowers contrast below readable.
 
 Rules:
 

@@ -43,8 +43,11 @@ var _order_gen := -1
 func _ready() -> void:
 	questions = G.content.get("quiz", [])
 	_build_world()
+	UI.attach_dither(self, 4.0, 2.0)
 	_build_ui()
 	_render()
+	if ui_root:
+		ui_root.add_child(UI.scanlines())
 	get_viewport().size_changed.connect(_on_resize)
 	set_process(true)
 	G.maybe_briefing(ui_root, "quiz")
@@ -187,7 +190,7 @@ func _segments(done: int, total: int, current: int = -1, on_paper: bool = false)
 	for i in total:
 		var seg := ColorRect.new()
 		var full := (G.INK if on_paper else G.GOLD)
-		var col := Color(full, 0.8) if i < done else (G.VERMILION if i == current else Color(full, 0.28))
+		var col := Color(full, 0.8) if i < done else (G.GOLD if i == current else Color(full, 0.28))
 		seg.color = col
 		seg.custom_minimum_size = Vector2(0, 3)
 		seg.size_flags_horizontal = Control.SIZE_EXPAND_FILL

@@ -6,25 +6,26 @@ signal language_changed
 
 const MODULES := ["moon", "stars", "scale", "seasons", "flares", "blackhole", "quiz"]
 
-const BG := Color("080710")
-const BG_SOFT := Color("141024")
-const PANEL := Color(0.043, 0.035, 0.075, 0.94)
-const GOLD := Color("ffd23f")
-const GOLD_SOFT := Color("e6b92e")
-const CREAM := Color("fff6e4")
-const MUTED := Color("bcb4ce")
-const TEAL := Color("5ff2e3")
-const ROSE := Color("ff8d7e")
-const VERMILION := Color("ff4b3a")
-const LINE := Color(1.0, 0.824, 0.247, 0.26)
-const PAPER := Color("fff4dc")
-const PAPER_DEEP := Color("efdfbd")
-const INK := Color("191322")
-const INK_SOFT := Color("4f4059")
+const BG := Color("050505")
+const BG_SOFT := Color("101010")
+const PANEL := Color(0.025, 0.025, 0.025, 0.94)
+const GOLD := Color("c6ff00")
+const GOLD_SOFT := Color("9ecb00")
+const CREAM := Color("f2f2ee")
+const MUTED := Color("8c8c88")
+const TEAL := Color("c6ff00")
+const ROSE := Color("ff3b30")
+const VERMILION := Color("ff3b30")
+const LINE := Color(0.949, 0.949, 0.933, 0.16)
+const PAPER := Color("f2f2ee")
+const PAPER_DEEP := Color("d8d8d2")
+const INK := Color("080808")
+const INK_SOFT := Color("5a5a56")
+const PAPER_ACCENT := Color("3d4a00")
 
 const SAVE_PATH := "user://nakshatra_save.json"
 
-const VERSION := "1.6.0"
+const VERSION := "1.7.0"
 const EDITION := "Studio edition"
 
 var visited: Dictionary = {}

@@ -44,7 +44,10 @@ const MONTHS := ["January", "February", "March", "April", "May", "June", "July",
 
 func _ready() -> void:
 	_build_world()
+	UI.attach_dither(self, 4.0, 2.0)
 	_build_ui()
+	if ui_root:
+		ui_root.add_child(UI.scanlines())
 	get_viewport().size_changed.connect(_on_resize)
 	set_process(true)
 	G.maybe_briefing(ui_root, "seasons")
