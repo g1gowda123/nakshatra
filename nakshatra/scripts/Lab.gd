@@ -26,6 +26,8 @@ var lanterns: Dictionary = {}
 var note_title: Label
 var note_body: Label
 var _wheel_done: Array = []
+var _selected_id := ""
+var _node_buttons: Dictionary = {}
 var _hovered_id := ""
 var _pointer := Vector2(-1, -1)
 var _portrait := false
@@ -422,6 +424,8 @@ func _build_ui() -> void:
 	if ui_root:
 		ui_root.queue_free()
 	_story_overlay = null
+	_node_buttons.clear()
+	_selected_id = ""
 	ui_root = Control.new()
 	ui_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	ui_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -434,10 +438,15 @@ func _build_ui() -> void:
 	vignette.material = ShaderMaterial.new()
 	vignette.material.shader = load("res://shaders/vignette.gdshader")
 	ui_root.add_child(vignette)
-	ui_root.add_child(UI.scrim(false, 280, 0.78))
+	var dim := ColorRect.new()
+	dim.color = Color(0.02, 0.03, 0.07, 0.52)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ui_root.add_child(dim)
+	ui_root.add_child(UI.scrim(false, 260, 0.72))
 
 	if hill:
-		hill.set_sign_visible(not UI.is_compact())
+		hill.set_sign_visible(false)
 
 	var col := UI.vbox(10)
 	col.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -566,7 +575,7 @@ func _star_wheel(mid: Control) -> void:
 	mid.add_child(holder)
 
 	var compact := UI.is_compact()
-	var wheel_size := clampf(minf(UI.viewport_size().x, UI.viewport_size().y) * 0.82, 330.0, 480.0)
+	var wheel_size := clampf(minf(UI.viewport_size().x, UI.viewport_size().y) * 0.84, 340.0, 500.0)
 	var wheel := Control.new()
 	wheel.custom_minimum_size = Vector2(wheel_size, wheel_size)
 	holder.add_child(wheel)
@@ -581,16 +590,12 @@ func _star_wheel(mid: Control) -> void:
 
 	var center := wheel_size * 0.5
 	var radius := wheel_size * 0.38
-	var node_size := 62.0 if not compact else 58.0
+	var node_size := 76.0 if not compact else 68.0
 	for i in ORDER.size():
 		var id := str(ORDER[i])
-		wheel.add_child(_node_button(id, i, Vector2(center, center), radius, node_size))
-		if not compact:
-			var label := _node_label(id)
-			var angle := -PI * 0.5 + TAU * float(i) / 7.0
-			var pos := Vector2(center, center) + Vector2(cos(angle), sin(angle)) * (radius + node_size * 0.8)
-			label.position = pos - Vector2(label.custom_minimum_size.x * 0.5, 8)
-			wheel.add_child(label)
+		var btn := _node_button(id, i, Vector2(center, center), radius, node_size)
+		_node_buttons[id] = btn
+		wheel.add_child(btn)
 
 	var note_box := VBoxContainer.new()
 	note_box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -598,57 +603,58 @@ func _star_wheel(mid: Control) -> void:
 	note_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	wheel.add_child(note_box)
 	var pad := VBoxContainer.new()
-	pad.add_theme_constant_override("separation", 2)
+	pad.add_theme_constant_override("separation", 4)
 	pad.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	note_box.add_child(pad)
 
-	note_title = UI.label("", 22 if not compact else 17, G.CREAM, "display")
+	note_title = UI.label("", 28 if not compact else 22, G.CREAM, "display")
 	note_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	note_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note_title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	note_title.clip_text = true
 	note_title.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	note_title.custom_minimum_size = Vector2(wheel_size * (0.44 if compact else 0.54), 0)
-	note_title.add_theme_constant_override("outline_size", 6)
-	note_title.add_theme_color_override("font_outline_color", Color(0.01, 0.02, 0.05, 0.68))
+	note_title.custom_minimum_size = Vector2(wheel_size * 0.56, 0)
 	pad.add_child(note_title)
 
-	note_body = UI.label("", 13 if not compact else 10, Color(G.CREAM, 0.78))
+	note_body = UI.label("", 16 if not compact else 14, Color(G.CREAM, 0.78))
 	note_body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	note_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note_body.autowrap_mode = TextServer.AUTOWRAP_OFF
+	note_body.clip_text = true
 	note_body.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	note_body.custom_minimum_size = Vector2(wheel_size * (0.44 if compact else 0.58), 0)
-	note_body.max_lines_visible = 3 if compact else 2
-	note_body.add_theme_constant_override("outline_size", 5)
-	note_body.add_theme_color_override("font_outline_color", Color(0.01, 0.02, 0.05, 0.62))
+	note_body.custom_minimum_size = Vector2(wheel_size * 0.46, 0)
 	pad.add_child(note_body)
+
+	var open := UI.button("Open", true, 15)
+	open.custom_minimum_size = Vector2(132, 42)
+	open.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	open.pressed.connect(func():
+		if _selected_id != "":
+			Sfx.play("click")
+			_open_module(_selected_id))
+	pad.add_child(open)
 
 	var first := _first_incomplete()
 	_note_update(first if first != "" else str(ORDER[0]))
 
 
-func _node_label(id: String) -> Label:
-	var short := {
-		"moon": "Moon",
-		"stars": "Stars",
-		"scale": "Distances",
-		"seasons": "Seasons",
-		"flares": "Sun",
-		"blackhole": "Gravity",
-		"quiz": "Riddles",
+func _node_icon(id: String) -> TextureRect:
+	var paths := {
+		"moon": "res://assets/art/icons/icon_moon.png",
+		"stars": "res://assets/art/icons/icon_stars.png",
+		"scale": "res://assets/art/icons/icon_scale.png",
+		"seasons": "res://assets/art/icons/icon_seasons.png",
+		"flares": "res://assets/art/icons/icon_flares.png",
+		"blackhole": "res://assets/art/icons/icon_blackhole.png",
+		"quiz": "res://assets/art/icons/icon_quiz.png",
 	}
-	var text := str(short.get(id, id))
-	var l := UI.label(text, 12, Color(G.CREAM, 0.68), "body_med")
-	l.autowrap_mode = TextServer.AUTOWRAP_OFF
-	l.clip_text = true
-	l.custom_minimum_size = Vector2(84, 16)
-	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	l.add_theme_constant_override("outline_size", 4)
-	l.add_theme_color_override("font_outline_color", Color(0.01, 0.02, 0.05, 0.55))
-	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return l
+	var icon := TextureRect.new()
+	icon.texture = load(str(paths.get(id, paths["moon"])))
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return icon
 
 
 func _node_button(id: String, index: int, center: Vector2, radius: float, node_size: float) -> Button:
-	var info := G.module_info(id)
 	var done := G.is_done(id)
 	var b := Button.new()
 	b.focus_mode = Control.FOCUS_ALL
@@ -656,30 +662,30 @@ func _node_button(id: String, index: int, center: Vector2, radius: float, node_s
 	b.custom_minimum_size = Vector2(node_size, node_size)
 	var normal := StyleBoxFlat.new()
 	normal.bg_color = Color(0, 0, 0, 0.0)
-	normal.border_color = Color(G.GOLD, 0.55 if done else 0.28)
-	normal.set_border_width_all(1)
+	normal.border_color = Color(G.GOLD, 0.68 if done else 0.42)
+	normal.set_border_width_all(2)
 	normal.set_corner_radius_all(int(node_size * 0.5))
 	normal.content_margin_left = 0
 	normal.content_margin_right = 0
 	normal.content_margin_top = 0
 	normal.content_margin_bottom = 0
 	var hover := normal.duplicate() as StyleBoxFlat
-	hover.bg_color = Color(G.GOLD, 0.22)
-	hover.border_color = Color(G.GOLD, 0.85)
+	hover.bg_color = Color(G.GOLD, 0.16)
+	hover.border_color = Color(G.GOLD, 0.95)
 	var pressed := normal.duplicate() as StyleBoxFlat
-	pressed.bg_color = Color(G.VERMILION, 0.28)
-	pressed.border_color = Color(G.VERMILION, 0.75)
+	pressed.bg_color = Color(G.VERMILION, 0.22)
+	pressed.border_color = Color(G.VERMILION, 0.72)
 	b.add_theme_stylebox_override("normal", normal)
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", pressed)
 	b.add_theme_stylebox_override("focus", UI.focus_ring())
 
-	var mark := BrandMark.new()
-	mark.custom_minimum_size = Vector2(node_size * 0.44, node_size * 0.44)
-	mark.ink = G.GOLD if done else Color(G.CREAM, 0.55)
-	mark.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	mark.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	b.add_child(mark)
+	var icon := _node_icon(id)
+	icon.custom_minimum_size = Vector2(node_size * 0.68, node_size * 0.68)
+	icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	icon.modulate = Color(1.0, 1.0, 1.0, 1.0 if done else 0.82)
+	b.add_child(icon)
 
 	var angle := -PI * 0.5 + TAU * float(index) / 7.0
 	var pos := center + Vector2(cos(angle), sin(angle)) * radius
@@ -687,7 +693,6 @@ func _node_button(id: String, index: int, center: Vector2, radius: float, node_s
 	b.mouse_entered.connect(func(): _note_update(id))
 	b.pressed.connect(func():
 		Sfx.play("click")
-		Juice.stamp(str(info.get("title", id)).to_upper(), G.GOLD, G.INK)
 		_open_module(id))
 	return b
 
@@ -696,8 +701,22 @@ func _note_update(id: String) -> void:
 	if note_title == null or id == "":
 		return
 	var info := G.module_info(id)
+	_selected_id = id
 	note_title.text = str(info.get("title", id))
-	note_body.text = str(info.get("blurb", ""))
+	note_body.text = str(info.get("prompt", info.get("blurb", "")))
+	for key in _node_buttons:
+		var btn := _node_buttons[key] as Button
+		var sb := btn.get_theme_stylebox("normal") as StyleBoxFlat
+		if sb:
+			if key == id:
+				sb.border_color = Color(G.GOLD, 1.0)
+				sb.set_border_width_all(4)
+			else:
+				sb.border_color = Color(G.GOLD, 0.34 if not G.is_done(str(key)) else 0.50)
+				sb.set_border_width_all(2)
+		for child in btn.get_children():
+			if child is TextureRect:
+				child.modulate = Color(1.0, 1.0, 1.0, 1.0 if key == id else 0.62)
 
 
 func _hub_footer() -> Control:
@@ -706,6 +725,8 @@ func _hub_footer() -> Control:
 		empty.custom_minimum_size = Vector2(0, 4)
 		empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		return empty
+	var box := VBoxContainer.new()
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var center := CenterContainer.new()
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var fest := UI.button("The lantern festival", true, 15)
@@ -714,7 +735,12 @@ func _hub_footer() -> Control:
 		Sfx.play("lantern")
 		Router.go("res://scenes/Finale.tscn"))
 	center.add_child(fest)
-	return center
+	box.add_child(center)
+	var lift := Control.new()
+	lift.custom_minimum_size = Vector2(0, 22)
+	lift.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(lift)
+	return box
 
 
 func _cards() -> Control:

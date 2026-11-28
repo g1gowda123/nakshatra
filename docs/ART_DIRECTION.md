@@ -14,10 +14,10 @@ low-poly demo, and so that the viva panel can see *why* each choice was made.
 **A night almanac, not a dashboard.**
 
 The screen is a hand-plotted star wheel. The world is a dark observatory hill;
-the interface is the brass ring of an almanac laid over it — quiet gold arcs,
-seven lantern nodes, and one sentence of instruction at a time. It should feel
-like a printed instrument you are allowed to touch, not a card stack or a
-telemetry readout.
+the interface is the brass ring of an almanac laid over it — seven medal
+nodes, one selected exhibit, one sentence of instruction, one Open button. It
+should feel like a printed instrument you are allowed to touch, not a card
+stack or a telemetry readout.
 
 Three rules follow from that:
 
@@ -54,8 +54,11 @@ Three rules follow from that:
 
 ### Surfaces
 
-- **The wheel** is drawn, not boxed: thin gold arcs, small plotted star dots,
-  and a soft dark disc behind the centre note.
+- **The wheel** is drawn, not boxed: one thin gold ring, seven evenly spaced
+  arcs, and a soft dark disc behind the centre note.
+- **The medals** are hand-drawn icons on dark discs: moon, stars, orbit,
+  seasons, sun, black hole, riddles. The selected medal carries a bright 4 px
+  border; the others sit at a hairline.
 - **Paper** is warm cream, rounded, with a brass hairline and a soft shadow.
 - **Buttons** are brass pills with ink text, never square brutalist blocks.
 - **The 3D hill** stays undithered and warm; the UI is the instrument on top.
