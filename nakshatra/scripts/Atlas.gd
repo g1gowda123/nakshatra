@@ -347,7 +347,7 @@ func _show_constellations() -> void:
 	overlay.theme = UI.theme()
 	ui_root.add_child(overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(0.015, 0.012, 0.008, 0.86)
+	dim.color = Color(0.030, 0.028, 0.024, 0.86)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	dim.gui_input.connect(func(e):

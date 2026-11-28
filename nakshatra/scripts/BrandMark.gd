@@ -2,7 +2,7 @@ class_name BrandMark
 extends Control
 ## The almanac mark: a four-point star inside a hairline ring with two ticks.
 
-var ink: Color = Color("d9b36c")
+var ink: Color = Design.GOLD
 var weight := 1.0
 
 
@@ -28,4 +28,4 @@ func _draw() -> void:
 		c + Vector2(-r * 0.72, 0), c + Vector2(-r * 0.17, -r * 0.17),
 	])
 	draw_colored_polygon(pts, ink)
-	draw_circle(c, r * 0.09, Color(ink, 0.9))
+	draw_circle(c, r * 0.09, Color(Design.PHOSPHOR, 0.9))

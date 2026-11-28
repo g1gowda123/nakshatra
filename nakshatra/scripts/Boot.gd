@@ -179,25 +179,21 @@ func _build_ui() -> void:
 	vignette.material = ShaderMaterial.new()
 	vignette.material.shader = load("res://shaders/vignette.gdshader")
 	ui_root.add_child(vignette)
-	ui_root.add_child(UI.scrim(true, 148, 0.48))
+	ui_root.add_child(UI.scrim(true, 148, 0.50))
 
 	content_root = Control.new()
 	content_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	content_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui_root.add_child(content_root)
 
-	var ring_holder := CenterContainer.new()
-	ring_holder.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	ring_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	content_root.add_child(ring_holder)
-	var ring: Control = preload("res://scripts/AlmanacRing.gd").new()
-	ring.custom_minimum_size = Vector2(400, 400) if not UI.is_compact() else Vector2(300, 300)
-	ring_holder.add_child(ring)
+	# The cassette emblem now sits above the wordmark instead of behind it,
+	# so the shell is always readable and never fights the type.
 
 	var bar := _top_bar()
-	bar.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	bar.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	bar.offset_left = 18
-	bar.offset_top = 14
+	bar.offset_right = -28
+	bar.offset_top = 48 if UI.is_compact() else 30
 	content_root.add_child(bar)
 
 	var text_holder := CenterContainer.new()
@@ -206,19 +202,20 @@ func _build_ui() -> void:
 	content_root.add_child(text_holder)
 	var col := UI.vbox(11)
 	text_holder.add_child(col)
-	_title_stack(col, 72 if not UI.is_compact() else 52)
+	_title_stack(col, 56 if not UI.is_compact() else 40)
 
 	ui_root.add_child(UI.grain(0.025))
 	UI.fade_in(content_root, 0.05, 0.85)
 
 
 func _top_bar() -> Control:
-	var row := UI.hbox(12)
+	var row := UI.hbox(20)
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(UI.brand_mark(24))
 
 	row.add_child(UI.spacer())
-	var lang := UI.link_button("ಕನ್ನಡ" if G.lang == "en" else "English", 13)
+	var lang := UI.link_button("ಕನ್ನಡ" if G.lang == "en" else "English", 15)
+	lang.custom_minimum_size = Vector2(96, 34)
 	if G.lang == "kn":
 		lang.add_theme_font_override("font", UI.body_med_font())
 	lang.pressed.connect(func():
@@ -230,7 +227,7 @@ func _top_bar() -> Control:
 	dot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(dot)
 
-	var snd := UI.link_button("Sound on" if G.sound_on else "Sound off", 11)
+	var snd := UI.link_button("Sound on" if G.sound_on else "Sound off", 13)
 	snd.pressed.connect(func():
 		G.sound_on = not G.sound_on
 		G.save_game()
@@ -242,6 +239,10 @@ func _top_bar() -> Control:
 
 
 func _title_stack(parent: VBoxContainer, title_size: int) -> void:
+	var deck: Control = preload("res://scripts/CassetteDeck.gd").new()
+	deck.custom_minimum_size = Vector2(280, 150) if not UI.is_compact() else Vector2(230, 130)
+	deck.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	parent.add_child(deck)
 	var title := UI.label("Nakshatra", title_size, G.CREAM, "display")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.autowrap_mode = TextServer.AUTOWRAP_OFF
@@ -251,10 +252,11 @@ func _title_stack(parent: VBoxContainer, title_size: int) -> void:
 	kannada.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	parent.add_child(kannada)
 
-	var line := UI.label("A night almanac for Classes 6–9.", 16 if not UI.is_compact() else 14, Color(G.CREAM, 0.72), "body_med")
+	var line := UI.label("A cassette-futurism sky lab for Classes 6 to 9.", 17 if not UI.is_compact() else 15, Color(Design.CREAM, 0.80), "body_med")
 	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	line.autowrap_mode = TextServer.AUTOWRAP_OFF
-	line.clip_text = true
+	line.clip_text = false
+	line.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	parent.add_child(line)
 
 	var begin := UI.button("Begin the night", true, 20)
@@ -265,11 +267,11 @@ func _title_stack(parent: VBoxContainer, title_size: int) -> void:
 		Router.go("res://scenes/Lab.tscn"))
 	parent.add_child(begin)
 
-	var links := UI.hbox(10)
+	var links := UI.hbox(14)
 	links.alignment = BoxContainer.ALIGNMENT_CENTER
 	parent.add_child(links)
 	for item in [["Seminar mode", "res://scenes/Seminar.tscn"], ["Sky Atlas", "res://scenes/Atlas.tscn"]]:
-		var link := UI.link_button(str(item[0]), 12, Color(G.CREAM, 0.72))
+		var link := UI.link_button(str(item[0]), 12, Color(Design.CREAM, 0.92))
 		var path := str(item[1])
 		link.pressed.connect(func():
 			Sfx.play("click")
@@ -278,7 +280,7 @@ func _title_stack(parent: VBoxContainer, title_size: int) -> void:
 		var sep := UI.label("·", 12, Color(G.MUTED, 0.55))
 		sep.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		links.add_child(sep)
-	var story := UI.link_button("The Story", 12, Color(G.CREAM, 0.72))
+	var story := UI.link_button("The Story", 12, Color(Design.CREAM, 0.92))
 	story.pressed.connect(func():
 		Sfx.play("click")
 		_show_story())
@@ -440,7 +442,7 @@ func _modal(title: String, body: Control, art_path: String = "", caption: String
 	ui_root.add_child(overlay)
 
 	var dim := ColorRect.new()
-	dim.color = Color(0.015, 0.012, 0.008, 0.8)
+	dim.color = Color(0.030, 0.028, 0.024, 0.8)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	dim.gui_input.connect(func(e):

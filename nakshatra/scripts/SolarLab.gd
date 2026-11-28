@@ -301,7 +301,7 @@ func _build_earth() -> void:
 	sat_label.pixel_size = 0.014
 	sat_label.modulate = Color(G.GOLD, 0.95)
 	sat_label.outline_size = 5
-	sat_label.outline_modulate = Color(0.01, 0.02, 0.05, 0.9)
+	sat_label.outline_modulate = Color(0.030, 0.028, 0.024, 0.9)
 	sat_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	sat_label.no_depth_test = true
 	sat_label.position = Vector3(-0.65, 0.5, 0)

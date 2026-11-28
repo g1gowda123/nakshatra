@@ -58,8 +58,8 @@ func _build_world() -> void:
 	if sky.env and sky.env.environment:
 		sky.env.environment.ambient_light_energy = 0.22
 	if sky.sky_material:
-		sky.sky_material.set_shader_parameter("horizon_color", Color(0.02, 0.03, 0.07))
-		sky.sky_material.set_shader_parameter("glow_color", Color(0.03, 0.03, 0.04))
+		sky.sky_material.set_shader_parameter("horizon_color", Color(0.035, 0.030, 0.026))
+		sky.sky_material.set_shader_parameter("glow_color", Color(0.045, 0.038, 0.030))
 		sky.sky_material.set_shader_parameter("milky_strength", 0.28)
 
 	cam = Camera3D.new()
@@ -208,7 +208,7 @@ func _add_orbit_label(text: String, angle: float, color: Color) -> void:
 	l.pixel_size = 0.012
 	l.modulate = color
 	l.outline_size = 6
-	l.outline_modulate = Color(0.01, 0.02, 0.05, 0.9)
+	l.outline_modulate = Color(0.030, 0.028, 0.024, 0.9)
 	l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	l.no_depth_test = true
 	l.position = Vector3(cos(angle) * (ORBIT_R + 3.2), 0.85, sin(angle) * (ORBIT_R + 3.2))

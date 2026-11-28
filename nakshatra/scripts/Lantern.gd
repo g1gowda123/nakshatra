@@ -307,7 +307,7 @@ func _build() -> void:
 	_title_label.modulate = Color(G.CREAM, 0.0)
 	_title_label.visible = false
 	_title_label.outline_size = 8
-	_title_label.outline_modulate = Color(0.02, 0.03, 0.06, 0.85)
+	_title_label.outline_modulate = Color(0.030, 0.028, 0.024, 0.85)
 	_title_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_title_label.no_depth_test = true
 	_title_label.render_priority = 5

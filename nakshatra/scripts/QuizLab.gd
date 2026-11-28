@@ -317,8 +317,8 @@ func _render_question() -> void:
 		b.custom_minimum_size = Vector2(0, 50)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		var osb := StyleBoxFlat.new()
-		osb.bg_color = Color(0.05, 0.04, 0.085, 0.92)
-		osb.border_color = Color(G.CREAM, 0.35)
+		osb.bg_color = Color(0.034, 0.031, 0.027, 0.92)
+		osb.border_color = Color(Design.GOLD, 0.42)
 		osb.set_border_width_all(2)
 		osb.set_corner_radius_all(0)
 		osb.content_margin_left = 20

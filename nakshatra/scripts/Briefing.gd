@@ -3,10 +3,10 @@ extends RefCounted
 ## The written lesson that opens every exhibit. A full reading page on warm
 ## paper, not a cramped modal: the explanation comes before the interaction.
 
-const PAPER := G.PAPER
-const PAPER_DEEP := G.PAPER_DEEP
-const INK := G.INK
-const INK_SOFT := G.INK_SOFT
+static var PAPER := Design.PAPER
+static var PAPER_DEEP := Design.PAPER_DEEP
+static var INK := Design.INK
+static var INK_SOFT := Design.INK_SOFT
 const GOLD_DARK := Color("6f5228")
 
 

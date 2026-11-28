@@ -6,26 +6,28 @@ signal language_changed
 
 const MODULES := ["moon", "stars", "scale", "seasons", "flares", "blackhole", "quiz"]
 
-const BG := Color("0d1020")
-const BG_SOFT := Color("131828")
-const PANEL := Color(0.055, 0.065, 0.125, 0.94)
-const GOLD := Color("d5a55a")
-const GOLD_SOFT := Color("bc8f48")
-const CREAM := Color("f4e8d4")
-const MUTED := Color("a79b87")
-const TEAL := Color("8fb7c7")
-const ROSE := Color("e8a891")
-const VERMILION := Color("c8503a")
-const LINE := Color(0.949, 0.894, 0.796, 0.22)
-const PAPER := Color("f5ead6")
-const PAPER_DEEP := Color("e3d3b8")
-const INK := Color("171310")
-const INK_SOFT := Color("6d6155")
-const PAPER_ACCENT := Color("7c4d28")
+# Palette lives in Design.gd. These stay mutable so a tweak there propagates
+# to every script that still reads G.GOLD, G.CREAM, and friends.
+var BG := Color("12100e")
+var BG_SOFT := Color("1a1815")
+var PANEL := Color(0.145, 0.135, 0.118, 0.96)
+var GOLD := Color("f0a860")
+var GOLD_SOFT := Color("d18d4c")
+var CREAM := Color("f2e6d0")
+var MUTED := Color("a8a29a")
+var TEAL := Color("7ce8d5")
+var ROSE := Color("e8a891")
+var VERMILION := Color("ff5a3c")
+var LINE := Color(0.949, 0.902, 0.816, 0.22)
+var PAPER := Color("e8dcc4")
+var PAPER_DEEP := Color("d6c8ae")
+var INK := Color("15130f")
+var INK_SOFT := Color("6d6155")
+var PAPER_ACCENT := Color("8a5a30")
 
 const SAVE_PATH := "user://nakshatra_save.json"
 
-const VERSION := "1.8.1"
+const VERSION := "1.9.0"
 const EDITION := "Studio edition"
 
 var visited: Dictionary = {}
@@ -63,6 +65,7 @@ const KANNADA := {
 
 
 func _ready() -> void:
+	Design.apply_to(self)
 	load_game()
 	if OS.has_feature("web"):
 		var prefers = JavaScriptBridge.eval("window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches", true)

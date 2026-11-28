@@ -3,9 +3,9 @@ extends RefCounted
 ## A browsable, written guide to the ideas that do not need a whole exhibit:
 ## nebulae, supernovae, pulsars, galaxies, gravitational waves, exoplanets.
 
-const PAPER := G.PAPER
-const INK := G.INK
-const INK_SOFT := G.INK_SOFT
+static var PAPER := Design.PAPER
+static var INK := Design.INK
+static var INK_SOFT := Design.INK_SOFT
 const GOLD_DARK := Color("8a6a3c")
 
 
@@ -17,7 +17,7 @@ static func show(host: Node) -> Control:
 	host.add_child(overlay)
 
 	var dim := ColorRect.new()
-	dim.color = Color(0.006, 0.012, 0.03, 0.86)
+	dim.color = Color(0.030, 0.028, 0.024, 0.86)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	overlay.add_child(dim)

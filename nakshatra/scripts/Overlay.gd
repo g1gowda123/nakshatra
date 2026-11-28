@@ -10,7 +10,7 @@ static func info(host: Control, title: String, kicker: String, paragraphs: Array
 	host.add_child(overlay)
 
 	var dim := ColorRect.new()
-	dim.color = Color(0.008, 0.015, 0.036, 0.88)
+	dim.color = Color(0.030, 0.028, 0.024, 0.88)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	overlay.add_child(dim)

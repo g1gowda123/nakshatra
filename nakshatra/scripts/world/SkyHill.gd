@@ -105,7 +105,7 @@ func _build_underlay() -> void:
 	base.mesh = bm
 	base.position = Vector3(0, -2.2, 0)
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color("05080e")
+	mat.albedo_color = Color("0d0b09")
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	base.material_override = mat
 	base.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -314,7 +314,7 @@ func _floor_lantern(pos: Vector3, s: float) -> void:
 	root.scale = Vector3.ONE * s
 	add_child(root)
 	var stone := StandardMaterial3D.new()
-	stone.albedo_color = Color("20262a")
+	stone.albedo_color = Color("22201c")
 	stone.roughness = 0.92
 	var base := MeshInstance3D.new()
 	var bm := CylinderMesh.new()
@@ -375,7 +375,7 @@ func _path_bollard(pos: Vector3) -> void:
 	root.position = Vector3(pos.x, y, pos.z)
 	add_child(root)
 	var stone := StandardMaterial3D.new()
-	stone.albedo_color = Color("1b2024")
+	stone.albedo_color = Color("1d1a16")
 	stone.roughness = 0.92
 	var post := MeshInstance3D.new()
 	var pm := CylinderMesh.new()
@@ -617,10 +617,10 @@ func _build_observatory() -> void:
 	add_child(root)
 
 	var stone := StandardMaterial3D.new()
-	stone.albedo_color = Color("172331")
+	stone.albedo_color = Color("181512")
 	stone.roughness = 0.92
 	var stone_dark := StandardMaterial3D.new()
-	stone_dark.albedo_color = Color("0f1822")
+	stone_dark.albedo_color = Color("12100c")
 	stone_dark.roughness = 0.95
 	var brass := StandardMaterial3D.new()
 	brass.albedo_color = Color("8b6a37")
@@ -822,7 +822,7 @@ func _build_observatory() -> void:
 	sign_board.mesh = sbm
 	sign_board.position = Vector3(0, 3.04, 3.96)
 	var board_mat := StandardMaterial3D.new()
-	board_mat.albedo_color = Color("101a24")
+	board_mat.albedo_color = Color("141210")
 	board_mat.roughness = 0.9
 	sign_board.material_override = board_mat
 	root.add_child(sign_board)
@@ -1007,7 +1007,7 @@ func _build_trees() -> void:
 func _build_horizon_treeline() -> void:
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	mat.albedo_color = Color("08111a")
+	mat.albedo_color = Color("0e0c09")
 	for i in 19:
 		var x := -48.0 + i * 5.3 + sin(i * 1.7) * 0.9
 		var z := -53.0 - absf(i - 9.0) * 0.25
@@ -1038,7 +1038,7 @@ func _build_bench() -> void:
 	wood.albedo_color = Color("3a2c1e")
 	wood.roughness = 0.82
 	var iron := StandardMaterial3D.new()
-	iron.albedo_color = Color("0c1116")
+	iron.albedo_color = Color("100e0b")
 	iron.metallic = 0.6
 	iron.roughness = 0.6
 	var seat := MeshInstance3D.new()
@@ -1212,7 +1212,7 @@ func _build_grass() -> void:
 	mi.multimesh = mm
 	var mat := ShaderMaterial.new()
 	mat.shader = load("res://shaders/grass_blade.gdshader")
-	mat.set_shader_parameter("base_color", Color(0.042, 0.070, 0.060))
+	mat.set_shader_parameter("base_color", Color(0.055, 0.048, 0.034))
 	mat.set_shader_parameter("tip_color", Color(0.115, 0.145, 0.105))
 	mat.set_shader_parameter("warm_color", Color(1.0, 0.68, 0.36))
 	mat.set_shader_parameter("sway", 0.11)

@@ -11,24 +11,24 @@ low-poly demo, and so that the viva panel can see *why* each choice was made.
 
 ## 1. The north star
 
-**A night almanac, not a dashboard.**
+**A cassette-futurism console, not a dashboard.**
 
-The screen is a hand-plotted star wheel. The world is a dark observatory hill;
-the interface is the brass ring of an almanac laid over it — seven medal
-nodes, one selected exhibit, one sentence of instruction, one Open button. It
-should feel like a printed instrument you are allowed to touch, not a card
-stack or a telemetry readout.
+The screen is a warm analog instrument laid over a dark observatory hill:
+charcoal housing, amber keys, mint-phosphor readouts, cream type. The 3D world
+stays visible but dimmed behind it. Every control should feel like something you
+could physically press — a key, a toggle, a dial — not a floating web chip.
 
-Three rules follow from that:
+Four rules follow from that:
 
-1. **One material, one accent.** Brass gold is the instrument; cream is the
-   ink; vermilion is reserved for a wrong answer. Nothing else is allowed to
-   compete for attention.
-2. **The wheel is the interface.** Seven exhibits are seven points on one
-   circle. Progress is the arc that fills. If a control cannot be placed on
-   the wheel, it belongs in the menu, not on the screen.
-3. **One sentence at a time.** A label says what the thing is. A note says
-   what to do. Nothing explains the interface; the interface explains itself.
+1. **One warm ground, two accents.** Amber is the hand: buttons, highlights,
+   things you touch. Phosphor is the machine: live readouts, selected states,
+   CRT glow. Vermilion is reserved for a wrong answer.
+2. **Every surface is physical.** Panels carry 2–3 px bezels, corner screws,
+   inner keycap edges, and soft shadows. Nothing is a flat rectangle.
+3. **One sentence at a time.** A label says what the thing is. A note says what
+   to do. Nothing explains the interface; the interface explains itself.
+4. **The lesson stays first.** Decoration never sits over the task prompt, the
+   answer explanation, or the assessment route.
 
 ## 2. Visual grammar
 
@@ -36,55 +36,47 @@ Three rules follow from that:
 
 | Token | Value | Use |
 |---|---|---|
-| `G.BG` | `#0d1020` | The night ground. Deep indigo, never pure black. |
-| `G.CREAM` | `#f4e8d4` | Primary type, the paper ink. |
-| `G.GOLD` | `#d5a55a` | Brass: the wheel, selected nodes, the primary action. |
-| `G.PAPER` | `#f5ead6` | Menus, notes, the certificate. |
-| `G.INK` | `#171310` | Ink on paper, button text on gold. |
-| `G.VERMILION` | `#c8503a` | A wrong answer, a warning. Never decoration. |
-| `G.MUTED` | `#a79b87` | Secondary copy on the dark field. |
+| `Design.BG` | `#12100e` | The night ground. Warm charcoal, never pure black. |
+| `Design.PANEL` | `#25231f` | Instrument housings and console panels. |
+| `Design.GOLD` | `#f0a860` | The hand: primary buttons, highlights, keycaps. |
+| `Design.PHOSPHOR` | `#7dffa8` | The machine: CRT readouts, selected states, live arcs. |
+| `Design.CREAM` | `#f2e6d0` | Primary type, labels, and engraved text. |
+| `Design.PAPER` | `#e8dcc4` | Menus, notes, the certificate. |
+| `Design.INK` | `#15130f` | Keycap text on amber, screws, engraved lines. |
+| `Design.VERMILION` | `#ff5a3c` | A wrong answer, a warning. Never decoration. |
+| `Design.MUTED` | `#a8a29a` | Secondary copy on the dark field. |
+| `Design.BEZEL` | `#2a2723` | Housing shells and recessed wells. |
+| `Design.BEZEL_EDGE` | `#4a4238` | Bevel edges, screws, inner keycap lines. |
 
 ### Type
 
-- **Cormorant Garamond** — the wordmark, titles, and the centre note.
-- **Noto Sans / Noto Sans Kannada** — reading copy, node labels, and the
-  Kannada layer.
-- No monospace. No tracking-heavy all-caps. The interface is a book page, not
-  a terminal.
+- **Michroma** — the wordmark and console labels. Wide, squared, Eurostile-line.
+- **Space Mono** — terminal readouts, nav, status text, micro-labels.
+- **Noto Sans** — reading copy, task prompts, body text.
+- **Noto Sans Kannada** — the Kannada layer, never faux-bold.
 
 ### Surfaces
 
-- **The wheel** is drawn, not boxed: one thin gold ring, seven evenly spaced
-  arcs, and a soft dark disc behind the centre note.
-- **The medals** are hand-drawn icons on dark discs: moon, stars, orbit,
-  seasons, sun, black hole, riddles. The selected medal carries a bright 4 px
-  border; the others sit at a hairline.
-- **Paper** is warm cream, rounded, with a brass hairline and a soft shadow.
-- **Buttons** are brass pills with ink text, never square brutalist blocks.
-- **The 3D hill** stays undithered and warm; the UI is the instrument on top.
+- **Instrument housing:** a warm charcoal panel, 3 px bezel, corner screws, and
+  a soft drop shadow. The hub dial sits inside one of these.
+- **Buttons:** every Button is a `MechanicalButton` with a top highlight, a
+  bottom shadow, an inner keycap edge, and four screws. Round controls get a
+  circular bevel; rectangular keys get a square one.
+- **The hub dial:** a thick amber bezel, a phosphor hairline, and seven evenly
+  spaced arcs that read as tape segments. A completed exhibit lights its arc.
+- **The title cassette:** a squarer shell, a “SIDE A” label strip, a tape
+  window, two reels, wound tape, and four screws. It sits above the wordmark,
+  never behind it.
+- **CRT:** one quiet full-screen pass — scanlines, vignette, chromatic split,
+  and tape noise — plus a physical bezel around the viewport.
+- **The 3D hill:** warm charcoal ground, amber lanterns, and quiet starlight.
+  It stays visible behind the console but never competes with the lesson text.
 
-### Type
+### One file to tweak
 
-- Display: the bundled serif (`UI.serif_font()`), generous tracking, old-style
-  figures. Used for titles, the certificate, and constellation names.
-- Body: the humanist sans (`UI.body_font()`); medium weight for lantern titles.
-- Kannada: `UI.kannada_font()`, never faux-bold, never auto-translated.
-- Micro-labels: uppercase, 8–10 px, 1.5–2 px tracking. They are the “printed
-  caption under the plate” voice. If a micro-label needs a paragraph, it is not
-  a micro-label.
-
-### Paper and metal
-
-| Surface | Treatment |
-|---|---|
-| Paper | `#f2e8d5` / `#efe0c4`, a hairline warm-brown border, a soft drop shadow, no gloss. |
-| Brass | Gold base, roughness ~0.42, a thin darker seam. No chrome. |
-| Ink ground | `ground_ink.gdshader`: fbm wash, warm vertex pools near lanterns, no tiling repetition. |
-| Path | `path_ink.gdshader`: staggered flagstones, dark mortar, gilt dust in the cracks, warm emission near lanterns. |
-| Lantern paper | `paper_lantern.gdshader`: unshaded, ribbed, belly-bright, slight flicker. |
-
-The test: at 50 % brightness on a phone, the path should still be a path, the
-lantern should still be a lantern, and the type should still be readable.
+Every palette, shape, CRT, and type token lives in `scripts/Design.gd`.
+`G.gd` copies those values at startup, so a tweak there propagates to every
+screen that still reads `G.GOLD`, `G.CREAM`, or any other legacy token.
 
 ---
 
@@ -234,11 +226,12 @@ post-processing chain beyond the vignette and grain.
 | `sun_surface.gdshader` | Granulation + sunspots + stress | Solar lab |
 | `accretion_disk.gdshader` | Turbulent disk + Doppler-ish warmth | Black hole lab |
 | `vignette.gdshader` | Edge falloff, no colour shift | every UI |
+| `crt_futurism.gdshader` | Scanlines, phosphor tint, vignette, chromatic split, tape noise | every frame via the `Crt` autoload |
 
 Shader rules:
 
 - Every shader must compile in the GL Compatibility renderer; no compute, no
-  screen texture unless it is the vignette.
+  screen texture unless it is the vignette or the CRT pass.
 - Every shader gets a **named parameter** rather than a magic number in the
   material setup. If a number matters to the art direction, it belongs in the
   shader header.

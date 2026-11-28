@@ -204,7 +204,7 @@ func _make_labels() -> void:
 		l.pixel_size = 0.20
 		l.modulate = Color(G.CREAM, 1.0)
 		l.outline_size = 12
-		l.outline_modulate = Color(0.01, 0.02, 0.05, 0.98)
+		l.outline_modulate = Color(0.030, 0.028, 0.024, 0.98)
 		l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		l.no_depth_test = true
 		l.position = StarDB.star_dir(idx) * (STAR_RADIUS - 14.0)
@@ -230,7 +230,7 @@ func _make_labels() -> void:
 		l.pixel_size = 0.24
 		l.modulate = Color(0.99, 0.86, 0.62, 1.0)
 		l.outline_size = 15
-		l.outline_modulate = Color(0.01, 0.02, 0.05, 0.99)
+		l.outline_modulate = Color(0.030, 0.028, 0.024, 0.99)
 		l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		l.no_depth_test = true
 		l.position = center * (STAR_RADIUS - 30.0)

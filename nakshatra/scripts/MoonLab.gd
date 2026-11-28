@@ -65,7 +65,7 @@ func _build_world() -> void:
 	if sky.env and sky.env.environment:
 		sky.env.environment.ambient_light_energy = 0.18
 	if sky.sky_material:
-		sky.sky_material.set_shader_parameter("horizon_color", Color(0.02, 0.03, 0.07))
+		sky.sky_material.set_shader_parameter("horizon_color", Color(0.035, 0.030, 0.026))
 		sky.sky_material.set_shader_parameter("mid_color", Color(0.012, 0.02, 0.05))
 		sky.sky_material.set_shader_parameter("glow_color", Color(0.04, 0.03, 0.04))
 		sky.sky_material.set_shader_parameter("milky_strength", 0.35)
@@ -146,7 +146,7 @@ func _build_world() -> void:
 	moon_tag.pixel_size = 0.016
 	moon_tag.modulate = Color(G.GOLD, 0.9)
 	moon_tag.outline_size = 6
-	moon_tag.outline_modulate = Color(0.01, 0.02, 0.05, 0.9)
+	moon_tag.outline_modulate = Color(0.030, 0.028, 0.024, 0.9)
 	moon_tag.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	moon_tag.no_depth_test = true
 	moon_tag.position = Vector3(0, 1.45, 0)
@@ -373,8 +373,8 @@ func _fill_panel() -> void:
 	v.add_child(center_frame)
 	var frame := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.039, 0.063, 0.11, 1.0)
-	sb.border_color = G.CREAM
+	sb.bg_color = Color(0.030, 0.028, 0.024, 1.0)
+	sb.border_color = Color(Design.PHOSPHOR, 0.34)
 	sb.set_border_width_all(2)
 	sb.set_corner_radius_all(0)
 	sb.shadow_color = Color(0, 0, 0, 0.55)
@@ -420,9 +420,11 @@ func _fill_panel() -> void:
 	prompt_label = UI.label("", 19, G.CREAM, "display")
 	prompt_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	outer.add_child(prompt_label)
+	outer.add_child(UI.micro("STEPS", Color(Design.MUTED, 0.82), 8))
 	progress_row = UI.hbox(5)
 	outer.add_child(progress_row)
 
+	outer.add_child(UI.micro("ORBIT", Color(Design.PHOSPHOR, 0.82), 9))
 	slider = HSlider.new()
 	slider.min_value = 0
 	slider.max_value = 360
@@ -594,7 +596,7 @@ func _show_finish_card() -> void:
 	overlay.theme = UI.theme()
 	ui_root.add_child(overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(0.01, 0.02, 0.05, 0.86)
+	dim.color = Color(0.030, 0.028, 0.024, 0.86)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay.add_child(dim)
 	var center := CenterContainer.new()

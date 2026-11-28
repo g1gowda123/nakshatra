@@ -11,7 +11,7 @@ account, no network calls at play time.
 **Play the current build:** https://g1gowda123.github.io/nakshatra/  
 **Source:** https://github.com/g1gowda123/nakshatra
 
-**v1.8.1 — Medal dial.** A quiet almanac dial: seven hand-drawn medals on one brass ring, one selected exhibit, one line of instruction, one Open button. Under it: a verified Moon-phase model, a quiz that shuffles
+**v1.9.0 — Cassette Futurism.** A full cassette-futurism console: warm charcoal, amber keys, phosphor readouts, a bolted dial face, and one CRT pass over every frame. Under it: a verified Moon-phase model, a quiz that shuffles
 its answers, a take-home certificate, keyboard access, reduced motion, and a
 deck that survives its own live-demo loop.
 The same build includes a twelve-slide presenter deck with speaker notes, a
@@ -342,7 +342,7 @@ a fixed size and saves a PNG. It is not part of the export.
 - **Illustrations**: original papercut art for the story and finale, plus
   code-drawn engraved plates (`tools/make_plates.py`) for the seven exhibits and
   the cover. No stock images.
-- **Type**: Anton, Cormorant Garamond, Noto Sans, Noto Sans Kannada —
+- **Type**: Michroma, Space Mono, Noto Sans, Noto Sans Kannada —
   **SIL Open Font License**.
 - **Code, shaders, UI, seminar deck and audio**: original for this project. The
   audio is synthesised locally (ambient pad, chimes, UI sounds).
@@ -360,11 +360,12 @@ issue — accuracy matters more than polish.
 
 - **Free choice is the point.** There is no level lock, no forced order, and no
   “complete the story to learn”. The story is a wrapper, not a gate.
-- **An observatory almanac, torn out and taped to a wall.** `scripts/UI.gd`
-  holds the whole visual system: ink ground, cream paper modals, acid-yellow
-  attention, vermilion stamps, hard offset shadows and square corners. Anton
-  carries the headings and controls; Noto Sans carries the reading. Every
-  button lifts, squashes and sparks; every result earns a stamp.
+- **A cassette-futurism console bolted over a night hill.** `scripts/UI.gd`
+  and `scripts/Design.gd` hold the whole visual system: warm charcoal housings,
+  amber keycaps, mint-phosphor readouts, corner screws, and one quiet CRT pass
+  over every frame. Michroma carries the headings; Space Mono carries the
+  terminal text; Noto Sans carries the reading. Every button lifts, squashes
+  and sparks; every result earns a stamp.
 - **One real sky.** The stars are not a decorative texture: positions,
   brightnesses and colours come from the HYG catalogue. Constellation lines are
   the official IAU figures; nakshatra lines are from Stellarium's Indian

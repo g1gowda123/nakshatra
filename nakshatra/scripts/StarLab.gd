@@ -151,7 +151,7 @@ func _refresh_target_glows() -> void:
 			pl.pixel_size = 0.52
 			pl.modulate = Color(G.GOLD, 0.95)
 			pl.outline_size = 12
-			pl.outline_modulate = Color(0.01, 0.02, 0.05, 0.98)
+			pl.outline_modulate = Color(0.030, 0.028, 0.024, 0.98)
 			pl.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 			pl.no_depth_test = true
 			pl.render_priority = 4
@@ -491,7 +491,7 @@ func _show_story(h: Dictionary) -> void:
 	overlay.theme = UI.theme()
 	ui_root.add_child(overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(0.01, 0.02, 0.05, 0.85)
+	dim.color = Color(0.030, 0.028, 0.024, 0.85)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay.add_child(dim)
 	var center := CenterContainer.new()
@@ -546,7 +546,7 @@ func _complete() -> void:
 	overlay.theme = UI.theme()
 	ui_root.add_child(overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(0.01, 0.02, 0.05, 0.88)
+	dim.color = Color(0.030, 0.028, 0.024, 0.88)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay.add_child(dim)
 	var center := CenterContainer.new()

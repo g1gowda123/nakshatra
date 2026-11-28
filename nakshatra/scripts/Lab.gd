@@ -439,7 +439,7 @@ func _build_ui() -> void:
 	vignette.material.shader = load("res://shaders/vignette.gdshader")
 	ui_root.add_child(vignette)
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.03, 0.07, 0.52)
+	dim.color = Color(0.030, 0.028, 0.024, 0.52)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui_root.add_child(dim)
@@ -453,7 +453,12 @@ func _build_ui() -> void:
 	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui_root.add_child(col)
 
-	col.add_child(_top_bar())
+	var top := _top_bar()
+	top.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	top.offset_left = 18
+	top.offset_right = -18
+	top.offset_top = 48 if UI.is_compact() else 30
+	col.add_child(top)
 
 	var mid := Control.new()
 	mid.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -477,11 +482,16 @@ func _top_bar() -> Control:
 	row.add_child(back)
 	row.add_child(UI.brand_mark(24))
 	row.add_child(UI.spacer())
-	var menu := UI.link_button("Menu", 12, Color(G.CREAM, 0.72))
+	var menu := UI.link_button("Menu", 11 if UI.is_compact() else 12, Color(G.CREAM, 0.76))
+	menu.size_flags_horizontal = Control.SIZE_SHRINK_END
 	menu.pressed.connect(func():
 		Sfx.play("click")
 		_show_menu())
 	row.add_child(menu)
+	var edge := Control.new()
+	edge.custom_minimum_size = Vector2(8, 0)
+	edge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(edge)
 	return row
 
 
@@ -502,7 +512,7 @@ func _show_menu() -> void:
 	overlay.theme = UI.theme()
 	ui_root.add_child(overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(0.015, 0.012, 0.008, 0.82)
+	dim.color = Color(0.030, 0.028, 0.024, 0.82)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	dim.gui_input.connect(func(e):
@@ -590,7 +600,7 @@ func _star_wheel(mid: Control) -> void:
 
 	var center := wheel_size * 0.5
 	var radius := wheel_size * 0.38
-	var node_size := 76.0 if not compact else 68.0
+	var node_size := 84.0 if not compact else 76.0
 	for i in ORDER.size():
 		var id := str(ORDER[i])
 		var btn := _node_button(id, i, Vector2(center, center), radius, node_size)
@@ -607,20 +617,20 @@ func _star_wheel(mid: Control) -> void:
 	pad.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	note_box.add_child(pad)
 
-	note_title = UI.label("", 28 if not compact else 22, G.CREAM, "display")
+	note_title = UI.label("", 26 if not compact else 20, Design.CREAM, "display")
 	note_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	note_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	note_title.clip_text = true
 	note_title.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	note_title.custom_minimum_size = Vector2(wheel_size * 0.56, 0)
+	note_title.custom_minimum_size = Vector2(wheel_size * 0.72, 0)
 	pad.add_child(note_title)
 
-	note_body = UI.label("", 16 if not compact else 14, Color(G.CREAM, 0.78))
+	note_body = UI.label("", 16 if not compact else 14, Color(Design.PHOSPHOR, 0.88), "mono")
 	note_body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	note_body.autowrap_mode = TextServer.AUTOWRAP_OFF
 	note_body.clip_text = true
 	note_body.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	note_body.custom_minimum_size = Vector2(wheel_size * 0.46, 0)
+	note_body.custom_minimum_size = Vector2(wheel_size * 0.52, 0)
 	pad.add_child(note_body)
 
 	var open := UI.button("Open", true, 15)
@@ -656,14 +666,14 @@ func _node_icon(id: String) -> TextureRect:
 
 func _node_button(id: String, index: int, center: Vector2, radius: float, node_size: float) -> Button:
 	var done := G.is_done(id)
-	var b := Button.new()
+	var b: Button = preload("res://scripts/MechanicalButton.gd").new()
 	b.focus_mode = Control.FOCUS_ALL
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	b.custom_minimum_size = Vector2(node_size, node_size)
 	var normal := StyleBoxFlat.new()
 	normal.bg_color = Color(0, 0, 0, 0.0)
 	normal.border_color = Color(G.GOLD, 0.68 if done else 0.42)
-	normal.set_border_width_all(2)
+	normal.set_border_width_all(3)
 	normal.set_corner_radius_all(int(node_size * 0.5))
 	normal.content_margin_left = 0
 	normal.content_margin_right = 0
@@ -709,14 +719,14 @@ func _note_update(id: String) -> void:
 		var sb := btn.get_theme_stylebox("normal") as StyleBoxFlat
 		if sb:
 			if key == id:
-				sb.border_color = Color(G.GOLD, 1.0)
+				sb.border_color = Color(Design.PHOSPHOR, 1.0)
 				sb.set_border_width_all(4)
 			else:
-				sb.border_color = Color(G.GOLD, 0.34 if not G.is_done(str(key)) else 0.50)
+				sb.border_color = Color(Design.GOLD, 0.48 if not G.is_done(str(key)) else 0.62)
 				sb.set_border_width_all(2)
 		for child in btn.get_children():
 			if child is TextureRect:
-				child.modulate = Color(1.0, 1.0, 1.0, 1.0 if key == id else 0.62)
+				child.modulate = Color(1.0, 1.0, 1.0, 1.0 if key == id else 0.78)
 
 
 func _hub_footer() -> Control:
@@ -737,7 +747,7 @@ func _hub_footer() -> Control:
 	center.add_child(fest)
 	box.add_child(center)
 	var lift := Control.new()
-	lift.custom_minimum_size = Vector2(0, 22)
+	lift.custom_minimum_size = Vector2(0, 36)
 	lift.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	box.add_child(lift)
 	return box
@@ -746,7 +756,7 @@ func _hub_footer() -> Control:
 func _cards() -> Control:
 	var shelf := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.012, 0.02, 0.032, 1.0)
+	sb.bg_color = Color(0.030, 0.028, 0.024, 1.0)
 	sb.border_color = Color(G.GOLD, 0.16)
 	sb.set_border_width_all(1)
 	sb.set_corner_radius_all(2)
@@ -857,7 +867,7 @@ func _thumb(art_path: String, px: float) -> Control:
 
 func _card_style(done: bool, current: bool) -> StyleBoxFlat:
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.031, 0.047, 0.075, 1.0)
+	sb.bg_color = Color(0.034, 0.031, 0.027, 1.0)
 	sb.border_color = Color(G.GOLD, 0.38 if current else (0.14 if done else 0.2))
 	sb.set_border_width_all(1)
 	sb.set_corner_radius_all(2)
@@ -891,7 +901,7 @@ func _module_card(id: String) -> Control:
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	b.add_theme_stylebox_override("normal", _card_style(done, current))
 	var hover := _card_style(done, current)
-	hover.bg_color = Color(0.06, 0.086, 0.13, 0.96)
+	hover.bg_color = Color(0.055, 0.048, 0.040, 0.96)
 	hover.border_color = Color(G.GOLD, 0.65)
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", hover)
@@ -961,9 +971,9 @@ func _module_poster(id: String) -> Control:
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	b.rotation = 0.0
 	var normal := StyleBoxFlat.new()
-	normal.bg_color = Color(0.055, 0.043, 0.095, 0.98)
+	normal.bg_color = Color(0.042, 0.038, 0.032, 0.98)
 	normal.border_color = Color(G.CREAM, 0.3)
-	normal.set_border_width_all(2)
+	normal.set_border_width_all(3)
 	normal.set_corner_radius_all(0)
 	normal.content_margin_left = 0
 	normal.content_margin_right = 0
@@ -973,7 +983,7 @@ func _module_poster(id: String) -> Control:
 	normal.shadow_size = 2
 	normal.shadow_offset = Vector2(5, 5)
 	var hover := normal.duplicate() as StyleBoxFlat
-	hover.bg_color = Color(0.09, 0.07, 0.15, 1.0)
+	hover.bg_color = Color(0.070, 0.058, 0.046, 1.0)
 	hover.border_color = accent
 	hover.shadow_color = Color(accent, 0.5)
 	hover.shadow_offset = Vector2(7, 7)
@@ -1041,7 +1051,7 @@ func _module_row(id: String) -> Control:
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	b.add_theme_stylebox_override("normal", _card_style(done, current))
 	var hover := _card_style(done, current)
-	hover.bg_color = Color(0.06, 0.086, 0.13, 0.96)
+	hover.bg_color = Color(0.055, 0.048, 0.040, 0.96)
 	hover.border_color = Color(G.GOLD, 0.65)
 	b.add_theme_stylebox_override("hover", hover)
 	b.add_theme_stylebox_override("pressed", hover)
@@ -1248,7 +1258,7 @@ func _show_story() -> void:
 	_story_overlay.theme = UI.theme()
 	ui_root.add_child(_story_overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(0.015, 0.012, 0.008, 0.84)
+	dim.color = Color(0.030, 0.028, 0.024, 0.84)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	dim.gui_input.connect(func(e):

@@ -355,7 +355,7 @@ func _build_ui() -> void:
 func _readability_gradient() -> TextureRect:
 	var grad := Gradient.new()
 	grad.offsets = PackedFloat32Array([0.0, 0.48, 1.0])
-	var dark := Color(0.024, 0.039, 0.078, 1.0)
+	var dark := Color(0.030, 0.028, 0.024, 1.0)
 	if _portrait:
 		grad.colors = PackedColorArray([Color(dark, 0.18), Color(dark, 0.55), Color(dark, 0.9)])
 	else:
@@ -695,7 +695,7 @@ func _build_visual_column(parent: Control) -> void:
 
 func _frame_style() -> StyleBoxFlat:
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.055, 0.082, 0.145, 0.96)
+	sb.bg_color = Color(0.042, 0.038, 0.032, 0.96)
 	sb.border_color = Color(G.GOLD, 0.52)
 	sb.set_border_width_all(2)
 	sb.set_corner_radius_all(2)
@@ -1067,7 +1067,7 @@ func _show_cue() -> void:
 	var s: Dictionary = slides[index]
 	var panel := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.02, 0.035, 0.07, 0.96)
+	sb.bg_color = Color(0.030, 0.028, 0.024, 0.96)
 	sb.border_color = Color(G.GOLD, 0.35)
 	sb.set_border_width_all(1)
 	sb.content_margin_left = 14
@@ -1137,7 +1137,7 @@ func _show_notes() -> void:
 	var vp := UI.viewport_size()
 	var panel := PanelContainer.new()
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.02, 0.035, 0.07, 0.97)
+	sb.bg_color = Color(0.030, 0.028, 0.024, 0.97)
 	sb.border_color = Color(G.GOLD, 0.35)
 	sb.border_width_left = 2
 	sb.set_border_width_all(1)

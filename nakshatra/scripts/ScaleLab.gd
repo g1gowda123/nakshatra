@@ -61,8 +61,8 @@ func _build_world() -> void:
 	if sky.env and sky.env.environment:
 		sky.env.environment.ambient_light_energy = 0.25
 	if sky.sky_material:
-		sky.sky_material.set_shader_parameter("horizon_color", Color(0.02, 0.03, 0.07))
-		sky.sky_material.set_shader_parameter("glow_color", Color(0.03, 0.03, 0.04))
+		sky.sky_material.set_shader_parameter("horizon_color", Color(0.035, 0.030, 0.026))
+		sky.sky_material.set_shader_parameter("glow_color", Color(0.045, 0.038, 0.030))
 		sky.sky_material.set_shader_parameter("milky_strength", 0.28)
 
 	cam = Camera3D.new()
@@ -98,7 +98,7 @@ func _build_world() -> void:
 	sun_lab.pixel_size = 0.018
 	sun_lab.modulate = G.GOLD
 	sun_lab.outline_size = 6
-	sun_lab.outline_modulate = Color(0.01, 0.02, 0.05, 0.9)
+	sun_lab.outline_modulate = Color(0.030, 0.028, 0.024, 0.9)
 	sun_lab.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	sun_lab.no_depth_test = true
 	sun_lab.position = Vector3(0, 3.5, 0)
@@ -152,7 +152,7 @@ func _build_world() -> void:
 		plab.pixel_size = 0.018
 		plab.modulate = Color(0.95, 0.90, 0.78, 0.85)
 		plab.outline_size = 5
-		plab.outline_modulate = Color(0.01, 0.02, 0.05, 0.9)
+		plab.outline_modulate = Color(0.030, 0.028, 0.024, 0.9)
 		plab.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 		plab.no_depth_test = true
 		var lift := 0.55
@@ -578,7 +578,7 @@ func _show_scale() -> void:
 	overlay.theme = UI.theme()
 	ui_root.add_child(overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(0.008, 0.015, 0.036, 0.9)
+	dim.color = Color(0.030, 0.028, 0.024, 0.9)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay.add_child(dim)
 	var center := CenterContainer.new()
@@ -640,7 +640,7 @@ func _show_sizes() -> void:
 	overlay.theme = UI.theme()
 	ui_root.add_child(overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(0.008, 0.015, 0.036, 0.9)
+	dim.color = Color(0.030, 0.028, 0.024, 0.9)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay.add_child(dim)
 	var center := CenterContainer.new()

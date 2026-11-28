@@ -12,7 +12,7 @@ import os
 OUT = 160
 SS = 8
 SIZE = OUT * SS
-DISC = (36, 46, 74, 255)
+DISC = (34, 30, 26, 255)
 GOLD = (213, 165, 90, 255)
 CREAM = (244, 232, 212, 255)
 VERMILION = (200, 80, 58, 255)

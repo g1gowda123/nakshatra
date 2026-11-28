@@ -1,5 +1,40 @@
 # Changelog
 
+## v1.9.0 — Cassette Futurism · 2026-11-28
+
+### Added
+
+- **A complete Cassette Futurism design language, not a motif.** Warm charcoal
+  panels, chunky 2–3 px bezels, amber for the hand, mint phosphor for the
+  machine, cream for the words. One quiet CRT pass over every frame, a physical
+  bezel around the viewport, and mechanical screws on every key.
+- **New display and terminal type.** Michroma for the wordmark and console
+  labels; Space Mono for readouts, nav, and status text; Noto Sans for reading
+  copy; Noto Sans Kannada for the local layer.
+- **A real cassette emblem on the title.** A squarer shell, label strip,
+  tape window, two reels, wound tape, and four screws — moved above the
+  wordmark so it never fights the type.
+- **An instrument housing on the hub.** The seven-exhibit dial now sits in a
+  bolted faceplate with corner screws, a thick amber bezel, a phosphor hairline,
+  and seven evenly spaced arcs that read as tape segments.
+- **Mechanical buttons everywhere.** Every Button is a `MechanicalButton`
+  with a top highlight, a bottom shadow, an inner keycap edge, and four screws.
+  Round nodes get a circular bevel; rectangular keys get a square one.
+- **One place to tweak the whole interface.** `scripts/Design.gd` now owns the
+  palette, shape, CRT, and type tokens. `G.gd` copies them at startup so every
+  legacy `G.GOLD` / `G.CREAM` read follows the same file.
+
+### Changed
+
+- **The whole surface is warmer.** Overlays, panels, sliders, scrollbars,
+  vignettes, and the 3D hill now lean charcoal/amber instead of cold blue.
+- **The router is a terminal readout.** The status card uses Space Mono,
+  a play glyph, and phosphor subtext instead of a serif sentence.
+- **The hub centre note is a CRT line.** One exhibit title, one phosphor
+  instruction, one Open key.
+- **Safe areas on phone.** The top bar lifts clear of the notch, the bottom CTA
+  lifts clear of the home indicator, and “Menu” no longer clips.
+
 ## v1.8.1 — Medal dial · 2026-11-28
 
 ### Added

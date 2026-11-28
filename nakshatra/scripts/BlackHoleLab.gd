@@ -311,8 +311,8 @@ func _build_ui() -> void:
 
 	var clock_box := PanelContainer.new()
 	var csb := StyleBoxFlat.new()
-	csb.bg_color = Color(0.04, 0.09, 0.15, 0.85)
-	csb.border_color = Color(G.TEAL, 0.3)
+	csb.bg_color = Color(0.030, 0.028, 0.024, 0.85)
+	csb.border_color = Color(Design.PHOSPHOR, 0.34)
 	csb.set_border_width_all(1)
 	csb.set_corner_radius_all(2)
 	csb.content_margin_left = 12

@@ -20,6 +20,7 @@ StarDB="*res://scripts/Sky.gd"
 Sfx="*res://scripts/Sfx.gd"
 Juice="*res://scripts/Juice.gd"
 Router="*res://scripts/Router.gd"
+Crt="*res://scripts/Crt.gd"
 DevCapture="*res://scripts/DevCapture.gd"
 
 [display]

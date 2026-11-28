@@ -36,23 +36,24 @@ func _ready() -> void:
 	center.add_child(box)
 
 	var mark := Label.new()
-	mark.text = "◈"
+	mark.text = "▶"
 	mark.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	mark.add_theme_font_size_override("font_size", 28)
-	mark.add_theme_color_override("font_color", Color(0.85, 0.70, 0.42))
+	mark.add_theme_font_size_override("font_size", 30)
+	mark.add_theme_color_override("font_color", Design.GOLD)
 	box.add_child(mark)
 
 	_title = Label.new()
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_title.add_theme_font_size_override("font_size", 18)
-	_title.add_theme_font_override("font", UI.display_font())
-	_title.add_theme_color_override("font_color", G.CREAM)
+	_title.add_theme_font_size_override("font_size", 17)
+	_title.add_theme_font_override("font", UI.mono_font())
+	_title.add_theme_color_override("font_color", Design.CREAM)
 	box.add_child(_title)
 
 	_sub = Label.new()
 	_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_sub.add_theme_font_size_override("font_size", 11)
-	_sub.add_theme_color_override("font_color", Color(G.CREAM, 0.65))
+	_sub.add_theme_font_override("font", UI.mono_font())
+	_sub.add_theme_color_override("font_color", Color(Design.PHOSPHOR, 0.68))
 	box.add_child(_sub)
 
 
