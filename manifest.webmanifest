@@ -1,0 +1,42 @@
+{
+  "name": "Nakshatra — The Sky Weavers",
+  "short_name": "Nakshatra",
+  "description": "A free-choice 3D sky lab for Classes 6–9, with a twelve-slide seminar deck.",
+  "lang": "en-IN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#060910",
+  "theme_color": "#060910",
+  "categories": [
+    "education",
+    "science"
+  ],
+  "icons": [
+    {
+      "src": "index.icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "index.apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Seminar deck",
+      "short_name": "Deck",
+      "url": "./index.html?scene=seminar"
+    },
+    {
+      "name": "Sky Lab",
+      "short_name": "Sky Lab",
+      "url": "./index.html?scene=lab"
+    }
+  ]
+}
