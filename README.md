@@ -11,7 +11,7 @@ account, no network calls at play time.
 **Play the current build:** https://g1gowda123.github.io/nakshatra/  
 **Source:** https://github.com/g1gowda123/nakshatra
 
-**v1.5.0 — The loud sky.** A verified Moon-phase model, a quiz that shuffles
+**v1.5.1 — Less noise.** A verified Moon-phase model, a quiz that shuffles
 its answers, a take-home certificate, keyboard access, reduced motion, and a
 deck that survives its own live-demo loop.
 The same build includes a twelve-slide presenter deck with speaker notes, a

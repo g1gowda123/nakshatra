@@ -320,8 +320,8 @@ func _add_title_block(parent: VBoxContainer, title_size: int) -> void:
 	parent.add_child(col)
 
 	var badges := UI.hbox(7)
-	badges.add_child(UI.sticker("CLASSES 6–9", G.VERMILION, G.CREAM, -2.0))
-	badges.add_child(UI.sticker("FREE CHOICE", G.TEAL, G.INK, 1.4))
+	badges.add_child(UI.sticker("CLASSES 6–9", G.VERMILION, G.CREAM, 0.0))
+	badges.add_child(UI.sticker("13° N", G.TEAL, G.INK, 0.0))
 	col.add_child(badges)
 
 	var title := UI.display("NAKSHATRA", title_px, G.CREAM)
@@ -332,7 +332,7 @@ func _add_title_block(parent: VBoxContainer, title_size: int) -> void:
 
 	var sub_row := UI.hbox(8)
 	sub_row.add_child(UI.slash(G.VERMILION, 7))
-	var sub := UI.sticker("THE SKY WEAVERS", G.VERMILION, G.CREAM, -1.2)
+	var sub := UI.sticker("THE SKY WEAVERS", G.VERMILION, G.CREAM, 0.0)
 	sub_row.add_child(sub)
 	col.add_child(sub_row)
 
@@ -343,11 +343,11 @@ func _add_title_block(parent: VBoxContainer, title_size: int) -> void:
 	thick.custom_minimum_size = Vector2(84, 3)
 	col.add_child(thick)
 
-	var tag := UI.label("SEVEN LANTERNS ON A HILL. ONE REAL SKY.", int(clampf(title_px * 0.2, 15, 21)), G.CREAM, "display")
+	var tag := UI.label("SEVEN LANTERNS. ONE REAL SKY.", int(clampf(title_px * 0.2, 15, 21)), G.CREAM, "display")
 	tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(tag)
 
-	var tag2 := UI.label("Pick any path. No locks, no order — just the sky above Chandragiri.", 14, Color(G.MUTED, 0.98))
+	var tag2 := UI.label("A free-choice sky lab for middle school.", 15, Color(G.MUTED, 0.98))
 	if not compact_land:
 		col.add_child(tag2)
 
@@ -388,9 +388,9 @@ func _add_title_block(parent: VBoxContainer, title_size: int) -> void:
 		_show_story())
 	links.add_child(story)
 
-	var ticker := UI.marquee("SEVEN LANTERNS  ·  ONE REAL SKY  ·  PICK ANY PATH  ·  NO LOCKS  ·  ", G.GOLD, 14)
-	ticker.custom_minimum_size.y = 22
-	col.add_child(ticker)
+	var facts := UI.tracked("7 EXHIBITS  ·  8,879 STARS  ·  WORKS OFFLINE", 9, Color(G.GOLD, 0.9), 2)
+	facts.autowrap_mode = TextServer.AUTOWRAP_OFF
+	col.add_child(facts)
 
 
 func _add_postcard(parent: Control, size: Vector2, rotate: bool) -> void:

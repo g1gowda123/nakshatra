@@ -265,7 +265,7 @@ func _update_readout() -> void:
 			phase_label.add_theme_font_size_override("font_size", 24)
 			phase_label.add_theme_color_override("font_color", G.CREAM)
 	if illum_label:
-		illum_label.text = "Set the geometry, then check." if hide else "%d%% of the face lit" % int(round(float(p["illum"]) * 100.0))
+		illum_label.text = "" if hide else "%d%% of the face lit" % int(round(float(p["illum"]) * 100.0))
 	if phase_kn_label:
 		phase_kn_label.text = "" if hide else _phase_kannada(str(p["name"]))
 	if note_label:
@@ -364,10 +364,9 @@ func _fill_panel() -> void:
 
 	var head := UI.hbox(8)
 	v.add_child(head)
-	head.add_child(UI.sticker("FROM EARTH", G.TEAL, G.INK, -2.0))
+	head.add_child(UI.sticker("FROM EARTH", G.TEAL, G.INK, 0.0))
 	head.add_child(UI.spacer())
-	if not UI.is_compact():
-		head.add_child(UI.sticker("LIVE", G.VERMILION, G.CREAM, 2.0))
+
 
 	var center_frame := CenterContainer.new()
 	v.add_child(center_frame)

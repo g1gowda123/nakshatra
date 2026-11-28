@@ -452,15 +452,14 @@ func _build_ui() -> void:
 	mid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	col.add_child(mid)
 
-	var hint_text := "TAP A LANTERN  —  OR PICK A LESSON BELOW"
+	var hint: Label = null
 	if G.all_done():
-		hint_text = "SEVEN LANTERNS LIT  —  THE HILL IS YOURS"
-	var hint := UI.tracked(hint_text, 8, Color(G.MUTED, 0.8), 2)
-	hint.autowrap_mode = TextServer.AUTOWRAP_OFF
-	hint.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	hint.position = Vector2(2, 12)
-	hint.size = Vector2(UI.viewport_size().x - UI.pad() * 2, 16)
-	mid.add_child(hint)
+		hint = UI.tracked("ALL SEVEN LANTERNS LIT", 8, Color(G.TEAL, 0.9), 2)
+		hint.autowrap_mode = TextServer.AUTOWRAP_OFF
+		hint.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		hint.position = Vector2(2, 12)
+		hint.size = Vector2(UI.viewport_size().x - UI.pad() * 2, 16)
+		mid.add_child(hint)
 
 	if G.all_done():
 		var finale := UI.button("The lantern festival   ›", true, 17)
@@ -597,9 +596,7 @@ func _cards() -> Control:
 	rail_title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	rail_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(rail_title)
-	var order_tag := UI.sticker("NO LOCKS  ·  ANY ORDER", G.TEAL, G.INK, 1.2)
-	order_tag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	head.add_child(order_tag)
+
 
 	if UI.is_portrait():
 		var scroll := ScrollContainer.new()
@@ -792,7 +789,7 @@ func _module_poster(id: String) -> Control:
 	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	b.focus_mode = Control.FOCUS_ALL
 	b.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	b.rotation = deg_to_rad(-0.7 if idx % 2 == 0 else 0.6)
+	b.rotation = 0.0
 	var normal := StyleBoxFlat.new()
 	normal.bg_color = Color(0.055, 0.043, 0.095, 0.98)
 	normal.border_color = Color(G.CREAM, 0.3)
@@ -844,9 +841,9 @@ func _module_poster(id: String) -> Control:
 	top.add_child(num)
 	top.add_child(UI.spacer())
 	if done:
-		top.add_child(UI.sticker("LIT", G.TEAL, G.INK, -6.0))
+		top.add_child(UI.sticker("LIT", G.TEAL, G.INK, 0.0))
 	elif current:
-		top.add_child(UI.sticker("START", G.VERMILION, G.CREAM, 5.0))
+		top.add_child(UI.sticker("START", G.VERMILION, G.CREAM, 0.0))
 
 	box.add_child(_thumb(str(info.get("art", "")), 40))
 	var title := UI.label(str(info.get("title", id)), 13, G.CREAM, "display")
@@ -859,8 +856,6 @@ func _module_poster(id: String) -> Control:
 	var bottom := UI.hbox(4)
 	box.add_child(bottom)
 	bottom.add_child(UI.micro(str(info.get("minutes", "")), Color(G.MUTED, 0.85), 8))
-	bottom.add_child(UI.spacer())
-	bottom.add_child(UI.micro("OPEN  ›", accent, 8))
 	return b
 
 

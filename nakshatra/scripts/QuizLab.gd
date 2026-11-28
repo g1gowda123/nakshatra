@@ -219,40 +219,39 @@ func _render() -> void:
 
 
 func _render_intro() -> void:
-	content_box.add_child(UI.micro("SKY NOTE 07  ·  A FRIENDLY CHECK", Color(G.GOLD, 0.9), 9))
+	content_box.add_child(UI.micro("SKY NOTE 07  ·  %d QUESTIONS" % questions.size(), Color(G.GOLD, 0.9), 9))
 
-	var cols := UI.hbox(26)
+	var compact := UI.is_compact()
+	var cols: BoxContainer = UI.vbox(10) if compact else UI.hbox(26)
 	content_box.add_child(cols)
 	var left := UI.vbox(10)
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cols.add_child(left)
 	left.add_child(UI.heading("%d riddles about the sky." % questions.size(), 40))
-	left.add_child(UI.label("No timer. Every answer is explained — so a wrong guess becomes a lesson.", 16, Color(G.MUTED, 0.95)))
-	left.add_child(UI.label("Use the same %d questions before and after a lesson to see how much has changed. This is a learning check, not an exam." % questions.size(), 15, G.CREAM))
+	left.add_child(UI.label("No timer. Every answer is explained.", 16, Color(G.MUTED, 0.95)))
+	left.add_child(UI.label("Take it before and after a lesson to see what changed.", 15, G.CREAM))
 	if G.quiz_best > 0:
 		left.add_child(UI.label("Your best so far: %d / %d" % [G.quiz_best, questions.size()], 14, G.GOLD, "body_med"))
 
-	var right := UI.vbox(0)
-	right.custom_minimum_size = Vector2(196, 0)
-	right.size_flags_horizontal = Control.SIZE_SHRINK_END
-	right.alignment = BoxContainer.ALIGNMENT_CENTER
-	cols.add_child(right)
-	var slip := UI.paper(16)
-	slip.custom_minimum_size = Vector2(196, 0)
-	right.add_child(slip)
-	var sv := UI.vbox(6)
-	slip.add_child(sv)
-	sv.add_child(UI.micro("SKY NOTE 07", Color("8a6a3c"), 8))
-	var big := UI.display("%d" % questions.size(), 58, G.INK)
-	big.custom_minimum_size.y = 58
-	sv.add_child(big)
-	sv.add_child(UI.micro("RIDDLES", G.INK_SOFT, 9))
-	sv.add_child(_segments(maxi(G.quiz_best, 0), questions.size(), -1, true))
-	sv.add_child(UI.rule(Color(G.INK, 0.2), 1))
-	sv.add_child(UI.micro("NO TIMER", G.INK_SOFT, 8))
-	sv.add_child(UI.micro("EVERY ANSWER EXPLAINED", G.INK_SOFT, 8))
-	sv.add_child(UI.micro("PRE- AND POST-TEST", G.INK_SOFT, 8))
-	sv.add_child(UI.micro("CLASS 6–9", Color("8a6a3c"), 8))
+	if not compact:
+		var right := UI.vbox(0)
+		right.custom_minimum_size = Vector2(196, 0)
+		right.size_flags_horizontal = Control.SIZE_SHRINK_END
+		right.alignment = BoxContainer.ALIGNMENT_CENTER
+		cols.add_child(right)
+		var slip := UI.paper(16)
+		slip.custom_minimum_size = Vector2(196, 0)
+		right.add_child(slip)
+		var sv := UI.vbox(6)
+		slip.add_child(sv)
+		sv.add_child(UI.micro("SKY NOTE 07", Color("8a6a3c"), 8))
+		var big := UI.display("%d" % questions.size(), 58, G.INK)
+		big.custom_minimum_size.y = 58
+		sv.add_child(big)
+		sv.add_child(UI.micro("RIDDLES", G.INK_SOFT, 9))
+		sv.add_child(_segments(maxi(G.quiz_best, 0), questions.size(), -1, true))
+		sv.add_child(UI.rule(Color(G.INK, 0.2), 1))
+		sv.add_child(UI.micro("PRE / POST", G.INK_SOFT, 8))
 
 	content_box.add_child(UI.rule(Color(G.GOLD, 0.22), 1))
 	var gap := Control.new()
@@ -260,11 +259,11 @@ func _render_intro() -> void:
 	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content_box.add_child(gap)
 
-	var row := UI.hbox(14)
+	var row: BoxContainer = UI.vbox(8) if compact else UI.hbox(14)
 	content_box.add_child(row)
 	var start := UI.button("Start the riddles   ›", true, 17)
-	start.custom_minimum_size = Vector2(240, 46)
-	start.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	start.custom_minimum_size = Vector2(0 if compact else 240, 46)
+	start.size_flags_horizontal = Control.SIZE_EXPAND_FILL if compact else Control.SIZE_SHRINK_BEGIN
 	start.pressed.connect(func():
 		Sfx.play("lantern")
 		started = true
@@ -277,13 +276,10 @@ func _render_intro() -> void:
 		_shuffle_gen += 1
 		_render())
 	row.add_child(start)
-	var lesson := UI.link_button("READ THE LESSON FIRST", 10)
+	var lesson := UI.link_button("READ THE LESSON" if compact else "READ THE LESSON FIRST", 10)
 	lesson.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	lesson.pressed.connect(func(): G.show_briefing("quiz"))
 	row.add_child(lesson)
-
-	content_box.add_child(UI.micro("THE EXHIBITS ARE ALWAYS OPEN — IF A QUESTION SURPRISES YOU, VISIT THE MATCHING LAB AFTERWARDS", Color(G.MUTED, 0.82), 8))
-
 
 func _render_question() -> void:
 	if index >= questions.size():
@@ -304,7 +300,6 @@ func _render_question() -> void:
 	gap_q.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content_box.add_child(gap_q)
 	content_box.add_child(UI.rule(Color(G.GOLD, 0.18), 1))
-	content_box.add_child(UI.micro("CHOOSE ONE ANSWER", Color(G.MUTED, 0.9), 8))
 
 	var letters := ["A", "B", "C", "D"]
 	var options: Array = q.get("options", [])

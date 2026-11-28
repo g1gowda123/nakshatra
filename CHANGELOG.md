@@ -1,5 +1,29 @@
 # Changelog
 
+## v1.5.1 — Less noise · 2026-11-27
+
+### Changed
+
+- **Cut the copy that was decorating instead of teaching.** The title loses the
+  redundant free-choice badge, the second slogan line and the ticker; it keeps
+  one class tag, one location tag, one promise, and a factual
+  `7 EXHIBITS · 8,879 STARS · WORKS OFFLINE` line.
+- **The hub stops explaining itself.** The “tap a lantern” instruction and the
+  “no locks” sticker are gone; only the completion line remains, and it appears
+  only when all seven are lit. Cards are upright and carry number, thumbnail,
+  title, time and state — no repeated “OPEN” label.
+- **The quiz intro is three lines, not a paragraph.** It keeps the pre/post
+  promise and the best score; the redundant exam disclaimer and the four-line
+  metadata slip go.
+- **The Moon card drops the duplicate instruction** under the inset; the task
+  prompt and `CHECK MY MOON` carry it.
+- **Stickers and cards no longer sit at odd angles**, so labels read straight.
+
+### Fixed
+
+- **Phone quiz intro no longer clips** the cream stat card or the “read the
+  lesson” link; the stat card is desktop-only and the actions stack on phones.
+
 ## v1.5.0 — The loud sky · 2026-11-27
 
 ### Changed
